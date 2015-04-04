@@ -12,7 +12,14 @@ package ecomerce.com.model;
 public class Cidade extends EntidadeDominio
 {
     private String nome;
-
+    private int id;
+    private float valor;
+    
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+    
     public String getNome()
     {
         return nome;
