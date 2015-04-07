@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ecomerce.com.model;
+package com.br.ecommerce.model.dao.implem;
 
 /**
  *
- * @author Grimmjhow!
+ * @author Elvin
  */
-//imports do programa!
-public class Contato
-{
+public class PrestadorServicoDAO {
     
 }
