@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.br.ecommerce.model.dao.implem;
+package br.com.ecommerce.model.dominio;
+
+import java.util.ArrayList;
 
 /**
  *
  * @author Elvin
  */
-public class PrestadorServicoDAO {
+public class PrestadorServico extends Usuario{
     
+    private ArrayList<Competencia> habilidades;
 }

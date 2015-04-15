@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 //pacotes do programa!
-package com.br.ecommerce.model.dominio;
+package br.com.ecommerce.model.dominio;
 /**
  *
  * @author java

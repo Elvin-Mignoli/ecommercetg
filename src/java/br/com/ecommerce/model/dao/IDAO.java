@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.br.ecommerce.model.dao;
+package br.com.ecommerce.model.dao;
 
-import com.br.ecommerce.model.dominio.EntidadeDominio;
+import br.com.ecommerce.model.dominio.EntidadeDominio;
 import java.util.List;
 
 /**

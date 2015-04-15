@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.br.ecommerce.model.testes;
+package br.com.ecommerce.testes;
 
-import com.br.ecommerce.model.util.Conexao;
+import br.com.ecommerce.util.Conexao;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;

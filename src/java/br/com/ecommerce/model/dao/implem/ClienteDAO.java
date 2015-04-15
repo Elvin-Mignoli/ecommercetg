@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.br.ecommerce.model.dao.implem;
+package br.com.ecommerce.model.dao.implem;
+
+import br.com.ecommerce.model.dao.IDAO;
+import br.com.ecommerce.model.dominio.EntidadeDominio;
+import java.util.List;
 
 /**
  *
  * @author Elvin
  */
-public class EnderecoDAO {
-    
+public class ClienteDAO {
+
+   
 }
