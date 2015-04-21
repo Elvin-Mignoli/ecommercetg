@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.ecommerce.model.dominio;
+package br.com.ecommerce.domain;
 
 import java.util.Calendar;
 

@@ -5,8 +5,8 @@
  */
 package br.com.ecommerce.testes;
 
-import br.com.ecommerce.model.dao.implem.EnderecoDAO;
-import br.com.ecommerce.model.dominio.Endereco;
+import br.com.ecommerce.core.impl.dao.EnderecoDAO;
+import br.com.ecommerce.domain.Endereco;
 
 /**
  *
@@ -51,7 +51,7 @@ public class TesteEnderecoDAO {
             end3.setId(10);
             end3.setId(10);
             
-            dao.alterar(end3);
+            //dao.alterar(end3);
     }
     
 }
