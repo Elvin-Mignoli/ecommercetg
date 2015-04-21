@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.ecommerce.model.dao.implem;
+package br.com.ecommerce.core.impl.dao;
 
-import br.com.ecommerce.model.dao.IDAO;
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.util.Conexao;
 import java.sql.Connection;
 import java.sql.SQLException;

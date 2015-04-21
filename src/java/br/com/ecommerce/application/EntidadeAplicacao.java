@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.ecommerce.model.dominio;
-
-import java.util.ArrayList;
+package br.com.ecommerce.application;
 
 /**
  *
- * @author Elvin
+ * @author java
  */
-public class PrestadorServico extends Usuario{
+public class EntidadeAplicacao implements IEntidade
+{
     
-    private ArrayList<Competencia> habilidades;
 }
