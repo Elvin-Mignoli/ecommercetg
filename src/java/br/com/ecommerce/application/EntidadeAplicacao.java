@@ -3,14 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ecomerce.com.model;
+package br.com.ecommerce.application;
 
 /**
  *
- * @author Grimmjhow!
+ * @author java
  */
-//imports do programa!
-public class Contato
+public class EntidadeAplicacao implements IEntidade
 {
     
 }
