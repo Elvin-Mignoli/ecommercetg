@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.domain;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -14,4 +15,13 @@ import java.util.ArrayList;
 public class PrestadorServico extends Usuario{
     
     private ArrayList<Competencia> habilidades;
+
+    
+    public PrestadorServico(String nome, String sobrenome, String cpf, Endereco endereco, Contato contato, 
+            String sexo, String dataNascimento, String tipoConta, String email, String senha,ArrayList lista) throws ParseException {
+        super(nome, sobrenome, cpf, endereco, contato, sexo, dataNascimento, tipoConta, email, senha);
+        this.habilidades = lista;
+    }
+    
+    public PrestadorServico(){}//default
 }

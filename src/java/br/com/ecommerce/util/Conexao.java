@@ -21,7 +21,7 @@ public class Conexao
         String url = "jdbc:mysql://localhost:3306/ecommerce";
         String usuario = "root";
         //senha deve ser padrão em todas as máquinas
-        String senha = "admin";
+        String senha = "root";
         //Class.forName("com.mysql.jdbc.Driver");   não precisa instanciar uma classe em tempo de execução, apenas PostgreSQL
         Connection conn;
         conn = DriverManager.getConnection(url, usuario, senha);

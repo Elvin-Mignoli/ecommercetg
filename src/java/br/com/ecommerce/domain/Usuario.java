@@ -5,7 +5,10 @@
  */
 package br.com.ecommerce.domain;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -19,11 +22,31 @@ public abstract class Usuario extends EntidadeDominio{
     private Endereco endereco;
     private Contato  contato;
     private String sexo;
-    private Calendar dataNascimento;
+    private Date dataNascimento;//arrumar
     private String tipoConta; // se o usuário é do tipo cliente ou prestador de serviço
+    private int status;  // 0 - inativo   e  1 - ativo
     private String email;
     private String senha;
 
+    public Usuario(String nome, String sobrenome, String cpf, Endereco endereco, Contato contato, String sexo, 
+            String dataNascimento, String tipoConta, String email, String senha) throws ParseException {
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.cpf = cpf;
+        this.endereco = endereco;
+        this.contato = contato;
+        this.sexo = sexo;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");//formatar para  americano
+        Date date = format.parse(dataNascimento);//formatar String em date
+        this.dataNascimento = date;
+        this.tipoConta = tipoConta;
+        this.email = email;
+        this.senha = senha;
+        this.status = 1;
+    }
+
+    public Usuario(){}
+   
     /**
      * @return the nome
      */
@@ -100,14 +123,14 @@ public abstract class Usuario extends EntidadeDominio{
     /**
      * @return the dataNascimento
      */
-    public Calendar getDataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
     /**
      * @param dataNascimento the dataNascimento to set
      */
-    public void setDataNascimento(Calendar dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -166,4 +189,20 @@ public abstract class Usuario extends EntidadeDominio{
     public void setSobrenome(String sobrenome) {
         this.sobrenome = sobrenome;
     }
+
+    /**
+     * @return the status
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    
 }

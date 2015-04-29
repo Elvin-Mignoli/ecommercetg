@@ -15,6 +15,11 @@ public class Contato
     private String telefone;
     private String celular;
 
+    public Contato(String telefone, String celular) {
+        this.telefone = telefone;
+        this.celular = celular;
+    }
+
     /**
      * @return the telefone
      */

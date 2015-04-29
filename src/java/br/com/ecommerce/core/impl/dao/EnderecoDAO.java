@@ -47,7 +47,8 @@ public class EnderecoDAO extends AbstractDAO
             ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
             if (resultado.next())            //se conseguir interar pelo menos 1 vez
             {//conseguiu iterar
-                end.setId(resultado.getInt(1));
+                //end.setId(resultado.getInt(1));
+                entidade.setId(resultado.getInt(1));
             }
             conexao.commit();//confirmando alteracoes no banco
         } catch (SQLException ex)
@@ -108,7 +109,30 @@ public class EnderecoDAO extends AbstractDAO
     @Override
     public void excluir(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        openConnection();//Abrir conexão com banco
+        Endereco end = (Endereco) entidade;
+        PreparedStatement preparador;
+        String sql = "DELETE FROM ENDERECOS WHERE ID = ?";
+        try{
+        conexao.setAutoCommit(false);
+        preparador = conexao.prepareStatement(sql);
+        preparador.setInt(1,end.getId());
+        preparador.executeUpdate();
+        conexao.commit();
+        }catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
@@ -120,7 +144,46 @@ public class EnderecoDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        openConnection();//Abrir conexão com banco
+        Endereco end = (Endereco) entidade;
+        PreparedStatement preparador;
+        String sql = "SELECT * FROM ENDERECOS WHERE ID = ?";
+        try{
+        conexao.setAutoCommit(false);
+        preparador = conexao.prepareStatement(sql);
+        preparador.setInt(1,end.getId());
+        ResultSet  resultado = preparador.executeQuery();
+        resultado.next();
+        conexao.commit();
+        if(resultado.getRow()== 0)
+        {
+            return null;
+        }else
+        {
+            end.setBairro(resultado.getString("bairro"));
+            end.setCep(resultado.getString("cep"));
+            end.setCidade(resultado.getString("cidade"));
+            end.setComplemento(resultado.getString("complemento"));
+            end.setEstado(resultado.getString("estado"));
+            end.setLogradouro(resultado.getString("logradouro"));
+            end.setNumero(resultado.getString("numero"));
+            end.setId(resultado.getInt("id"));
+            return end;
+        }
+        }catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
 }
