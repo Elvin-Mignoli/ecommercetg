@@ -24,4 +24,18 @@ public class PrestadorServico extends Usuario{
     }
     
     public PrestadorServico(){}//default
+
+    /**
+     * @return the habilidades
+     */
+    public ArrayList<Competencia> getHabilidades() {
+        return habilidades;
+    }
+
+    /**
+     * @param habilidades the habilidades to set
+     */
+    public void setHabilidades(ArrayList<Competencia> habilidades) {
+        this.habilidades = habilidades;
+    }
 }

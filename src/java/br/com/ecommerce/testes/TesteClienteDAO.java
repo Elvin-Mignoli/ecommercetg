@@ -24,68 +24,85 @@ import java.util.List;
  */
 public class TesteClienteDAO {
     public static void main(String[] args) throws SQLException, ParseException {
-        Endereco end = new Endereco();
-        end.setBairro("Colorado");
-        end.setCep("08655120");
-        end.setCidade("Suzano");
-        end.setComplemento("Apt 2");
-        end.setEstado("São Paulo");
-        end.setLogradouro("Rua: 10");
-        end.setNumero("100");
-        
-      
-        Contato contato = new Contato("47471515","996147755");
-        Cliente cliente = new Cliente("Elvin", "Mignoli","0000231221" , end, contato, "M", "1992/05/11", "Cliente", "Elvin-mig@hotmail.com","1234");
-        ClienteDAO clienteDAO = new ClienteDAO();
-        
-        //salvar
-        //clienteDAO.salvar(cliente);
-        
-        
-        //excluir
-       cliente.setId(15);
-       end.setId(27);
-       //clienteDAO.excluir(cliente);
-       
-       //consultar um cliente
-        Cliente clienteConsult = new Cliente();
-        /*clienteConsult.setId(16);
-        clienteConsult = (Cliente) clienteDAO.consultarUm(clienteConsult);
-        System.out.println("NOME: " + clienteConsult.getNome());
-        System.out.println("SOBRENOME: " + clienteConsult.getSobrenome());
-        System.out.println("CPF: " + clienteConsult.getCpf());
-        System.out.println("SEXO: " + clienteConsult.getSexo());
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.println("DATA NASCIMENTO: " + format.format(clienteConsult.getDataNascimento()));
-        System.out.println("ENDEREÇO: " );
-        System.out.println("RUA: " + clienteConsult.getEndereco().getLogradouro());
-        System.out.println("CONTATO: " + clienteConsult.getContato().getTelefone());
-        System.out.println("EMAIL: " + clienteConsult.getEmail());
-        System.out.println("SENHA: " + clienteConsult.getSenha());
-        System.out.println("STATUS: " + clienteConsult.getStatus());
-        System.out.println("TIPO DE CONTA: " + clienteConsult.getTipoConta());
-        System.out.println("ID: " + clienteConsult.getId());*/
-       
-       
-       //consultar varios clientes
-      List<EntidadeDominio> lista = clienteDAO.consultar(clienteConsult);
-       for(EntidadeDominio cl: lista)
-       {
-           Cliente consulaCliente = (Cliente) cl;
-            System.out.println("\nNOME: " + consulaCliente.getNome());
-            System.out.println("SOBRENOME: " + consulaCliente.getSobrenome());
-            System.out.println("CPF: " + consulaCliente.getCpf());
-            System.out.println("SEXO: " + consulaCliente.getSexo());
+            Endereco end = new Endereco();
+            end.setBairro("Colorado");
+            end.setCep("08655120");
+            end.setCidade("Suzano");
+            end.setComplemento("Apt 2");
+            end.setEstado("São Paulo");
+            end.setLogradouro("Rua: 10");
+            end.setNumero("100");
+
+
+            Contato contato = new Contato("47471515","996147755");
+            Cliente cliente = new Cliente("Elvin", "Mignoli","0000231221" , end, contato, "M", "1992/05/11", "Cliente", "Elvin-mig@hotmail.com","1234");
+            ClienteDAO clienteDAO = new ClienteDAO();
+
+            //salvar
+            //clienteDAO.salvar(cliente);
+
+
+            //excluir
+           cliente.setId(15);
+           end.setId(27);
+           //clienteDAO.excluir(cliente);
+
+           //consultar um cliente
+           /* Cliente clienteConsult = new Cliente();
+           clienteConsult.setId(16);
+            clienteConsult = (Cliente) clienteDAO.consultarUm(clienteConsult);
+            System.out.println("NOME: " + clienteConsult.getNome());
+            System.out.println("SOBRENOME: " + clienteConsult.getSobrenome());
+            System.out.println("CPF: " + clienteConsult.getCpf());
+            System.out.println("SEXO: " + clienteConsult.getSexo());
             SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-            System.out.println("DATA NASCIMENTO: " + format.format(consulaCliente.getDataNascimento()));
+            System.out.println("DATA NASCIMENTO: " + format.format(clienteConsult.getDataNascimento()));
             System.out.println("ENDEREÇO: " );
-            System.out.println("RUA: " + consulaCliente.getEndereco().getLogradouro());
-            System.out.println("CONTATO: " + consulaCliente.getContato().getTelefone());
-            System.out.println("EMAIL: " + consulaCliente.getEmail());
-            System.out.println("SENHA: " + consulaCliente.getSenha());
-            System.out.println("STATUS: " + consulaCliente.getStatus());
-            System.out.println("TIPO DE CONTA: " + consulaCliente.getTipoConta());
-            System.out.println("ID: " + consulaCliente.getId());
+            System.out.println("RUA: " + clienteConsult.getEndereco().getLogradouro());
+            System.out.println("CONTATO: " + clienteConsult.getContato().getTelefone());
+            System.out.println("EMAIL: " + clienteConsult.getEmail());
+            System.out.println("SENHA: " + clienteConsult.getSenha());
+            System.out.println("STATUS: " + clienteConsult.getStatus());
+            System.out.println("TIPO DE CONTA: " + clienteConsult.getTipoConta());
+            System.out.println("ID: " + clienteConsult.getId());*/
+
+
+           //consultar varios clientes
+          /*List<EntidadeDominio> lista = clienteDAO.consultar(clienteConsult);
+           for(EntidadeDominio cl: lista)
+           {
+               Cliente consulaCliente = (Cliente) cl;
+                System.out.println("\nNOME: " + consulaCliente.getNome());
+                System.out.println("SOBRENOME: " + consulaCliente.getSobrenome());
+                System.out.println("CPF: " + consulaCliente.getCpf());
+                System.out.println("SEXO: " + consulaCliente.getSexo());
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                System.out.println("DATA NASCIMENTO: " + format.format(consulaCliente.getDataNascimento()));
+                System.out.println("ENDEREÇO: " );
+                System.out.println("RUA: " + consulaCliente.getEndereco().getLogradouro());
+                System.out.println("CONTATO: " + consulaCliente.getContato().getTelefone());
+                System.out.println("EMAIL: " + consulaCliente.getEmail());
+                System.out.println("SENHA: " + consulaCliente.getSenha());
+                System.out.println("STATUS: " + consulaCliente.getStatus());
+                System.out.println("TIPO DE CONTA: " + consulaCliente.getTipoConta());
+                System.out.println("ID: " + consulaCliente.getId());
+        }*/
+           
+        //Atualizar
+         /* Endereco end3 = new Endereco();
+            end.setBairro("Jardim do Bosque");
+            end.setCep("08655525");
+            end.setCidade("Suzano");
+            end.setComplemento("Apt 10");
+            end.setEstado("São Paulo");
+            end.setLogradouro("Rua: 207");
+            end.setNumero("522");
+            end.setId(28);
+
+            Contato contato2 = new Contato("47474410","996147740");
+            Cliente cliente4 = new Cliente("Pedro", "Mignoli","0000000000" , end, contato, "M", "1998/05/11", "Cliente", "pedro-mig@hotmail.com","1235");
+            cliente4.setId(16);
+            clienteDAO.atualizar(cliente4);*/
+            
     }
-}
 }

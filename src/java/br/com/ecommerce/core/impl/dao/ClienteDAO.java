@@ -59,7 +59,7 @@ public class ClienteDAO extends AbstractDAO
                 entidade.setId(resultado.getInt(1));
             }
             conexao.commit();//confirmando alteracoes no banco
-            Autenticar autenticar = new Autenticar();
+            AutenticarDAO autenticar = new AutenticarDAO();
             autenticar.salvar(cliente);
         } catch (SQLException ex)
         { 
@@ -80,7 +80,46 @@ public class ClienteDAO extends AbstractDAO
 
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        openConnection();//Abrir conexão com banco
+        Cliente cliente = (Cliente) entidade;
+        PreparedStatement preparador;
+        String sql = "UPDATE CLIENTES SET NOME = ?, SOBRENOME = ?, DATA_NASCIMENTO = ?, "
+                + " TELEFONE = ?,  CELULAR = ? ,  SEXO = ? WHERE ID = ?";  //criando sql para insert no banco
+        try
+        {
+            conexao.setAutoCommit(false);//setando auto commit para false
+            preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
+            //setando parametros do insert
+            preparador.setString(1, cliente.getNome());
+            preparador.setString(2, cliente.getSobrenome());
+            java.sql.Date sqlData = new java.sql.Date(cliente.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
+            preparador.setDate(3, sqlData);
+            preparador.setString(4, cliente.getContato().getTelefone());
+            preparador.setString(5, cliente.getContato().getCelular());
+            preparador.setString(6, cliente.getSexo());
+            preparador.setInt(7, cliente.getId());
+            preparador.executeUpdate();//executando a query no banco de dados
+            conexao.commit();//confirmando alteracoes no banco
+            //Atualizar o endereço
+            EnderecoDAO endDAO = new EnderecoDAO();
+            endDAO.atualizar(cliente.getEndereco());
+            //Atualizar Login
+            AutenticarDAO login = new AutenticarDAO();
+            login.atualizar(cliente);
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
@@ -97,7 +136,7 @@ public class ClienteDAO extends AbstractDAO
         conexao.commit();
         EnderecoDAO endDAO = new EnderecoDAO();
         endDAO.excluir(cliente.getEndereco());
-        Autenticar autenticar = new Autenticar();
+        AutenticarDAO autenticar = new AutenticarDAO();
         autenticar.excluir(cliente);
         }catch (SQLException ex)
         {
@@ -120,7 +159,7 @@ public class ClienteDAO extends AbstractDAO
         openConnection();//Abrir conexão com banco
         ArrayList<EntidadeDominio> lista = new ArrayList<>();
         PreparedStatement preparador;
-        String sql = "SELECT * FROM CLIENTES ";
+        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
         try{
         conexao.setAutoCommit(false);
         preparador = conexao.prepareStatement(sql);
@@ -142,7 +181,7 @@ public class ClienteDAO extends AbstractDAO
                 //pegar o id do banco 
                 cliente.setId(resultado.getInt("id"));
                 //pegar os dados do login
-                Autenticar autenticar = new Autenticar();
+                AutenticarDAO autenticar = new AutenticarDAO();
                 autenticar.consultarUm(cliente);
                 //pegar os dados do contato
                 Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
@@ -180,7 +219,7 @@ public class ClienteDAO extends AbstractDAO
         openConnection();//Abrir conexão com banco
         Cliente cliente = (Cliente)entidade;
         PreparedStatement preparador;
-        String sql = "SELECT * FROM CLIENTES WHERE ID = ?";
+        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE CLIENTES.ID = ? AND ID_ENDERECO = ENDERECOS.ID ";
         try{
         conexao.setAutoCommit(false);
         preparador = conexao.prepareStatement(sql);
@@ -201,7 +240,7 @@ public class ClienteDAO extends AbstractDAO
             //pegar o id do banco 
             cliente.setId(resultado.getInt("id"));
             //pegar os dados do login
-            Autenticar autenticar = new Autenticar();
+            AutenticarDAO autenticar = new AutenticarDAO();
             autenticar.consultarUm(cliente);
             //pegar os dados do contato
             Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  

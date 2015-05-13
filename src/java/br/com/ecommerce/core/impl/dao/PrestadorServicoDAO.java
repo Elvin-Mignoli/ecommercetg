@@ -5,8 +5,17 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.Competencia;
+import br.com.ecommerce.domain.Contato;
+import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.PrestadorServico;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,34 +25,252 @@ import java.util.List;
 public class PrestadorServicoDAO extends AbstractDAO
 {
 
-    @Override
-    public void salvar(EntidadeDominio entidade) throws SQLException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     @Override
+    public void salvar(EntidadeDominio entidade) throws SQLException {
+       openConnection(); //Abrir conexão com banco
+        PrestadorServico prestador = (PrestadorServico) entidade;
+        PreparedStatement preparador;
+        //criando sql para insert no banco
+        String sql = "INSERT INTO PRESTADOR_SERVICOS(NOME,SOBRENOME,DATA_NASCIMENTO,CPF,TELEFONE,CELULAR,SEXO,ID_ENDERECO) VALUES(?,?,?,?,?,?,?,?)";
+        
+        //pegando o id do endereço e salvando endereco
+        EnderecoDAO endDAO = new EnderecoDAO();
+        endDAO.salvar(prestador.getEndereco());
+        
+        try
+        {
+            conexao.setAutoCommit(false);//setando auto commit para false
+            preparador = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
+            //setando parametros do insert
+            preparador.setString(1, prestador.getNome());
+            preparador.setString(2, prestador.getSobrenome());
+            java.sql.Date sqlData = new java.sql.Date(prestador.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
+            preparador.setDate(3, sqlData);
+            preparador.setString(4, prestador.getCpf());
+            preparador.setString(5, prestador.getContato().getTelefone());
+            preparador.setString(6, prestador.getContato().getCelular());
+            preparador.setString(7, prestador.getSexo());
+            preparador.setInt(8, prestador.getEndereco().getId());
+            preparador.executeUpdate();//executando a query no banco de dados
+            ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
+            if (resultado.next())            //se conseguir interar pelo menos 1 vez
+            {//conseguiu iterar
+                entidade.setId(resultado.getInt(1));
+            }
+            conexao.commit();//confirmando alteracoes no banco
+            //insercao dos dados de login
+            AutenticarDAO autenticar = new AutenticarDAO();
+            autenticar.salvar(prestador);
+            //inserção das competencias
+            CompetenciaDAO compDAO= new CompetenciaDAO();
+            compDAO.salvar(prestador);
+            
+        } catch (SQLException ex)
+        { 
+            endDAO.excluir(prestador.getEndereco());
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
-    public void atualizar(EntidadeDominio entidade) throws SQLException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void atualizar(EntidadeDominio entidade) throws SQLException {
+        openConnection();//Abrir conexão com banco
+        Cliente cliente = (Cliente) entidade;
+        PreparedStatement preparador;
+        String sql = "UPDATE CLIENTES SET NOME = ?, SOBRENOME = ?, DATA_NASCIMENTO = ?, "
+                + " TELEFONE = ?,  CELULAR = ? ,  SEXO = ? WHERE ID = ?";  //criando sql para insert no banco
+        try
+        {
+            conexao.setAutoCommit(false);//setando auto commit para false
+            preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
+            //setando parametros do insert
+            preparador.setString(1, cliente.getNome());
+            preparador.setString(2, cliente.getSobrenome());
+            java.sql.Date sqlData = new java.sql.Date(cliente.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
+            preparador.setDate(3, sqlData);
+            preparador.setString(4, cliente.getContato().getTelefone());
+            preparador.setString(5, cliente.getContato().getCelular());
+            preparador.setString(6, cliente.getSexo());
+            preparador.setInt(7, cliente.getId());
+            preparador.executeUpdate();//executando a query no banco de dados
+            conexao.commit();//confirmando alteracoes no banco
+            //Atualizar o endereço
+            EnderecoDAO endDAO = new EnderecoDAO();
+            endDAO.atualizar(cliente.getEndereco());
+            //Atualizar Login
+            AutenticarDAO login = new AutenticarDAO();
+            login.atualizar(cliente);
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
-    public void excluir(EntidadeDominio entidade) throws SQLException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void excluir(EntidadeDominio entidade) throws SQLException {
+         openConnection();//Abrir conexão com banco
+        Cliente cliente = (Cliente)entidade;
+        PreparedStatement preparador;
+        String sql = "DELETE FROM CLIENTES WHERE ID = ?";
+        try{
+        conexao.setAutoCommit(false);
+        preparador = conexao.prepareStatement(sql);
+        preparador.setInt(1,cliente.getId());
+        preparador.executeUpdate();
+        conexao.commit();
+        EnderecoDAO endDAO = new EnderecoDAO();
+        endDAO.excluir(cliente.getEndereco());
+        AutenticarDAO autenticar = new AutenticarDAO();
+        autenticar.excluir(cliente);
+        }catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
-    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
+        openConnection();//Abrir conexão com banco
+        ArrayList<EntidadeDominio> lista = new ArrayList<>();
+        PreparedStatement preparador;
+        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
+        try{
+        conexao.setAutoCommit(false);
+        preparador = conexao.prepareStatement(sql);
+        ResultSet  resultado = preparador.executeQuery();
+        resultado.next();
+        conexao.commit();
+        if(resultado.getRow()== 0)
+        {
+            return null;
+        }else
+        {
+           do
+            {
+                Cliente cliente = new Cliente();
+                EnderecoDAO endDao = new EnderecoDAO();
+                Endereco end = new Endereco();
+                end.setId(resultado.getInt("id_endereco"));
+                cliente.setEndereco((Endereco) endDao.consultarUm(end));
+                //pegar o id do banco 
+                cliente.setId(resultado.getInt("id"));
+                //pegar os dados do login
+                AutenticarDAO autenticar = new AutenticarDAO();
+                autenticar.consultarUm(cliente);
+                //pegar os dados do contato
+                Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
+                cliente.setContato(contato);
+                //
+                cliente.setNome(resultado.getString("nome"));
+                cliente.setCpf(resultado.getString("cpf"));
+                cliente.setDataNascimento(resultado.getDate("data_nascimento"));
+                cliente.setSexo(resultado.getString("sexo"));
+                cliente.setSobrenome(resultado.getString("sobrenome"));
+                //falta dao de autenticação
+                lista.add(cliente);
+                
+            }while(resultado.next());
+            return lista;
+        }
+        }catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
     }
 
     @Override
-    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException {
+        openConnection();//Abrir conexão com banco
+        Cliente cliente = (Cliente)entidade;
+        PreparedStatement preparador;
+        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE CLIENTES.ID = ? AND ID_ENDERECO = ENDERECOS.ID ";
+        try{
+        conexao.setAutoCommit(false);
+        preparador = conexao.prepareStatement(sql);
+        preparador.setInt(1,cliente.getId());
+        ResultSet  resultado = preparador.executeQuery();
+        resultado.next();
+        conexao.commit();
+        if(resultado.getRow()== 0)
+        {
+            return null;
+        }else
+        {
+            //pegar os dados de  endereço
+            EnderecoDAO endDao = new EnderecoDAO();
+            Endereco end = new Endereco();
+            end.setId(resultado.getInt("id_endereco"));
+            cliente.setEndereco((Endereco) endDao.consultarUm(end));
+            //pegar o id do banco 
+            cliente.setId(resultado.getInt("id"));
+            //pegar os dados do login
+            AutenticarDAO autenticar = new AutenticarDAO();
+            autenticar.consultarUm(cliente);
+            //pegar os dados do contato
+            Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
+            cliente.setContato(contato);
+            //
+            cliente.setNome(resultado.getString("nome"));
+            cliente.setCpf(resultado.getString("cpf"));
+            cliente.setDataNascimento(resultado.getDate("data_nascimento"));
+            cliente.setSexo(resultado.getString("sexo"));
+            cliente.setSobrenome(resultado.getString("sobrenome"));
+            return cliente;
+        }
+        }catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
 
+}
 }
