@@ -159,7 +159,7 @@ public class ClienteDAO extends AbstractDAO
         openConnection();//Abrir conexão com banco
         ArrayList<EntidadeDominio> lista = new ArrayList<>();
         PreparedStatement preparador;
-        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
+        String sql = "SELECT CLIENTES.* FROM CLIENTES,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
         try{
         conexao.setAutoCommit(false);
         preparador = conexao.prepareStatement(sql);
@@ -192,7 +192,6 @@ public class ClienteDAO extends AbstractDAO
                 cliente.setDataNascimento(resultado.getDate("data_nascimento"));
                 cliente.setSexo(resultado.getString("sexo"));
                 cliente.setSobrenome(resultado.getString("sobrenome"));
-                //falta dao de autenticação
                 lista.add(cliente);
                 
             }while(resultado.next());
@@ -219,7 +218,7 @@ public class ClienteDAO extends AbstractDAO
         openConnection();//Abrir conexão com banco
         Cliente cliente = (Cliente)entidade;
         PreparedStatement preparador;
-        String sql = "SELECT * FROM CLIENTES,ENDERECOS WHERE CLIENTES.ID = ? AND ID_ENDERECO = ENDERECOS.ID ";
+        String sql = "SELECT CLIENTES.* FROM CLIENTES,ENDERECOS WHERE CLIENTES.ID = ? AND ID_ENDERECO = ENDERECOS.ID ";
         try{
         conexao.setAutoCommit(false);
         preparador = conexao.prepareStatement(sql);

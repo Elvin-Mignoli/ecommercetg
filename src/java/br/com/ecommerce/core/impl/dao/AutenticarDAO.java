@@ -144,6 +144,7 @@ public class AutenticarDAO extends AbstractDAO
                 preparador.setString(1, prestador.getEmail());
                 preparador.setString(2, prestador.getSenha());
                 preparador.setInt(3, prestador.getStatus());
+                preparador.setInt(4,prestador.getId());
                 preparador.executeUpdate();//executando a query no banco de dados
                 conexao.commit();//confirmando alteracoes no banco
             } catch (SQLException ex)
@@ -238,7 +239,7 @@ public class AutenticarDAO extends AbstractDAO
         if(entidade instanceof Cliente)
         {
             Cliente cliente = (Cliente) entidade;
-            sql = "SELECT * FROM LOGIN WHERE ID_CLIENTE = ?";
+            sql = "SELECT LOGIN.* FROM LOGIN,CLIENTES WHERE LOGIN.ID_CLIENTE = ? AND LOGIN.ID_CLIENTE = CLIENTES.ID";
             try{
             conexao.setAutoCommit(false);
             preparador = conexao.prepareStatement(sql);
@@ -276,7 +277,7 @@ public class AutenticarDAO extends AbstractDAO
         }//if
         else if(entidade instanceof PrestadorServico)
         {
-            sql = "SELECT * FROM LOGIN WHERE ID_PRESTADOR = ?";
+            sql = "SELECT LOGIN.* FROM LOGIN,PRESTADOR_SERVICOS WHERE LOGIN.ID_PRESTADOR = ? AND LOGIN.ID_PRESTADOR = PRESTADOR_SERVICOS.ID";
             PrestadorServico prestador = (PrestadorServico) entidade;
             try{
             conexao.setAutoCommit(false);
@@ -294,7 +295,7 @@ public class AutenticarDAO extends AbstractDAO
                 prestador.setSenha(resultado.getString("senha"));
                 prestador.setStatus(resultado.getInt("status"));
                 prestador.setTipoConta(resultado.getString("tipo_conta"));
-                prestador.setId(resultado.getInt("id_cliente"));
+                prestador.setId(resultado.getInt("id_prestador"));
                
                 return prestador;
             }//else

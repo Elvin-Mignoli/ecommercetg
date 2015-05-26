@@ -48,8 +48,8 @@ public class TesteClienteDAO {
            //clienteDAO.excluir(cliente);
 
            //consultar um cliente
-           /* Cliente clienteConsult = new Cliente();
-           clienteConsult.setId(16);
+            Cliente clienteConsult = new Cliente();
+            /*clienteConsult.setId(16);
             clienteConsult = (Cliente) clienteDAO.consultarUm(clienteConsult);
             System.out.println("NOME: " + clienteConsult.getNome());
             System.out.println("SOBRENOME: " + clienteConsult.getSobrenome());
