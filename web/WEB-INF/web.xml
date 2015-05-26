@@ -6,7 +6,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
-        <url-pattern>/SalvarCliente</url-pattern>
+        <url-pattern>/Cliente/SalvarCliente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
