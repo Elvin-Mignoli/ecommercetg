@@ -7,18 +7,19 @@ package br.com.ecommerce.core.impl.command;
 
 import br.com.ecommerce.core.ICommand;
 import br.com.ecommerce.application.Resultado;
+import br.com.ecommerce.domain.EntidadeDominio;
 
 /**
  *
  * @author java
  */
-public class CommandSalvar implements ICommand
+public class CommandSalvar extends AbstractICommand
 {
 
     @Override
-    public Resultado execute()
+    public Resultado execute(EntidadeDominio entidade)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return fachada.salvar(entidade);
     }
     
 }

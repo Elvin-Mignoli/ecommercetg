@@ -23,7 +23,6 @@ public class Resultado extends EntidadeAplicacao
     private List<EntidadeDominio> entidades = new ArrayList<>(); //para retornar várias entidadesDominio como resposta ("Consultar")
     private EntidadeDominio entidade = new EntidadeDominio();   //para retornar uma única entidadeDominio como resposta ("Consultar Um")
     
-    
     // Métodos de Acesso!
     
     /*

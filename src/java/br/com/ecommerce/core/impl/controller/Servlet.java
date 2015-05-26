@@ -8,7 +8,7 @@ package br.com.ecommerce.core.impl.controller;
 import br.com.ecommerce.core.ICommand;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.ViewHelper.FactoryHelper;
-import br.com.ecommerce.core.impl.command.FactoryICommand;
+import br.com.ecommerce.core.impl.command.AbstractICommand;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.application.Resultado;
 import java.io.IOException;
@@ -34,9 +34,9 @@ public class Servlet extends HttpServlet
         //retorna uma entidade
         EntidadeDominio entidade = vh.getEntidade(request);
         
-        ICommand command = FactoryICommand.getCommand(request.getParameter("operacao"));
+        ICommand command = AbstractICommand.getCommand(request.getParameter("operacao"));
         
-        Resultado resultado = command.execute();
+        Resultado resultado = command.execute(entidade);
         
         vh.setView(resultado, request, response);
     }

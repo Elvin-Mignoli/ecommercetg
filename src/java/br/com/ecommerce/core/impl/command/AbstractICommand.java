@@ -1,6 +1,8 @@
 package br.com.ecommerce.core.impl.command;
 
 import br.com.ecommerce.core.ICommand;
+import br.com.ecommerce.core.IFachada;
+import br.com.ecommerce.core.impl.controller.Fachada;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +11,9 @@ import java.util.Map;
  * @author Felipe Monteiro
  * Fábrica para retornar a instância de um Command
  */
-public abstract class FactoryICommand
+public abstract class AbstractICommand implements ICommand
 {
+    protected IFachada fachada = new Fachada();
     private static Map<String,ICommand> cmd = new HashMap<>(); //lista para conter os commdes específicos
     
     //esse bloco de codigo é executado quando a classe é carregada!
