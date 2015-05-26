@@ -8,37 +8,191 @@ package br.com.ecommerce.core.impl.controller;
 import br.com.ecommerce.core.IFachada;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.application.Resultado;
+import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.core.IStrategy;
+import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
+import br.com.ecommerce.core.impl.IStrategy.ValidaCamposCliente;
+import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.PrestadorServico;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
- * @author Felipe Monteiro
+ * @author Felipe Monteiro 
  * Fachada para encapsular todos os métodos do sistema!
  */
 public class Fachada implements IFachada
 {
 
+    //atributos da fachada!
+    private Map<String, Map<String, List<IStrategy>>> rns;
+    private Map<String, IDAO> daos;
+    private Resultado resultado;
+    /*
+     Metodo Construtor da Fachada!
+     */
+
+    public Fachada()
+    {
+        rns = new HashMap<>();
+        daos = new HashMap<>(); //notacao diamante!
+        //populando o hash de DAO!
+        daos.put(Cliente.class.getName(), new ClienteDAO());
+        daos.put(PrestadorServico.class.getName(), new PrestadorServicoDAO());
+
+        /* 
+         Lista de Regras de negocio! 
+         */
+        // --> Regras de Negocio SalvarCliente!
+        List<IStrategy> rnsSalvarCliente = new ArrayList<>();
+        rnsSalvarCliente.add(new ValidaCamposCliente());
+        rnsSalvarCliente.add(new ValidaCPF());
+
+        Map<String, List<IStrategy>> rnsCliente = new HashMap<>();   //Mapa de regras!
+        rnsCliente.put("Salvar", rnsSalvarCliente);
+        //Fim das regras do Cliente
+
+        //Map final com todas as regras separados por operacao!
+        rns.put(Cliente.class.getName(), rnsCliente);
+    }
+
     @Override
     public Resultado salvar(EntidadeDominio entidade)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        resultado = executaRegras(entidade,"Salvar");
+
+        if (!resultado.getMensagens().isEmpty())
+            return resultado;
+        
+        IDAO dao = daos.get(entidade.getClass().getName());
+        
+        try
+        {
+            dao.salvar(entidade);   //conseguiu salvar a entidade
+            
+            return resultado;       //retorna o resultado sem uma lista de Mensagens!
+        } 
+        catch (SQLException ex) //--> Algum erro grave ocorreu!
+        {
+            ex.printStackTrace();
+            resultado.addMensagens(ex.getMessage());
+            return resultado;
+        }
     }
 
     @Override
     public Resultado alterar(EntidadeDominio entidade)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        resultado = executaRegras(entidade, "Atualizar");
+        
+        if(!resultado.getMensagemSimples().isEmpty())
+            return resultado;
+        
+        try
+        {
+          IDAO dao = daos.get(entidade.getClass().getName());
+          
+          dao.atualizar(entidade);
+          
+          return resultado; 
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            resultado.addMensagens(ex.getMessage());
+            return resultado;
+        }
     }
 
     @Override
     public Resultado excluir(EntidadeDominio entidade)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        resultado = executaRegras(entidade, "Excluir");
+        
+        if(!resultado.getMensagens().isEmpty())
+            return resultado;
+        
+        try
+        {
+            IDAO dao = daos.get(entidade.getClass().getName());
+            
+            dao.excluir(entidade);
+            
+            return resultado;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            resultado.addMensagens(ex.getMessage());
+            return resultado;
+        }
     }
 
     @Override
     public Resultado consultar(EntidadeDominio entidade)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        resultado = executaRegras(entidade, "Consultar");
+        
+        if(!resultado.getMensagens().isEmpty())
+            return resultado;
+        
+        try
+        {
+            IDAO dao = daos.get(entidade.getClass().getName());
+            
+            dao.consultar(entidade);
+            
+            return resultado;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            resultado.addMensagens(ex.getMessage());
+            return resultado;
+        }
     }
-    
+
+    /**
+     * Executa cada regra de negocio especifica de cada entidadeDominio
+     *
+     * @param entidade SubClasse de EntidadeDomino
+     * @param operacao Operacao para Validacao
+     * (Salvar,Alterar,Consultar,Deletar)
+     * @return Null se tudo deu certo ou uma String preenchida!
+     */
+    public Resultado executaRegras(EntidadeDominio entidade, String operacao)
+    {
+        Resultado resultado = new Resultado();
+        String nameClass = entidade.getClass().getName();
+        StringBuilder msg = new StringBuilder();
+
+        Map<String, List<IStrategy>> regrasOperacao = rns.get(nameClass);
+
+        if (regrasOperacao == null)  //nao existem regras para essa entidade?
+        {
+            return null;
+        }
+
+        if (!regrasOperacao.isEmpty())   //lista nao eh vazia?
+        {//Sim!
+            List<IStrategy> regras = regrasOperacao.get(operacao);
+
+            for (IStrategy s : regras)
+            {
+                String m = s.processar(entidade);
+
+                if (m != null)
+                {
+                    resultado.addMensagens(m);
+                }
+            }
+        }
+        return resultado;
+    }
 }

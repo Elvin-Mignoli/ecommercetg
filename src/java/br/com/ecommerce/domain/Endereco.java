@@ -16,6 +16,19 @@ public class Endereco extends EntidadeDominio
     private String logradouro;
     private String numero;
     private String cep;
+
+    public Endereco(String logradouro, String numero, String cep, String bairro, String cidade, String estado, String complemento) {
+        this.logradouro = logradouro;
+        this.numero = numero;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.complemento = complemento;
+    }
+    
+    public Endereco(){}//default
+    
     private String bairro;
     private String cidade;
     private String estado;

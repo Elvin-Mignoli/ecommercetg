@@ -6,6 +6,8 @@
 package br.com.ecommerce.core;
 
 import br.com.ecommerce.application.Resultado;
+import br.com.ecommerce.core.impl.controller.Fachada;
+import br.com.ecommerce.domain.EntidadeDominio;
 
 /**
  *
@@ -15,5 +17,5 @@ import br.com.ecommerce.application.Resultado;
 public interface ICommand
 {
     //para retornar os dados vindos da Fachada que só retorna Resultado
-    public Resultado execute();
+    public Resultado execute(EntidadeDominio entidade);
 }

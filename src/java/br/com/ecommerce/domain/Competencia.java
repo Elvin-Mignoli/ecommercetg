@@ -15,6 +15,14 @@ public class Competencia extends EntidadeDominio{
     
     private String descricao;  //a descrição da competencia que o usuário do tipo prestador de serviço possui. ex: Java Web.
 
+    public Competencia(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Competencia() {
+    }
+
+    
     /**
      * @return the descricao
      */

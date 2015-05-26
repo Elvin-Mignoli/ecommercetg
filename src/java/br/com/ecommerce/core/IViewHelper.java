@@ -5,8 +5,10 @@
  */
 package br.com.ecommerce.core;
 
-import br.com.ecommerce.application.EntidadeAplicacao;
+import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.domain.EntidadeDominio;
+import java.io.IOException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,9 +30,9 @@ public interface IViewHelper
     
     /**
      *  Método para setar visão do usuário final nas Páginas JSP
-     * @param entidade implementação Resultado para captura dos resultados!
+     * @param resultado implementação Resultado para captura dos resultados!
      * @param request Requisição da página
      * @param response Response da página
      */
-    public void setView(EntidadeAplicacao entidade, HttpServletRequest request, HttpServletResponse response);
+    public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
 }

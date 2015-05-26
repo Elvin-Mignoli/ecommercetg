@@ -7,12 +7,20 @@ package br.com.ecommerce.domain;
 
 /**
  *
- * @author grimmjhow
+ * @author Felipe Monteiro
  */
 //imports do programa
-import java.util.Calendar;
+import java.text.ParseException;
 
 public class Cliente extends Usuario
 {
-    
+
+    public Cliente(String nome, String sobrenome, String cpf, Endereco endereco, Contato contato, String sexo, String dataNascimento, String tipoConta, String email, String senha) throws ParseException
+    {
+        super(nome, sobrenome, cpf, endereco, contato, sexo, dataNascimento, tipoConta, email, senha);
+    }
+
+    public Cliente()
+    {
+    }//default
 }
