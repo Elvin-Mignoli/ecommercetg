@@ -17,12 +17,14 @@ import java.util.Map;
 public abstract class FactoryHelper
 {
     //lista Hash para conter todos os helpers
-    private static Map<String,IViewHelper> helpers = new HashMap<>();
+    private final static Map<String,IViewHelper> helpers = new HashMap<>();
     
     //esse bloco de codigo carrega quando a classe é carregada!
     static
     {
-        //insere a URL e o Helper ligado à essa URL
+        helpers.put("/EcomerceTG/SalvarCliente", new SalvarClienteVHWeb());
+        helpers.put("/EcomerceTG/ConsultarUmCliente", new ConsultarUmClienteVHWeb());
+        
     }
     
     /**
