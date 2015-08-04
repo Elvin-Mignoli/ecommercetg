@@ -1,19 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esse Código foi escrito por mim, enquanto estava bebendo cerveja!
+ * Altere qualquer linha de código sóbrio! Please! ;)
  */
 package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.Cliente;
-import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
-import java.sql.PreparedStatement;
+import br.com.ecommerce.domain.Usuario;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -23,143 +21,110 @@ import java.util.List;
 public class AutenticarDAO extends AbstractDAO
 {
 
+    public AutenticarDAO()
+    {
+    }
+
+    public AutenticarDAO(Connection conexao)
+    {
+        super(conexao);
+    }
+
+    /**
+     * Salva uma entidade Usuario no banco de dados! OBS: É preciso ter os dados
+     * de uma entidade Cliente para persistir um Usuário!
+     *
+     * @param entidade - EntidadeDominio (Usuário) - Contendo os dados de um
+     * usuário e um cliente
+     * @throws SQLException Lança uma exception caso algum erro ocorra ao
+     * persistir a entidade!
+     */
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection(); //Abrir conexão com banco
-        PreparedStatement preparador;
-        if(entidade instanceof Cliente)
+        try
         {
-            Cliente cliente = (Cliente) entidade;
-             //criando sql para insert no banco
-            String sql = "INSERT INTO LOGIN (EMAIL,SENHA,STATUS,ID_CLIENTE,TIPO_CONTA) VALUES(?,?,?,?,?);";
+            Usuario usuario = (Usuario) entidade;
 
-            try
+            if (conexao == null || conexao.isClosed())
             {
-                conexao.setAutoCommit(false);//setando auto commit para false
-                preparador = conexao.prepareStatement(sql);
-                //setando parametros do insert
-                preparador.setString(1, cliente.getEmail());
-                preparador.setString(2, cliente.getSenha());
-                preparador.setInt(3, cliente.getStatus());
-                preparador.setInt(4, cliente.getId());
-                preparador.setString(5, cliente.getTipoConta());
-                preparador.executeUpdate();//executando a query no banco de dados
-                conexao.commit();//confirmando alteracoes no banco
-            } catch (SQLException ex)
-            {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
-            }
-        }//if cliente
-        else if(entidade instanceof PrestadorServico)
+                openConnection();
+                conexao.setAutoCommit(false);
+            } //Abrir conexão com banco
+
+            //criando sql para insert no banco
+            StringBuilder sql = new StringBuilder();
+            sql.append("INSERT INTO LOGIN ");
+            sql.append("(EMAIL,SENHA,STATUS,ID_CLIENTE,TIPO_CONTA) ");
+            sql.append("VALUES(?,?,?,?,?)");
+
+            //conexao.setAutoCommit(false);//setando auto commit para false
+            pst = conexao.prepareStatement(sql.toString());
+
+            //setando parametros do insert
+            pst.setString(1, usuario.getEmail());
+            pst.setString(2, usuario.getSenha());
+            pst.setInt(3, usuario.getStatus());
+            pst.setInt(4, entidade.getId());
+            pst.setString(5, usuario.getTipoConta());
+
+            pst.execute();//executando a query no banco de dados
+
+        } catch (SQLException ex)
         {
-            PrestadorServico prestador = (PrestadorServico) entidade;
-             //criando sql para insert no banco
-            String sql = "INSERT INTO LOGIN (EMAIL,SENHA,STATUS,ID_PRESTADOR,TIPO_CONTA) VALUES(?,?,?,?,?);";
-
-            try
-            {
-                conexao.setAutoCommit(false);//setando auto commit para false
-                preparador = conexao.prepareStatement(sql);
-                //setando parametros do insert
-                preparador.setString(1, prestador.getEmail());
-                preparador.setString(2, prestador.getSenha());
-                preparador.setInt(3, prestador.getStatus());
-                preparador.setInt(4, prestador.getId());
-                preparador.setString(5, prestador.getTipoConta());
-                preparador.executeUpdate();//executando a query no banco de dados
-                conexao.commit();//confirmando alteracoes no banco
-            } catch (SQLException ex)
-            {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
-            }
-        }//else if prestador
-       
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        }
     }
 
+    /**
+     * Atualiza um Usuário no banco de dados!
+     *
+     * @param entidade Entidade Usuário contendo os dados de um usuário
+     * @throws SQLException Lança uma SQLException caso não consiga atualizar um
+     * usuário!
+     */
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
-        PreparedStatement preparador;
-        if(entidade instanceof Cliente )
+        Usuario usuario = (Usuario) entidade;
+        try
         {
-            Cliente cliente = (Cliente) entidade;
-            String sql = "UPDATE LOGIN SET EMAIL = ?, SENHA = ?, STATUS = ? WHERE ID_CLIENTE = ?";  //criando sql para insert no banco
+            openConnection();// --> Abrir conexão com banco
+
+            conexao.setAutoCommit(false);//setando auto commit para false
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE LOGIN SET");
+            sql.append("EMAIL = ?, ");
+            sql.append("SENHA = ?,");
+            sql.append("STATUS = ? ");
+            sql.append("WHERE ID_CLIENTE = ?");  //criando sql para update no banco
+
+            pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
+
+            //setando parametros do insert
+            pst.setString(1, usuario.getEmail());
+            pst.setString(2, usuario.getSenha());
+            pst.setInt(3, usuario.getStatus());
+            pst.setInt(4, usuario.getId());
+
+            pst.executeUpdate();//executando a query no banco de dados
+
+            conexao.commit();//confirmando alteracoes no banco
+
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
             try
             {
-                conexao.setAutoCommit(false);//setando auto commit para false
-                preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
-                //setando parametros do insert
-                preparador.setString(1, cliente.getEmail());
-                preparador.setString(2, cliente.getSenha());
-                preparador.setInt(3, cliente.getStatus());
-                preparador.setInt(4, cliente.getId());
-                preparador.executeUpdate();//executando a query no banco de dados
-                conexao.commit();//confirmando alteracoes no banco
-            } catch (SQLException ex)
+                conexao.close();
+            } catch (SQLException e)
             {
-                ex.printStackTrace();
                 throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
-            }
-        }//if cliente
-        else if(entidade instanceof PrestadorServico)
-        {
-            PrestadorServico prestador = (PrestadorServico) entidade;
-            String sql = "UPDATE LOGIN SET EMAIL = ?, SENHA = ?, STATUS = ? WHERE ID_PRESTADOR = ?";  //criando sql para insert no banco
-            try
-            {
-                conexao.setAutoCommit(false);//setando auto commit para false
-                preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
-                //setando parametros do insert
-                preparador.setString(1, prestador.getEmail());
-                preparador.setString(2, prestador.getSenha());
-                preparador.setInt(3, prestador.getStatus());
-                preparador.setInt(4,prestador.getId());
-                preparador.executeUpdate();//executando a query no banco de dados
-                conexao.commit();//confirmando alteracoes no banco
-            } catch (SQLException ex)
-            {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
             }
         }
     }
@@ -167,153 +132,160 @@ public class AutenticarDAO extends AbstractDAO
     @Override
     public void excluir(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco 
-        PreparedStatement preparador;
-        String sql = null;
-        if(entidade instanceof Cliente)
+        Usuario usuario = (Usuario) entidade;
+        try
         {
-            Cliente cliente = (Cliente) entidade;
-            sql = "DELETE FROM LOGIN WHERE ID_CLIENTE = ?";
-             try{
-            conexao.setAutoCommit(false);
-            preparador = conexao.prepareStatement(sql);
-            preparador.setInt(1,cliente.getId());
-            preparador.executeUpdate();
+            openConnection();//Abrir conexão com banco 
+
+            conexao.setAutoCommit(false);   //evitando o autocommit!
+
+            StringBuilder sql = new StringBuilder();   //--> String para conter a query!
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET STATUS = 0 ");
+            sql.append("WHERE ID_CLIENTE = ?");
+
+            pst = conexao.prepareStatement(sql.toString()); //criando caminho para o sql
+
+            pst.setInt(1, usuario.getId());
+
+            pst.executeUpdate();
+
             conexao.commit();
-            }catch (SQLException ex)
-            {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }//catch
-            }//finally
-        }//if
-        else if(entidade instanceof PrestadorServico)
+
+        } catch (SQLException ex)
         {
-            PrestadorServico prestador = (PrestadorServico) entidade;
-            sql = "DELETE FROM LOGIN WHERE ID_PRESTADOR = ?";
-            try{
-            conexao.setAutoCommit(false);
-            preparador = conexao.prepareStatement(sql);
-            preparador.setInt(1,prestador.getId());
-            preparador.executeUpdate();
-            conexao.commit();
-            }catch (SQLException ex)
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
             {
-                ex.printStackTrace();
+                conexao.close();
+            } catch (SQLException e)
+            {
                 throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
-            }
-        }//else if
-        
-        
+            }//catch
+        }//finally
     }
 
     @Override
     public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
+    /**
+     * Método responsável por efetuar uma autenticação de um usuário na
+     * aplicação
+     *
+     * @param entidade PrestadorServico ou Cliente com os dados Email e Senha da
+     * Classe Pai!
+     * @return entidade Dominio com todos os dados do usuário!
+     * @throws SQLException Caso Algo der errado retorna um SQLException!
+     */
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
-        PreparedStatement preparador;
-        String sql = null;
-        if(entidade instanceof Cliente)
+        try
         {
-            Cliente cliente = (Cliente) entidade;
-            sql = "SELECT LOGIN.* FROM LOGIN,CLIENTES WHERE LOGIN.ID_CLIENTE = ? AND LOGIN.ID_CLIENTE = CLIENTES.ID";
-            try{
-            conexao.setAutoCommit(false);
-            preparador = conexao.prepareStatement(sql);
-            preparador.setInt(1,cliente.getId());
-            ResultSet  resultado = preparador.executeQuery();
-            resultado.next();
-            conexao.commit();
-            if(resultado.getRow()== 0)
+            Usuario usuario = (Usuario) entidade;
+
+            IDAO dao;   //--> conexao dao para cliente ou prestador!
+
+            openConnection();   //abrindo conexao com o banco de dados!
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("SELECT * FROM LOGIN ");
+            sql.append("WHERE email = ? and senha = ? ");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setString(1, usuario.getEmail());
+            pst.setString(2, usuario.getSenha());
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next())  //entra no While enquanto tiver registro para leitura
+            {
+                if (rs.getInt("id_prestador") != 0)    //Decidindo qual campo pegar o ID! Prestador ou Cliente!
+                {
+                    PrestadorServico prestador = new PrestadorServico();
+                    prestador.setId(rs.getInt("id_prestador"));
+                    prestador.setEmail(rs.getString("email"));
+                    prestador.setTipoConta(rs.getString("tipo_conta"));
+                    prestador.setStatus(rs.getInt("status"));
+
+                    dao = new PrestadorServicoDAO(conexao);
+
+                    dao.consultarUm(prestador);
+
+                    return prestador;
+                } else if (rs.getInt("id_cliente") != 0)
+                {
+                    Cliente cliente = new Cliente();
+                    cliente.setId(rs.getInt("id_cliente"));
+                    cliente.setEmail(rs.getString("email"));
+                    cliente.setSenha(rs.getString("senha"));
+                    cliente.setStatus(rs.getInt("status"));
+                    cliente.setTipoConta(rs.getString("tipo_conta"));
+
+                    dao = new ClienteDAO(conexao);
+
+                    dao.consultarUm(cliente);
+
+                    return cliente;
+                }
+            } else    //não existe ninguem com esse email e senha =/
             {
                 return null;
-            }else
-            {
-                cliente.setEmail(resultado.getString("email"));
-                cliente.setSenha(resultado.getString("senha"));
-                cliente.setStatus(resultado.getInt("status"));
-                cliente.setTipoConta(resultado.getString("tipo_conta"));
-                cliente.setId(resultado.getInt("id_cliente"));
-               
-                return cliente;
-            }//else
-            }catch (SQLException ex)
-            {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }//catch
-            }//finally
-        }//if
-        else if(entidade instanceof PrestadorServico)
+            }
+        } catch (SQLException ex)
         {
-            sql = "SELECT LOGIN.* FROM LOGIN,PRESTADOR_SERVICOS WHERE LOGIN.ID_PRESTADOR = ? AND LOGIN.ID_PRESTADOR = PRESTADOR_SERVICOS.ID";
-            PrestadorServico prestador = (PrestadorServico) entidade;
-            try{
-            conexao.setAutoCommit(false);
-            preparador = conexao.prepareStatement(sql);
-            preparador.setInt(1,prestador.getId());
-            ResultSet  resultado = preparador.executeQuery();
-            resultado.next();
-            conexao.commit();
-            if(resultado.getRow()== 0)
+            try
             {
-                return null;
-            }else
+                conexao.rollback();
+            } catch (SQLException ex1)
             {
-                prestador.setEmail(resultado.getString("email"));
-                prestador.setSenha(resultado.getString("senha"));
-                prestador.setStatus(resultado.getInt("status"));
-                prestador.setTipoConta(resultado.getString("tipo_conta"));
-                prestador.setId(resultado.getInt("id_prestador"));
-               
-                return prestador;
-            }//else
-            }catch (SQLException ex)
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            return null;
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException ex)
             {
                 ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }//catch
-            }//finnally
-        }//else if
-        throw new SQLException();
+            }
+        }
+        return null;
+    }
+
+    public EntidadeDominio existeEmail(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        openConnection();
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("SELECT EMAIL FROM LOGIN ");
+        sql.append("WHERE EMAIL = ?");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, usuario.getEmail());
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next())   //Retornou um Usuario?
+        {
+            return usuario;
+        } else
+        {
+            return null;
+        }
     }
 }

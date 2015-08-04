@@ -8,26 +8,45 @@ package br.com.ecommerce.core.impl.dao;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.util.Conexao;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
  *
  * @author Elvin
  */
-public abstract class AbstractDAO  implements IDAO{
-     protected Connection conexao;
- 
+public abstract class AbstractDAO implements IDAO
+{
+    protected Connection conexao;
+    protected PreparedStatement pst;
+    protected boolean transaction = false;
+    
+    public AbstractDAO(){ } //construtor default
+    
+    /**
+     * Construtor para compartilhamento de conexao
+     * @param conexao  - Conexao que vai ser compartilhada com uma classe DAO
+     */
+    public AbstractDAO(Connection conexao) 
+    {
+        this.conexao = conexao;
+    }
+    
+    
     protected void openConnection()
     {
-	try 
+        try
         {
-            conexao = Conexao.conectar();
-	} catch (ClassNotFoundException e) {
+            conexao = Conexao.conectar();  
+            transaction = true;
+        } catch (ClassNotFoundException e)
+        {
             e.printStackTrace();
             System.out.println("Class Not Found Exception");
-	} catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
             System.out.println("SQLException");
-	}
+        }
     }
 }

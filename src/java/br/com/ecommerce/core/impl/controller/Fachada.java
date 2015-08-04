@@ -10,8 +10,8 @@ import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
+import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
-import br.com.ecommerce.core.impl.IStrategy.ValidaCamposCliente;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.domain.Cliente;
@@ -51,8 +51,8 @@ public class Fachada implements IFachada
          */
         // --> Regras de Negocio SalvarCliente!
         List<IStrategy> rnsSalvarCliente = new ArrayList<>();
-        rnsSalvarCliente.add(new ValidaCamposCliente());
         rnsSalvarCliente.add(new ValidaCPF());
+        rnsSalvarCliente.add(new ExisteCliente());
 
         Map<String, List<IStrategy>> rnsCliente = new HashMap<>();   //Mapa de regras!
         rnsCliente.put("Salvar", rnsSalvarCliente);
@@ -91,7 +91,7 @@ public class Fachada implements IFachada
     {
         resultado = executaRegras(entidade, "Atualizar");
         
-        if(!resultado.getMensagemSimples().isEmpty())
+        if(!resultado.getMensagens().isEmpty())
             return resultado;
         
         try
@@ -182,14 +182,17 @@ public class Fachada implements IFachada
         if (!regrasOperacao.isEmpty())   //lista nao eh vazia?
         {//Sim!
             List<IStrategy> regras = regrasOperacao.get(operacao);
-
+            
+            if(regras == null || regras.isEmpty())
+                return resultado;
+            
             for (IStrategy s : regras)
             {
-                String m = s.processar(entidade);
+                resultado = s.processar(entidade);
 
-                if (m != null)
+                if (!resultado.getMensagens().isEmpty())
                 {
-                    resultado.addMensagens(m);
+                    return resultado;
                 }
             }
         }

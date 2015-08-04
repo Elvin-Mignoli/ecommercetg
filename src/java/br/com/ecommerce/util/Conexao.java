@@ -18,11 +18,11 @@ public class Conexao
 {
     public static Connection conectar() throws ClassNotFoundException, SQLException
     {
-        String url = "jdbc:mysql://localhost:3306/ecommerce";
-        String usuario = "root";
+        String url = "jdbc:postgresql://localhost:5432/Ecommerce";
+        String usuario = "postgres";
         //senha deve ser padrão em todas as máquinas
-        String senha = "root";
-        //Class.forName("com.mysql.jdbc.Driver");   não precisa instanciar uma classe em tempo de execução, apenas PostgreSQL
+        String senha = "admin";
+        Class.forName("org.postgresql.Driver");   //não precisa instanciar uma classe em tempo de execução, apenas PostgreSQL
         Connection conn;
         conn = DriverManager.getConnection(url, usuario, senha);
         return conn;

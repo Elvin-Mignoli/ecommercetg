@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.core.impl.IStrategy;
 
+import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.domain.EntidadeDominio;
 
@@ -15,7 +16,7 @@ import br.com.ecommerce.domain.EntidadeDominio;
 public class ValidaCamposEndereco implements IStrategy
 {
     @Override
-    public String processar(EntidadeDominio entidade)
+    public Resultado processar(EntidadeDominio entidade)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

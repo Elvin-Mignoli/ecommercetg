@@ -5,18 +5,12 @@
  */
 package br.com.ecommerce.testes;
 
-import br.com.ecommerce.application.EntidadeAplicacao;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
-import br.com.ecommerce.domain.EntidadeDominio;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -35,7 +29,7 @@ public class TesteClienteDAO {
 
 
             Contato contato = new Contato("47471515","996147755");
-            Cliente cliente = new Cliente("Elvin", "Mignoli","0000231221" , end, contato, "M", "1992/05/11", "Cliente", "Elvin-mig@hotmail.com","1234");
+            Cliente cliente = new Cliente();//"Elvin", "Mignoli","0000231221" , end, contato, "M", "1992/05/11", "Cliente", "Elvin-mig@hotmail.com","1234");
             ClienteDAO clienteDAO = new ClienteDAO();
 
             //salvar

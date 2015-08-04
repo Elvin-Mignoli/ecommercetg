@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.core;
 
+import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.domain.EntidadeDominio;
 
 /**
@@ -15,5 +16,5 @@ import br.com.ecommerce.domain.EntidadeDominio;
 public interface IStrategy
 {
     //para processsar a regra de negócio e retornar uma String
-    public String processar(EntidadeDominio entidade);
+    public Resultado processar(EntidadeDominio entidade);
 }

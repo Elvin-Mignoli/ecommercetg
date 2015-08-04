@@ -22,9 +22,14 @@ public abstract class FactoryHelper
     //esse bloco de codigo carrega quando a classe é carregada!
     static
     {
-        helpers.put("/EcomerceTG/Cliente/SalvarCliente", new SalvarClienteVHWeb());
-        helpers.put("/EcomerceTG/Cliente/ConsultarUmCliente", new ConsultarUmClienteVHWeb());
-        
+        helpers.put("/Ecommerce/Cliente/SalvarCliente", new SalvarClienteVHWeb());
+        helpers.put("/Ecommerce/Cliente/ConsultarUmCliente", new ConsultarUmClienteVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/SalvarCliente", new SalvarClienteVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/CPF", new ConsultaCPFVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/Email", new ConsultaEmailVHWeb());
+        helpers.put("/Ecommerce/ValidarUsuario", new ValidaUsuarioVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/CEP", new ConsultaCEPVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/AtualizarCliente", new AtualizarClienteVHWeb());
     }
     
     /**

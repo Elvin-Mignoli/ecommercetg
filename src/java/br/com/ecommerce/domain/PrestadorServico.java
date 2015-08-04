@@ -7,35 +7,60 @@ package br.com.ecommerce.domain;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
  * @author Elvin
  */
-public class PrestadorServico extends Usuario{
-    
-    private ArrayList<Competencia> habilidades;
+public class PrestadorServico extends Usuario
+{
 
-    
-    public PrestadorServico(String nome, String sobrenome, String cpf, Endereco endereco, Contato contato, 
-            String sexo, String dataNascimento, String tipoConta, String email, String senha,ArrayList lista) throws ParseException {
-        super(nome, sobrenome, cpf, endereco, contato, sexo, dataNascimento, tipoConta, email, senha);
-        this.habilidades = lista;
+    private ArrayList<Competencia> habilidades;
+    private String cnpj;
+
+    public PrestadorServico(ArrayList<Competencia> habilidades, String cnpj, String nome, String sobrenome)
+    {
+        super();
+        this.habilidades = habilidades;
+        this.cnpj = cnpj;
+    }
+
+    public PrestadorServico(ArrayList<Competencia> habilidades, String cnpj, String nome, String sobrenome, Date dataNascimento, Contato contato, Endereco endereco, String idade, String sexo, String estadoCivil)
+    {
+        super();
+        this.habilidades = habilidades;
+        this.cnpj = cnpj;
     }
     
-    public PrestadorServico(){}//default
+    public PrestadorServico()
+    {
+        super();
+    }//default
 
+    public String getCnpj()
+    {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj)
+    {
+        this.cnpj = cnpj;
+    }
+    
     /**
      * @return the habilidades
      */
-    public ArrayList<Competencia> getHabilidades() {
+    public ArrayList<Competencia> getHabilidades()
+    {
         return habilidades;
     }
 
     /**
      * @param habilidades the habilidades to set
      */
-    public void setHabilidades(ArrayList<Competencia> habilidades) {
+    public void setHabilidades(ArrayList<Competencia> habilidades)
+    {
         this.habilidades = habilidades;
     }
 }
