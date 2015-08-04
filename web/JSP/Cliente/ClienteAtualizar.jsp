@@ -5,155 +5,205 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
 <!DOCTYPE html>
-<script src="/EcomerceTG/js/libs/jquery-1.11.1.min.js"></script>
-<script src="/EcomerceTG/js/libs/jquery-ui.min.js"></script>
-<script src="/EcomerceTG/js/libs/jquery.maskedinput.js"></script>
-<html>
+<script src="../../js/libs/jquery-1.11.1.min.js"></script>
+<script src="../../js/libs/jquery-ui.min.js"></script>
+<script src="../../js/libs/jquery.maskedinput.js"></script>
+<!-- <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Atualizar Cliente</title>
-        <script>
-            $(document).ready(function() {
-                $("#data").mask("99/99/9999");
-                $("#telefone").mask("(99)9999-9999");
-                $("#celular").mask("(99)99999-9999");
-                $("#cep").mask("99999-999");
-                $("#input_cpf").mask("99999999999");
-                
-                if ($("#estado").val().length > 1)
-                {
-                    $("#numero").focus();
-                }
-                $("#numero").blur(function() {
-                    $("#input_nome").focus();
-                });
+        <title>Atualizar Cliente</title> -->
+<script>
+    $(document).ready(function () {
+        $("#data").mask("99/99/9999");
+        $("#telefone").mask("(99)9999-9999");
+        $("#celular").mask("(99)99999-9999");
+        $("#cep").mask("99999-999");
+        $("#input_cpf").mask("999.999.999-99");
 
-                
-            });
-        </script>
-    </head>
-    <body>
-       <div class="div_bloco_comum">
-        <fieldset id="total">
-          <legend><span>Altualizar dados do cliente</span></legend>
-            <form id="form_atualizar" method="POST" action="AtualizarCliente">
-                <input type="text" hidden="true" value="Atualizar" name="operacao"
-                <fieldset class="pessoais">
-                        <legend class="legend_comum">Informações pessoais</legend>
-                        <table>
-                            <tr>
-                                <td><label for="input_nome">Nome</label></td>
-                                <td><input type="text" name="txtNome" id="input_nome" placeholder="Nome" 
-                                           required="true" min="3" value="${sessionScope.cliente.nome}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="input_sobrenome">Sobrenome</label></td>
-                                <td><input type="text" name="txtSobrenome" id="input_sobrenome" placeholder="Sobrenome" 
-                                           required="true" min="3" value="${sessionScope.cliente.sobrenome}" /></td>
-                            </tr>
-                            <tr>
-                                <td><label for="sexo">Sexo</label></td>
-                                <td><select id="sexo" name="txtSexo" required="true">
-                                        <option value="Não especificado">Prefiro não especificar</option>
-                                        <option value="Masculino">Masculino</option>
-                                        <option value="Feminino">Feminino</option>                                
-                                    </select>
-                                </td>
-                            </tr>
-                            
-                            <tr>
-                                <td><label for="input_cpf">Cpf</label></td>
-                                <td><input type="text" name="txtCpf" id="input_cpf" placeholder="CPF"
-                                           required="true" min="3" value="${sessionScope.cliente.cpf}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="data">Data de nascimento</label></td>
-                                <td><input type="text" id="data" name="txtDatanascimento" placeholder="Data de nascimento" 
-                                           required="true" maxlength="10" value="${sessionScope.cliente.dataNascimento}"/></td>
-                            </tr>
+        if ($("#estado").val().length > 1)
+        {
+            $("#numero").focus();
+        }
+        $("#numero").blur(function () {
+            $("#input_nome").focus();
+        });
 
-                            <tr>
-                                <td><label for="telefone">Telefone</label></td>
-                                <td><input type="tel" id="telefone" name="txtTelefone" placeholder="Telefone"
-                                           required="true" value="${sessionScope.cliente.contato.telefone}"/></td>
-                            </tr>
-                              <tr>
-                            <td><label for="celular">Celular</label></td>
-                            <td><input type="cel" id="celular" name="txtCelular" placeholder="Celular" value="${sessionScope.cliente.contato.celular}"></td>
-                            </tr>
-                        </table>
-                      
-            </fieldset>
-                    <fieldset id="endereco_layout" class="pessoais">
-                        <legend class="legend_comum">Endereco</legend>
-                        <table>
-                            <tr>
-                                <td><label for="cep">CEP</label></td>
-                                <td><input type="text" id="cep" name="txtCep" placeholder="Insira CEP" 
-                                           value="${sessionScope.cliente.endereco.cep}"required="true"/></td>
-                                </tr>
-                                <tr>
-                                    <td><label for="rua">Logradouro</label></td>
-                                    <td><input type="text" id="rua" name="txtRua" placeholder="Rua, Logradouro, Avenida"  
-                                               required="true"   value="${sessionScope.cliente.endereco.logradouro}"/></td>
-                                <td><label for="numero">N°</label><input type="number" max="10000" name="textNumero" id="numero" 
-                                                                         required="true"value="${sessionScope.cliente.endereco.numero}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="bairro">Bairro</label></td>
-                                <td><input type="text" id="bairro" name="txtBairro"  placeholder="Bairro" 
-                                           required="true" value="${sessionScope.cliente.endereco.bairro}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="cidade">Cidade</label></td>
-                                <td><input type="text" id="cidade" name="txtCidade" placeholder="Cidade" 
-                                           required="true"  value="${sessionScope.cliente.endereco.cidade}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="estado">Estado</label></td>
-                                <td><input type="text" id="estado" name="txtEstado"  placeholder="Estado"
-                                           required="true"   value="${sessionScope.cliente.endereco.estado}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="completmento">Complemento</label></td>
-                                <td><imput type="text" id="complemento" name="txtComplemento" placeholder="Complemento"
-                                           required="true"  value="${sessionScope.cliente.endereco.complemento}"/></td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                    
-                    <fieldset class="pessoais">
-                        <legend class="legend_comum">Informações de login</legend>
-                        <table>                         
-                            <tr>
-                                <td><label for="input_email">Email</label></td>
-                                <td><input type="email" name="txtEmail" id="input_email" placeholder="E-mail válido" 
-                                           required="true"  value="${sessionScope.cliente.email}"/></td>
-                            </tr>
-                            <tr>
-                                <td><label for="input_senha">Senha</label></td>
-                                <td><input type="password" name="txtSenha" id="input_senha" placeholder="Senha" 
-                                           required="true"   value="${sessionScope.cliente.senha}"/></td>
-                            </tr>
-                        </table>
-                    </fieldset>
-                    <p><input type="submit" value="Atualizar" id="button_cadastrar" name="bAtualizar"/></p>
-                </form>
-            </fieldset>
-            <c:if test="${requestScope.MsgAtualizarCliente != null}">
-              <table>
-                <c:forEach items="${requestScope.MsgAtualizarCliente}" var="lista">
-                    <tr>
-                        <span>${lista.livro_id}</span>
-                        <span>${lista.data_emp.time}</span>
-                        <span>${requestScope.mensal.mes}</span>
-                        <span>${requestScope.mensal.ano}</span>
-                    </tr>
-                </c:forEach>
-              </table>
-            </c:if>
+
+    });
+</script>
+<script src="../../js/ajaxFuntions.js"></script>
+<!-- <script src="../../js/libs/jquery-1.11.1.min.js"></script>
+ <script src="../../js/libs/jquery-ui.min.js"></script>
+ <script src="../../js/libs/jquery.maskedinput.js"></script>
+<!-- implementando bootstrap na página 
+<script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../bootstrap/js/collapse.js"></script>
+<script src="../../bootstrap/js/tab.js"></script>
+<!-- implementando CSS do bootstrap 
+<link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+<script src="../../js/ajaxFuntions.js"></script>
+</head>
+<body>  -->
+<form method="POST" action="AtualizarCliente">
+    <input type="text" name="operacao" value="Atualizar" hidden="true"/>
+    <div class="container">
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Nome
+                </span>
+                <input type="text" name="txtNome" placeholder="José" required="required" value="${sessionScope.user.nome}" class="form-control"/>
+            </div>
         </div>
-    </body>
-</html>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Sobrenome
+                </span>
+                <input type="text" name="txtSobrenome" placeholder="Silva" required="required" value="${sessionScope.user.sobrenome}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Sexo
+                </span>
+                <input type="text" hidden="true" value="${sessionScope.user.sexo}" id="valueSexo" />
+                <script>
+    var valSexo = $('#valueSexo').val();
+
+    if (valSexo === "M")
+    {
+        document.getElementById("op2").setAttribute("selected", "true");
+    }
+    else if (valSexo === "F")
+    {
+        document.getElementById("op3").setAttribute("selected", "true");
+    }
+
+                </script>
+                <select name="txtSexo" class="form-control">
+                    <option value="Não especificado" id="op1">Prefiro não especificar</option>
+                    <option value="Masculino" id="op2">Masculino</option>
+                    <option value="Feminino" id="op3">Feminino</option>                                
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    CPF
+                </span>
+                <input type="text" name="txtCpf" id="input_cpf" placeholder="CPF" required="required" min="3" value="${sessionScope.user.cpf}" readonly="true" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Data
+                </span>
+                <input type="date" name="txtDatanascimento" value="<f:formatDate pattern="yyyy-MM-dd" value="${sessionScope.user.dataNascimento}"></f:formatDate>" class="form-control"/>        
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group col-lg-3">
+                    <span class="input-group-addon">
+                        Telefone
+                    </span>
+                    <input type="text" id="telefone" name="txtTelefone" placeholder="Telefone" value="${sessionScope.user.contato.telefone}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Celular
+                </span>
+                <input type="text" id="celular" name="txtCelular" placeholder="Celular" value="${sessionScope.user.contato.celular}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <h2>Endereço</h2>
+        </div>
+
+        <div class="form-group" id="div_cep">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon" id="span_cep">
+                    CEP
+                </span>
+                <input type="text" id="cep" name="txtCep" placeholder="0800-000" value="${sessionScope.user.endereco.cep}" class="form-control" onchange="loadEndereco()"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Logradouro
+                </span>
+                <input type="text" id="rua" name="txtLogradouro" placeholder="Rua, Logradouro, Avenida" value="${sessionScope.user.endereco.logradouro}" class="form-control"/>
+            </div>
+        </div>
+
+        <!-- <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Número
+                </span>
+                <input type="text" max="10000" name="textNumero" id="numero" value="${sessionScope.user.endereco.numero}" class="form-control"/>
+            </div>
+        </div> -->
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Bairro
+                </span>
+                <input type="text" id="bairro" name="txtBairro"  placeholder="Bairro" value="${sessionScope.user.endereco.bairro}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Cidade
+                </span>
+                <input type="text" id="cidade" name="txtCidade" placeholder="Cidade" value="${sessionScope.user.endereco.cidade}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Estado
+                </span>
+                <input type="text" id="estado" name="txtEstado"  placeholder="Estado" value="${sessionScope.user.endereco.estado}" class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group col-lg-3">
+                <span class="input-group-addon">
+                    Complemento
+                </span>
+                <input type="text" id="complemento" placeholder="Complemento" class="form-control" name="txtComplemento" value="${sessionScope.user.endereco.complemento}"/>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="form-group form-inline">
+            <input type="submit" value="Atualizar" class="btn btn-success"/>
+        </div>
+    </div>
+</form>
+<!-- </body>
+</html> -->
 

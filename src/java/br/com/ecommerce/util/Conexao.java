@@ -22,7 +22,7 @@ public class Conexao
         String usuario = "postgres";
         //senha deve ser padrão em todas as máquinas
         String senha = "admin";
-        //Class.forName("com.mysql.jdbc.Driver");   não precisa instanciar uma classe em tempo de execução, apenas PostgreSQL
+        Class.forName("org.postgresql.Driver");   //não precisa instanciar uma classe em tempo de execução, apenas PostgreSQL
         Connection conn;
         conn = DriverManager.getConnection(url, usuario, senha);
         return conn;

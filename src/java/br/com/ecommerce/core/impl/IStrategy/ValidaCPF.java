@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.core.impl.IStrategy;
 
+import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
@@ -18,17 +19,29 @@ public class ValidaCPF implements IStrategy
 {
 
      @Override
-    public String processar(EntidadeDominio entidade)
+    public Resultado processar(EntidadeDominio entidade)
     {
         Cliente cli = (Cliente) entidade;
         //String cpf = (cli.getCpf() == null || cli.getCpf().trim().equals("")) ? "" : cli.getCpf();
+        Resultado resultado = new Resultado();
         
-        if(cli.getCpf().length() < 11)//CPF contem todos os digitos?
-            return "CPF contem menos do que 11 Digitos";    //Envia mensagem para o usuario, pois CPF esta errado
-        else if(isCPF(cli.getCpf()))
-            return null;
+        String cpf = cli.getCpf().replace(".", "").replace("-", "");
+        
+        if(cpf.length() < 11)//CPF contem todos os digitos?
+        {
+            resultado.addMensagens("CPF contem menos do que 11 Digitos");
+            return resultado;
+        }    //Envia mensagem para o usuario, pois CPF esta errado
+        else if(isCPF(cpf))
+        {
+            cli.setCpf(cpf);
+            return resultado;
+        }
         else
-            return "O CPF digitado é inválido";
+        {
+            resultado.addMensagens("O CPF digitado é inválido");
+            return resultado;
+        }
     }
     
     private static boolean isCPF(String CPF)

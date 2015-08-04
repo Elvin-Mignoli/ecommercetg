@@ -21,5 +21,4 @@ public class CommandSalvar extends AbstractICommand
     {
         return fachada.salvar(entidade);
     }
-    
 }

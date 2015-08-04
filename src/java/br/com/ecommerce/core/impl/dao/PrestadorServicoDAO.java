@@ -5,12 +5,11 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
-import br.com.ecommerce.domain.Cliente;
-import br.com.ecommerce.domain.Competencia;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,18 +24,29 @@ import java.util.List;
 public class PrestadorServicoDAO extends AbstractDAO
 {
 
-     @Override
-    public void salvar(EntidadeDominio entidade) throws SQLException {
-       openConnection(); //Abrir conexão com banco
+    PrestadorServicoDAO(Connection conexao)
+    {
+        super(conexao);
+    }
+
+    public PrestadorServicoDAO()
+    {
+        
+    }
+
+    @Override
+    public void salvar(EntidadeDominio entidade) throws SQLException
+    {
+        openConnection(); //Abrir conexão com banco
         PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
         //criando sql para insert no banco
         String sql = "INSERT INTO PRESTADOR_SERVICOS(NOME,SOBRENOME,DATA_NASCIMENTO,CPF,TELEFONE,CELULAR,SEXO,ID_ENDERECO) VALUES(?,?,?,?,?,?,?,?)";
-        
+
         //pegando o id do endereço e salvando endereco
         EnderecoDAO endDAO = new EnderecoDAO();
         endDAO.salvar(prestador.getEndereco());
-        
+
         try
         {
             conexao.setAutoCommit(false);//setando auto commit para false
@@ -46,7 +56,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             preparador.setString(2, prestador.getSobrenome());
             java.sql.Date sqlData = new java.sql.Date(prestador.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
             preparador.setDate(3, sqlData);
-            preparador.setString(4, prestador.getCpf());
+            preparador.setString(4, prestador.getCnpj());
             preparador.setString(5, prestador.getContato().getTelefone());
             preparador.setString(6, prestador.getContato().getCelular());
             preparador.setString(7, prestador.getSexo());
@@ -62,11 +72,11 @@ public class PrestadorServicoDAO extends AbstractDAO
             AutenticarDAO autenticar = new AutenticarDAO();
             autenticar.salvar(prestador);
             //inserção das competencias
-            CompetenciaDAO compDAO= new CompetenciaDAO();
+            CompetenciaDAO compDAO = new CompetenciaDAO();
             compDAO.salvar(prestador);
-            
+
         } catch (SQLException ex)
-        { 
+        {
             endDAO.excluir(prestador.getEndereco());
             ex.printStackTrace();
             throw new SQLException();
@@ -83,7 +93,8 @@ public class PrestadorServicoDAO extends AbstractDAO
     }
 
     @Override
-    public void atualizar(EntidadeDominio entidade) throws SQLException {
+    public void atualizar(EntidadeDominio entidade) throws SQLException
+    {
         openConnection();//Abrir conexão com banco
         PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
@@ -100,7 +111,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             preparador.setDate(3, sqlData);
             preparador.setString(4, prestador.getContato().getTelefone());
             preparador.setString(5, prestador.getContato().getCelular());
-            preparador.setString(6,prestador.getSexo());
+            preparador.setString(6, prestador.getSexo());
             preparador.setInt(7, prestador.getId());
             preparador.executeUpdate();//executando a query no banco de dados
             conexao.commit();//confirmando alteracoes no banco
@@ -130,9 +141,10 @@ public class PrestadorServicoDAO extends AbstractDAO
     }
 
     @Override
-    public void excluir(EntidadeDominio entidade) throws SQLException {
-         openConnection();//Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico)entidade;
+    public void excluir(EntidadeDominio entidade) throws SQLException
+    {
+        openConnection();//Abrir conexão com banco
+        PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
         //excluir as competencias vinculadas com prestador
         CompetenciaDAO compDAO = new CompetenciaDAO();
@@ -142,16 +154,17 @@ public class PrestadorServicoDAO extends AbstractDAO
         autenticar.excluir(prestador);
         //excluir prestador
         String sql = "DELETE FROM PRESTADOR_SERVICOS WHERE ID = ?";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,prestador.getId());
-        preparador.executeUpdate();
-        conexao.commit();
-        //excluir endereço
-        EnderecoDAO endDAO = new EnderecoDAO();
-        endDAO.excluir(prestador.getEndereco());
-        }catch (SQLException ex)
+        try
+        {
+            conexao.setAutoCommit(false);
+            preparador = conexao.prepareStatement(sql);
+            preparador.setInt(1, prestador.getId());
+            preparador.executeUpdate();
+            conexao.commit();
+            //excluir endereço
+            EnderecoDAO endDAO = new EnderecoDAO();
+            endDAO.excluir(prestador.getEndereco());
+        } catch (SQLException ex)
         {
             ex.printStackTrace();
             throw new SQLException();
@@ -168,25 +181,90 @@ public class PrestadorServicoDAO extends AbstractDAO
     }
 
     @Override
-    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
+    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
+    {
         openConnection();//Abrir conexão com banco
         ArrayList<EntidadeDominio> lista = new ArrayList<>();
         PreparedStatement preparador;
         String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
+        try
         {
-            return null;
-        }else
-        {
-           do
+            conexao.setAutoCommit(false);
+            preparador = conexao.prepareStatement(sql);
+            ResultSet resultado = preparador.executeQuery();
+            resultado.next();
+            conexao.commit();
+            if (resultado.getRow() == 0)
             {
-                PrestadorServico prestador = new PrestadorServico();
+                return null;
+            } else
+            {
+                do
+                {
+                    PrestadorServico prestador = new PrestadorServico();
+                    EnderecoDAO endDao = new EnderecoDAO();
+                    Endereco end = new Endereco();
+                    end.setId(resultado.getInt("id_endereco"));
+                    prestador.setEndereco((Endereco) endDao.consultarUm(end));
+                    //pegar o id do banco 
+                    prestador.setId(resultado.getInt("id"));
+                    //pegar os dados do login
+                    AutenticarDAO autenticar = new AutenticarDAO();
+                    autenticar.consultarUm(prestador);
+                    //pegar os dados do contato
+                    Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
+                    prestador.setContato(contato);
+                    //
+                    prestador.setNome(resultado.getString("nome"));
+                    prestador.setCnpj(resultado.getString("cpf"));
+                    prestador.setDataNascimento(resultado.getDate("data_nascimento"));
+                    prestador.setSexo(resultado.getString("sexo"));
+                    prestador.setSobrenome(resultado.getString("sobrenome"));
+                    //recuperar as competencias
+                    CompetenciaDAO compDAO = new CompetenciaDAO();
+                    compDAO.consultarUm(prestador);
+                    lista.add(prestador);
+
+                } while (resultado.next());
+                return lista;
+            }
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
+    }
+
+    @Override
+    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
+    {
+        openConnection();//Abrir conexão com banco
+        PrestadorServico prestador = (PrestadorServico) entidade;
+        PreparedStatement preparador;
+        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE PRESTADOR_SERVICOS.ID = ? AND PRESTADOR_SERVICOS.ID_ENDERECO = ENDERECOS.ID ";
+        try
+        {
+            conexao.setAutoCommit(false);
+            preparador = conexao.prepareStatement(sql);
+            preparador.setInt(1, prestador.getId());
+            ResultSet resultado = preparador.executeQuery();
+            resultado.next();
+            conexao.commit();
+            if (resultado.getRow() == 0)
+            {
+                return null;
+            } else
+            {
+                //pegar os dados de  endereço
                 EnderecoDAO endDao = new EnderecoDAO();
                 Endereco end = new Endereco();
                 end.setId(resultado.getInt("id_endereco"));
@@ -197,23 +275,20 @@ public class PrestadorServicoDAO extends AbstractDAO
                 AutenticarDAO autenticar = new AutenticarDAO();
                 autenticar.consultarUm(prestador);
                 //pegar os dados do contato
-                Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
+                Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
                 prestador.setContato(contato);
                 //
                 prestador.setNome(resultado.getString("nome"));
-                prestador.setCpf(resultado.getString("cpf"));
+                prestador.setCnpj(resultado.getString("cpf"));
                 prestador.setDataNascimento(resultado.getDate("data_nascimento"));
                 prestador.setSexo(resultado.getString("sexo"));
                 prestador.setSobrenome(resultado.getString("sobrenome"));
                 //recuperar as competencias
                 CompetenciaDAO compDAO = new CompetenciaDAO();
                 compDAO.consultarUm(prestador);
-                lista.add(prestador);
-                
-            }while(resultado.next());
-            return lista;
-        }
-        }catch (SQLException ex)
+                return prestador;
+            }
+        } catch (SQLException ex)
         {
             ex.printStackTrace();
             throw new SQLException();
@@ -227,64 +302,6 @@ public class PrestadorServicoDAO extends AbstractDAO
                 throw new SQLException();
             }
         }
+
     }
-
-    @Override
-    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico)entidade;
-        PreparedStatement preparador;
-        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE PRESTADOR_SERVICOS.ID = ? AND PRESTADOR_SERVICOS.ID_ENDERECO = ENDERECOS.ID ";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,prestador.getId());
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
-        {
-            return null;
-        }else
-        {
-            //pegar os dados de  endereço
-            EnderecoDAO endDao = new EnderecoDAO();
-            Endereco end = new Endereco();
-            end.setId(resultado.getInt("id_endereco"));
-            prestador.setEndereco((Endereco) endDao.consultarUm(end));
-            //pegar o id do banco 
-            prestador.setId(resultado.getInt("id"));
-            //pegar os dados do login
-            AutenticarDAO autenticar = new AutenticarDAO();
-            autenticar.consultarUm(prestador);
-            //pegar os dados do contato
-            Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
-            prestador.setContato(contato);
-            //
-            prestador.setNome(resultado.getString("nome"));
-            prestador.setCpf(resultado.getString("cpf"));
-            prestador.setDataNascimento(resultado.getDate("data_nascimento"));
-            prestador.setSexo(resultado.getString("sexo"));
-            prestador.setSobrenome(resultado.getString("sobrenome"));
-            //recuperar as competencias
-            CompetenciaDAO compDAO = new CompetenciaDAO();
-            compDAO.consultarUm(prestador);
-            return prestador;
-        }
-        }catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
-            {
-                conexao.close();
-            } catch (SQLException e)
-            {
-                throw new SQLException();
-            }
-        }
-
-}
 }

@@ -5,19 +5,19 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.Usuario;
+import java.sql.Connection;
 import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  *
@@ -26,46 +26,82 @@ import java.util.List;
 public class ClienteDAO extends AbstractDAO
 {
 
+    //atributo para conter os parametros de uma query!
+    private List<String> parameters = new ArrayList<>();    //parametros para busca dos clientes
+
+    /**
+     * Cria um objeto de ClienteDAO e anexa uma conexao já aberta!
+     *
+     * @param conexao Connection já aberta por outro DAO
+     */
+    public ClienteDAO(Connection conexao)
+    {
+        super(conexao);
+    }
+
+    //construtor default!
+    public ClienteDAO()
+    {
+    }
+
     @Override
-    public void salvar(EntidadeDominio entidade) throws SQLException {
-       openConnection(); //Abrir conexão com banco
-        Cliente cliente = (Cliente) entidade;
-        PreparedStatement preparador;
-        //criando sql para insert no banco
-        String sql = "INSERT INTO CLIENTES(NOME,SOBRENOME,DATA_NASCIMENTO,CPF,TELEFONE,CELULAR,SEXO,ID_ENDERECO) VALUES(?,?,?,?,?,?,?,?)";
-        
-        //pegando o id do endereço
-        EnderecoDAO endDAO = new EnderecoDAO();
-        endDAO.salvar(cliente.getEndereco());
-        
+    public void salvar(EntidadeDominio entidade) throws SQLException
+    {
         try
         {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
+            Cliente cliente = (Cliente) entidade;
+            
+            openConnection(); //Abrir conexão com banco
+            
+            conexao.setAutoCommit(false);
+            
+            //salvando dados do Endereco!
+            IDAO dao = new EnderecoDAO(conexao);
+            
+            dao.salvar(cliente.getEndereco());
+            
+            //criando sql para insert no banco
+            StringBuilder sql = new StringBuilder();
+            sql.append("INSERT INTO CLIENTES ");
+            sql.append("(NOME,SOBRENOME,CPF,ID_ENDERECO) ");
+            sql.append("VALUES(?,?,?,?)");
+            
+            //criando caminho para conexao no banco de dados e retornando o ID do ultimo insert!
+            pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+
             //setando parametros do insert
-            preparador.setString(1, cliente.getNome());
-            preparador.setString(2, cliente.getSobrenome());
-            java.sql.Date sqlData = new java.sql.Date(cliente.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
-            preparador.setDate(3, sqlData);
-            preparador.setString(4, cliente.getCpf());
-            preparador.setString(5, cliente.getContato().getTelefone());
-            preparador.setString(6, cliente.getContato().getCelular());
-            preparador.setString(7, cliente.getSexo());
-            preparador.setInt(8, cliente.getEndereco().getId());
-            preparador.executeUpdate();//executando a query no banco de dados
-            ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
+            pst.setString(1, cliente.getNome());
+            pst.setString(2, cliente.getSobrenome());
+            pst.setString(3, cliente.getCpf());
+            pst.setInt(4, cliente.getEndereco().getId());
+            
+            pst.executeUpdate();
+            
+            ResultSet resultado = pst.getGeneratedKeys(); //pegando id da ultima insercao no banco
+
             if (resultado.next())            //se conseguir interar pelo menos 1 vez
             {//conseguiu iterar
-                entidade.setId(resultado.getInt(1));
+                entidade.setId(resultado.getInt("id"));
             }
-            conexao.commit();//confirmando alteracoes no banco
-            AutenticarDAO autenticar = new AutenticarDAO();
-            autenticar.salvar(cliente);
+            
+            //salvando dados de Login!
+            dao = new AutenticarDAO(conexao);
+            
+            dao.salvar(entidade);
+            
+            conexao.commit();   //commitando as alteracoes feitas no banco!
+
         } catch (SQLException ex)
-        { 
-            endDAO.excluir(cliente.getEndereco());
+        {
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
             ex.printStackTrace();
-            throw new SQLException();
+            throw new SQLException(ex);
         } finally
         {
             try
@@ -78,34 +114,140 @@ public class ClienteDAO extends AbstractDAO
         }
     }
 
+    /**
+     * Atualiza todas as informações de uma entidade Cliente!
+     *
+     * @param entidade Cliente com seus dados preenchidos!
+     * @throws SQLException Caso ocorra algum problema ao atualizar
+     */
     @Override
-    public void atualizar(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        Cliente cliente = (Cliente) entidade;
-        PreparedStatement preparador;
-        String sql = "UPDATE CLIENTES SET NOME = ?, SOBRENOME = ?, DATA_NASCIMENTO = ?, "
-                + " TELEFONE = ?,  CELULAR = ? ,  SEXO = ? WHERE ID = ?";  //criando sql para insert no banco
+    public void atualizar(EntidadeDominio entidade) throws SQLException
+    {
         try
         {
+            Cliente cliente = (Cliente) entidade;
+
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE CLIENTES SET ");
+            sql.append("NOME = ?, ");
+            sql.append("SOBRENOME = ?, ");
+            sql.append("DATA_NASCIMENTO = ?, ");
+            sql.append("TELEFONE = ?, ");
+            sql.append("CELULAR = ? , ");
+            sql.append("SEXO = ? ");
+            sql.append("WHERE ID = ?");  //criando sql para insert no banco
+
+            openConnection();//Abrir conexão com banco
+
             conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
+
+            IDAO dao = new EnderecoDAO(conexao);
+
+            dao.atualizar(cliente.getEndereco());   //atualizando dados do endereco!
+
+            pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
+
             //setando parametros do insert
-            preparador.setString(1, cliente.getNome());
-            preparador.setString(2, cliente.getSobrenome());
-            java.sql.Date sqlData = new java.sql.Date(cliente.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
-            preparador.setDate(3, sqlData);
-            preparador.setString(4, cliente.getContato().getTelefone());
-            preparador.setString(5, cliente.getContato().getCelular());
-            preparador.setString(6, cliente.getSexo());
-            preparador.setInt(7, cliente.getId());
-            preparador.executeUpdate();//executando a query no banco de dados
+            pst.setString(1, cliente.getNome());
+            pst.setString(2, cliente.getSobrenome());
+            if(cliente.getData() != null)
+                pst.setDate(3, new Date(cliente.getDataNascimento().getTime()));
+            else
+                pst.setDate(3, null);
+            pst.setString(4, cliente.getContato().getTelefone());
+            pst.setString(5, cliente.getContato().getCelular());
+            pst.setString(6, cliente.getSexo());
+            pst.setInt(7, cliente.getId());
+
+            pst.executeUpdate();//executando a query no banco de dados
+
             conexao.commit();//confirmando alteracoes no banco
-            //Atualizar o endereço
-            EnderecoDAO endDAO = new EnderecoDAO();
-            endDAO.atualizar(cliente.getEndereco());
-            //Atualizar Login
-            AutenticarDAO login = new AutenticarDAO();
-            login.atualizar(cliente);
+
+        } catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
+        }
+    }
+
+    /**
+     * Método não foi implementado, pois a exclusão é feita de forma lógica!
+     *
+     * @param entidade
+     * @throws SQLException
+     */
+    @Override
+    public void excluir(EntidadeDominio entidade) throws SQLException
+    {
+        /*
+         A exclusão de um cliente é feita de forma lógica!
+         Não é necessário efetuar a exclusão por aqui!
+         */
+    }
+
+    @Override
+    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            openConnection();//Abrir conexão com banco
+            List<EntidadeDominio> lista = new ArrayList<>();
+
+            Cliente cliente = (Cliente) entidade;
+
+            StringBuilder sql = createQuery(entidade);  //criando a query para consulta!
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            int x = 0;
+
+            if (parameters.isEmpty())
+            {
+                sql.append("SELECT * FROM CLIENTES");
+            } else
+            {
+                for (String p : parameters)
+                {
+                    pst.setString(x++, p);
+                }
+            }
+
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next())
+            {
+                //pegar o id do banco 
+                cliente.setId(rs.getInt("id"));
+
+                //pegar os dados do contato
+                Contato contato = new Contato(rs.getString("telefone"), rs.getString("celular"));
+                cliente.setContato(contato);
+
+                //pegando dados pessoais do cliente!
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setDataNascimento(rs.getDate("data_nascimento"));
+                cliente.setSexo(rs.getString("sexo"));
+                cliente.setSobrenome(rs.getString("sobrenome"));
+
+                //pegando dados do endereco!
+                cliente.setEndereco(new Endereco());
+                IDAO dao = new EnderecoDAO(); // --> Criando instancia do DAO de Endereco!
+                cliente.getEndereco().setId(rs.getInt("id_endereco"));
+                dao.consultarUm(cliente.getEndereco());
+
+                lista.add(cliente);
+            }
+            return lista;
         } catch (SQLException ex)
         {
             ex.printStackTrace();
@@ -123,68 +265,35 @@ public class ClienteDAO extends AbstractDAO
     }
 
     @Override
-    public void excluir(EntidadeDominio entidade) throws SQLException {
-         openConnection();//Abrir conexão com banco
-        Cliente cliente = (Cliente)entidade;
-        PreparedStatement preparador;
-        String sql = "DELETE FROM CLIENTES WHERE ID = ?";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,cliente.getId());
-        preparador.executeUpdate();
-        conexao.commit();
-        EnderecoDAO endDAO = new EnderecoDAO();
-        endDAO.excluir(cliente.getEndereco());
-        AutenticarDAO autenticar = new AutenticarDAO();
-        autenticar.excluir(cliente);
-        }catch (SQLException ex)
+    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
+    {
+        try
         {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
-            {
-                conexao.close();
-            } catch (SQLException e)
-            {
-                throw new SQLException();
-            }
-        }
-    }
+            openConnection();//Abrir conexão com banco
+            Cliente cliente = (Cliente) entidade;
 
-    @Override
-    public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        ArrayList<EntidadeDominio> lista = new ArrayList<>();
-        PreparedStatement preparador;
-        String sql = "SELECT CLIENTES.* FROM CLIENTES,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
-        {
-            return null;
-        }else
-        {
-           do
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("SELECT * FROM CLIENTES WHERE ID = ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setInt(1, cliente.getId());
+
+            ResultSet resultado = pst.executeQuery();
+
+            if (resultado.next())
             {
-                Cliente cliente = new Cliente();
+                //pegar os dados de  endereço
                 EnderecoDAO endDao = new EnderecoDAO();
                 Endereco end = new Endereco();
                 end.setId(resultado.getInt("id_endereco"));
                 cliente.setEndereco((Endereco) endDao.consultarUm(end));
                 //pegar o id do banco 
                 cliente.setId(resultado.getInt("id"));
-                //pegar os dados do login
-                AutenticarDAO autenticar = new AutenticarDAO();
-                autenticar.consultarUm(cliente);
+
                 //pegar os dados do contato
-                Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
+                Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
                 cliente.setContato(contato);
                 //
                 cliente.setNome(resultado.getString("nome"));
@@ -192,67 +301,10 @@ public class ClienteDAO extends AbstractDAO
                 cliente.setDataNascimento(resultado.getDate("data_nascimento"));
                 cliente.setSexo(resultado.getString("sexo"));
                 cliente.setSobrenome(resultado.getString("sobrenome"));
-                lista.add(cliente);
-                
-            }while(resultado.next());
-            return lista;
-        }
-        }catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
-            {
-                conexao.close();
-            } catch (SQLException e)
-            {
-                throw new SQLException();
+                return cliente;
             }
-        }
-    }
-
-    @Override
-    public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        Cliente cliente = (Cliente)entidade;
-        PreparedStatement preparador;
-        String sql = "SELECT CLIENTES.* FROM CLIENTES,ENDERECOS WHERE CLIENTES.ID = ? AND ID_ENDERECO = ENDERECOS.ID ";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,cliente.getId());
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
-        {
             return null;
-        }else
-        {
-            //pegar os dados de  endereço
-            EnderecoDAO endDao = new EnderecoDAO();
-            Endereco end = new Endereco();
-            end.setId(resultado.getInt("id_endereco"));
-            cliente.setEndereco((Endereco) endDao.consultarUm(end));
-            //pegar o id do banco 
-            cliente.setId(resultado.getInt("id"));
-            //pegar os dados do login
-            AutenticarDAO autenticar = new AutenticarDAO();
-            autenticar.consultarUm(cliente);
-            //pegar os dados do contato
-            Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));  
-            cliente.setContato(contato);
-            //
-            cliente.setNome(resultado.getString("nome"));
-            cliente.setCpf(resultado.getString("cpf"));
-            cliente.setDataNascimento(resultado.getDate("data_nascimento"));
-            cliente.setSexo(resultado.getString("sexo"));
-            cliente.setSobrenome(resultado.getString("sobrenome"));
-            return cliente;
-        }
-        }catch (SQLException ex)
+        } catch (SQLException ex)
         {
             ex.printStackTrace();
             throw new SQLException();
@@ -268,5 +320,89 @@ public class ClienteDAO extends AbstractDAO
         }
     }
 
-   
+    /**
+     * Método para criar uma query específica de uma consulta!
+     *
+     * @param entidade
+     * @return Uma string contendo a query completa
+     */
+    public StringBuilder createQuery(EntidadeDominio entidade)
+    {
+        Cliente cliente = (Cliente) entidade;
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT * FROM CLIENTES WHERE ");
+
+        /*
+         Bloco de IFs para definir os parâmetros de pesquisa!
+         */
+        if (cliente.getNome() != null || !cliente.getNome().equals(""))
+        {
+            sql.append("NOME ILIKE ? AND ");
+            parameters.add(cliente.getNome());
+        } else if (cliente.getSobrenome() != null || !cliente.getSobrenome().equals(""))
+        {
+            sql.append("SOBRENOME ILIKE ? AND ");
+            parameters.add(cliente.getSobrenome());
+        } else if (cliente.getCpf() != null || !cliente.getCpf().equals(""))
+        {
+            sql.append("CPF ILIKE ? AND ");
+            parameters.add(cliente.getCpf());
+        }
+
+        sql.delete(sql.length() - 5, sql.length());
+
+        return sql;
+    }
+    
+    /**
+     * Busca um Cliente no banco de dados pelo CPF!
+     * @param entidade
+     * @return Se o cliente existe retorna um objeto de Cliente, caso contrário retorna null
+     * @throws SQLException lança uma exceção caso de alguma coisa errada na pesquisa!
+     */
+    public EntidadeDominio consultaClienteCPF(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            Cliente cliente = (Cliente) entidade;
+            
+            openConnection();
+            
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT NOME FROM CLIENTES ");
+            sql.append("WHERE CPF = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, cliente.getCpf());
+                        
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next())   //retornou algum cliente?
+            {
+                return cliente;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
 }

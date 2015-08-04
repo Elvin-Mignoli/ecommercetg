@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,87 +23,123 @@ import java.util.logging.Logger;
 public class EnderecoDAO extends AbstractDAO
 {
 
-    @Override
-    public void salvar(EntidadeDominio entidade) throws SQLException
+    /**
+     * Construtor para receber uma conexao já aberta por um DAO!
+     *
+     * @param conexao
+     */
+    public EnderecoDAO(Connection conexao)
     {
-        openConnection(); //Abrir conexão com banco
-        Endereco end = (Endereco) entidade;
-        PreparedStatement preparador;
-        //criando sql para insert no banco
-        String sql = "INSERT INTO ENDERECOS(logradouro,numero,bairro,cidade,estado,complemento, cep) VALUES(?,?,?,?,?,?,?);";
+        super(conexao);
+    }
 
-        try
-        {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
-            //setando parametros do insert
-            preparador.setString(1, end.getLogradouro());
-            preparador.setString(2, end.getNumero());
-            preparador.setString(3, end.getBairro());
-            preparador.setString(4, end.getCidade());
-            preparador.setString(5, end.getEstado());
-            preparador.setString(6, end.getComplemento());
-            preparador.setString(7, end.getCep());
-            preparador.executeUpdate();//executando a query no banco de dados
-            ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
-            if (resultado.next())            //se conseguir interar pelo menos 1 vez
-            {//conseguiu iterar
-                //end.setId(resultado.getInt(1));
-                entidade.setId(resultado.getInt(1));
-            }
-            conexao.commit();//confirmando alteracoes no banco
-        } catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
-            {
-                conexao.close();
-            } catch (SQLException e)
-            {
-                throw new SQLException();
-            }
-        }
+    public EnderecoDAO()
+    {
+
     }
 
     @Override
-    public void atualizar(EntidadeDominio entidade) throws SQLException
+    public void salvar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
-        Endereco end = (Endereco) entidade;
-        PreparedStatement preparador;
-        String sql = "UPDATE ENDERECOS SET LOGRADOURO = ?, NUMERO = ?, BAIRRO = ?, CIDADE = ?,"
-                + " ESTADO = ?,  CEP = ? ,  COMPLEMENTO = ? WHERE ID = ?";  //criando sql para insert no banco
         try
         {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
+            if (conexao == null || conexao.isClosed())//Abrir conexão com banco
+            {
+                openConnection();
+                conexao.setAutoCommit(false);//setando auto commit para false
+            }
+            Endereco end = (Endereco) entidade;
+            //criando sql para insert no banco
+            StringBuilder sql = new StringBuilder();
+            sql.append("INSERT INTO ENDERECOS ");
+            sql.append("(logradouro,numero,bairro,cidade,estado,complemento,cep) ");
+            sql.append("VALUES(?,?,?,?,?,?,?)");
+
+            pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
             //setando parametros do insert
-            preparador.setString(1, end.getLogradouro());
-            preparador.setString(2, end.getNumero());
-            preparador.setString(3, end.getBairro());
-            preparador.setString(4, end.getCidade());
-            preparador.setString(5, end.getEstado());
-            preparador.setString(6, end.getCep());
-            preparador.setString(7, end.getComplemento());
-            preparador.setInt(8, end.getId());
-            preparador.executeUpdate();//executando a query no banco de dados
-            conexao.commit();//confirmando alteracoes no banco
+            pst.setString(1, end.getLogradouro());
+            pst.setString(2, end.getNumero());
+            pst.setString(3, end.getBairro());
+            pst.setString(4, end.getCidade());
+            pst.setString(5, end.getEstado());
+            pst.setString(6, end.getComplemento());
+            pst.setString(7, end.getCep());
+
+            pst.executeUpdate();
+            
+            ResultSet resultado = pst.getGeneratedKeys(); //pegando id da ultima insercao no banco
+
+            if (resultado.next()) //se conseguir interar pelo menos 1 vez
+            {
+                //end.setId(resultado.getInt(1));
+                entidade.setId(resultado.getInt(1));
+            }
         } catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
         {
             try
             {
-                conexao.close();
-            } catch (SQLException e)
+                conexao.rollback();
+            } catch (SQLException ex1)
             {
-                throw new SQLException();
+                ex1.printStackTrace();
             }
+            ex.printStackTrace();
+            throw new SQLException();
+        } 
+    }
+
+    /**
+     *
+     * @param entidade
+     * @throws SQLException
+     */
+    @Override
+    public void atualizar(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            if (conexao == null || conexao.isClosed())
+            {
+                openConnection();//Abrir conexão com banco
+            }
+            Endereco end = (Endereco) entidade;
+            PreparedStatement pst;
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE ENDERECOS SET ");
+            sql.append("LOGRADOURO = ?, ");
+            sql.append("NUMERO = ?, ");
+            sql.append("BAIRRO = ?, ");
+            sql.append("CIDADE = ?, ");
+            sql.append(" ESTADO = ?, ");
+            sql.append("CEP = ? , ");
+            sql.append("COMPLEMENTO = ? ");
+            sql.append("WHERE ID = ?");  //criando sql para insert no banco
+
+            pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
+            //setando parametros do insert
+            pst.setString(1, end.getLogradouro());
+            pst.setString(2, end.getNumero());
+            pst.setString(3, end.getBairro());
+            pst.setString(4, end.getCidade());
+            pst.setString(5, end.getEstado());
+            pst.setString(6, end.getCep());
+            pst.setString(7, end.getComplemento());
+            pst.setInt(8, end.getId());
+
+            pst.executeUpdate();//executando a query no banco de dados
+
+            // O Commite é feito por outra Classe DAO (Cliente ou PrestadorServico)
+        } catch (SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException();
         }
     }
 
@@ -113,13 +150,14 @@ public class EnderecoDAO extends AbstractDAO
         Endereco end = (Endereco) entidade;
         PreparedStatement preparador;
         String sql = "DELETE FROM ENDERECOS WHERE ID = ?";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,end.getId());
-        preparador.executeUpdate();
-        conexao.commit();
-        }catch (SQLException ex)
+        try
+        {
+            conexao.setAutoCommit(false);
+            preparador = conexao.prepareStatement(sql);
+            preparador.setInt(1, end.getId());
+            preparador.executeUpdate();
+            conexao.commit();
+        } catch (SQLException ex)
         {
             ex.printStackTrace();
             throw new SQLException();
@@ -144,36 +182,38 @@ public class EnderecoDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
-        Endereco end = (Endereco) entidade;
-        PreparedStatement preparador;
-        String sql = "SELECT * FROM ENDERECOS WHERE ID = ?";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,end.getId());
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
+        try
         {
+            Endereco end = (Endereco) entidade;
+            if(conexao == null || conexao.isClosed())
+                openConnection();//Abrir conexão com banco
+            
+            String sql = "SELECT * FROM ENDERECOS WHERE ID = ?";
+            
+            pst = conexao.prepareStatement(sql);
+            
+            pst.setInt(1, end.getId());
+            
+            ResultSet resultado = pst.executeQuery();
+
+            if (resultado.next())
+            {
+                end.setBairro(resultado.getString("bairro"));
+                end.setCep(resultado.getString("cep"));
+                end.setCidade(resultado.getString("cidade"));
+                end.setComplemento(resultado.getString("complemento"));
+                end.setEstado(resultado.getString("estado"));
+                end.setLogradouro(resultado.getString("logradouro"));
+                end.setNumero(resultado.getString("numero"));
+                end.setId(resultado.getInt("id"));
+                return end;
+            }
+            
             return null;
-        }else
-        {
-            end.setBairro(resultado.getString("bairro"));
-            end.setCep(resultado.getString("cep"));
-            end.setCidade(resultado.getString("cidade"));
-            end.setComplemento(resultado.getString("complemento"));
-            end.setEstado(resultado.getString("estado"));
-            end.setLogradouro(resultado.getString("logradouro"));
-            end.setNumero(resultado.getString("numero"));
-            end.setId(resultado.getInt("id"));
-            return end;
-        }
-        }catch (SQLException ex)
+        } catch (SQLException ex)
         {
             ex.printStackTrace();
-            throw new SQLException();
+            throw new SQLException(ex);
         } finally
         {
             try
@@ -185,5 +225,4 @@ public class EnderecoDAO extends AbstractDAO
             }
         }
     }
-
 }

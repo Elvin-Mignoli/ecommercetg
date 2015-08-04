@@ -13,6 +13,8 @@ import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -27,59 +29,74 @@ import javax.servlet.http.HttpServletResponse;
 public class AtualizarClienteVHWeb implements IViewHelper
 {
 
+    private Cliente cliente = new Cliente();
+    
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request)
     {
+        Cliente sessionCliente = (Cliente) request.getSession().getAttribute("user");
         /* Dados do Pessoais do Cliente */
         String nome = request.getParameter("txtNome");
-        String sobrenome = request.getParameter("txtSobreNome");
+        String sobrenome = request.getParameter("txtSobrenome");
         String cpf = request.getParameter("txtCpf");
-        String sexo = request.getParameter("txtSexo");
-        String tipoConta = request.getParameter("cliente");
-        int status = 1; //ativo! --> 0 Inativo!
-        String email = request.getParameter("txtEmail");
-        String senha = request.getParameter("txtSenha");
-        String dataNascimento = request.getParameter("txtDataNascimento");
+        String sexo = request.getParameter("txtSexo").substring(0, 1);
+        String dataNascimento = request.getParameter("txtDatanascimento");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date data = null;
+        
+        try
+        {
+            if(dataNascimento != null || !dataNascimento.equals(""))
+            {
+                data = sdf.parse(dataNascimento);
+            }
+        } catch (ParseException ex)
+        {
+            ex.printStackTrace();
+            System.out.println("Data Inválida!");
+        }
 
         /* Dados do Endereco do Cliente! */
         String logradouro = request.getParameter("txtLogradouro");
         String numero = request.getParameter("txtNumero");
-        String cep = request.getParameter("txtCep");
+        String cep = request.getParameter("txtCep").replace("-", "");
         String bairro = request.getParameter("txtBairro");
         String cidade = request.getParameter("txtCidade");
         String estado = request.getParameter("txtEstado");
         String complemento = request.getParameter("txtComplemento");
-
+        Endereco endereco = new Endereco(logradouro, numero, cep, bairro, cidade, estado, complemento);
+        endereco.setId(sessionCliente.getEndereco().getId());
+        
         /* Classe de Contato! */
-        String telefone = request.getParameter("txtTelefone");
-        String celular = request.getParameter("txtCelular");
+        String telefone = request.getParameter("txtTelefone").replace("(", "").replace(")", "").replace("-", "");
+        String celular = request.getParameter("txtCelular").replace("(", "").replace(")", "").replace("-", "");
         Contato contato = new Contato(telefone, celular);
 
-        Endereco endereco = new Endereco(logradouro, numero, cep, bairro, cidade, estado, complemento);
+        cliente.setId(sessionCliente.getId());
+        cliente.setNome(nome);
+        cliente.setSobrenome(sobrenome);
+        cliente.setCpf(cpf);
+        cliente.setSexo(sexo);
+        cliente.setDataNascimento(data);
+        cliente.setContato(contato);
+        cliente.setEndereco(endereco);
 
-        try
-        {
-            Cliente cliente = new Cliente(nome, sobrenome, cpf, endereco, contato, sexo, dataNascimento, tipoConta, email, senha);
-            //Objeto de Cliente Criado com Sucesso!
-            return cliente;
-        } catch (ParseException ex)
-        {
-            ex.printStackTrace();
-            return null;
-        }
+        return cliente;
     }
 
     @Override
-    public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException
+    public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        RequestDispatcher rq;
-        if (!resultado.getMensagemSimples().isEmpty())    //a lista de mensagens de erro esta vazia
+        if (!resultado.getMensagens().isEmpty())    //a lista de mensagens de erro esta vazia
         {
-            request.setAttribute("MsgAtualizaCliente", resultado.getMensagens());   //retorna lista de mensagens
+            request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens
         }
-        rq = request.getRequestDispatcher("ClienteAtualizar");
-
-        rq.forward(request, response);
+        else
+        {
+            request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
+            request.getSession().setAttribute("user", cliente);
+            
+        }
+        request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }
-
 }
