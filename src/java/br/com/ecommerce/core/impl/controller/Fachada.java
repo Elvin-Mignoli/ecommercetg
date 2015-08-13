@@ -12,8 +12,11 @@ import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
+import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
+import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.SQLException;
@@ -45,6 +48,7 @@ public class Fachada implements IFachada
         //populando o hash de DAO!
         daos.put(Cliente.class.getName(), new ClienteDAO());
         daos.put(PrestadorServico.class.getName(), new PrestadorServicoDAO());
+        daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
 
         /* 
          Lista de Regras de negocio! 
@@ -53,13 +57,22 @@ public class Fachada implements IFachada
         List<IStrategy> rnsSalvarCliente = new ArrayList<>();
         rnsSalvarCliente.add(new ValidaCPF());
         rnsSalvarCliente.add(new ExisteCliente());
-
+        
         Map<String, List<IStrategy>> rnsCliente = new HashMap<>();   //Mapa de regras!
         rnsCliente.put("Salvar", rnsSalvarCliente);
         //Fim das regras do Cliente
-
+        
+        // --> Regras de Negócio AtualizarCartao!
+        List<IStrategy> rnsAtualizarCartao = new ArrayList<>();
+        rnsAtualizarCartao.add(new ValidaCartaoCredito());
+        
+        Map<String,List<IStrategy>> rnsCartao = new HashMap<>();
+        rnsCartao.put("Atualizar", rnsAtualizarCartao);
+        //Fim das regras do Cartão!
+        
         //Map final com todas as regras separados por operacao!
         rns.put(Cliente.class.getName(), rnsCliente);
+        rns.put(CartaoCredito.class.getName(), rnsCartao);
     }
 
     @Override

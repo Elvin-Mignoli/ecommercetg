@@ -107,7 +107,7 @@
         <div class="form-group">
             <div class="input-group col-lg-3">
                 <span class="input-group-addon">
-                    Data
+                    Data Nascimento
                 </span>
                 <input type="date" name="txtDatanascimento" value="<f:formatDate pattern="yyyy-MM-dd" value="${sessionScope.user.dataNascimento}"></f:formatDate>" class="form-control"/>        
                 </div>

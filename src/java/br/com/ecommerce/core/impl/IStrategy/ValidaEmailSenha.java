@@ -6,14 +6,10 @@
 package br.com.ecommerce.core.impl.IStrategy;
 
 import br.com.ecommerce.application.Resultado;
-import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.dao.AutenticarDAO;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.Usuario;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

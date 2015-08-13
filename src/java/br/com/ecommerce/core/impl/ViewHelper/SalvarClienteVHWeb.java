@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.ViewHelper;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IViewHelper;
+import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
@@ -40,6 +41,7 @@ public class SalvarClienteVHWeb implements IViewHelper
 
         cliente = new Cliente();
 
+        cliente.setCartao(new CartaoCredito());
         cliente.setNome(nome);
         cliente.setSobrenome(sobrenome);
         cliente.setCpf(cpf);

@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.ViewHelper;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IViewHelper;
+import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
@@ -15,9 +16,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,7 +69,7 @@ public class AtualizarClienteVHWeb implements IViewHelper
         String telefone = request.getParameter("txtTelefone").replace("(", "").replace(")", "").replace("-", "");
         String celular = request.getParameter("txtCelular").replace("(", "").replace(")", "").replace("-", "");
         Contato contato = new Contato(telefone, celular);
-
+        
         cliente.setId(sessionCliente.getId());
         cliente.setNome(nome);
         cliente.setSobrenome(sobrenome);
@@ -80,6 +78,7 @@ public class AtualizarClienteVHWeb implements IViewHelper
         cliente.setDataNascimento(data);
         cliente.setContato(contato);
         cliente.setEndereco(endereco);
+        cliente.setCartao(new CartaoCredito());
 
         return cliente;
     }

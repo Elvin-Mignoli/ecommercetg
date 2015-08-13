@@ -7,7 +7,6 @@ package br.com.ecommerce.filter;
 
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.ViewHelper.FactoryHelper;
-import br.com.ecommerce.domain.EntidadeDominio;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -24,11 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author java
+ * @author Felipe Monteiro
  */
 @WebFilter(filterName = "FilterBusiness", urlPatterns =
 {
-    "/JSP/Cliente/CPF","/JSP/Cliente/Email","/JSP/Cliente/CEP"
+    "/JSP/Cliente/CPF","/JSP/Cliente/Email","/JSP/Cliente/CEP", "/JSP/Cliente/AtualizaEmail",
+    "/JSP/Cliente/AtualizaSenha","/JSP/Cliente/Imagem"
 })
 public class FilterBusiness implements Filter
 {
@@ -42,10 +42,10 @@ public class FilterBusiness implements Filter
 
     public FilterBusiness()
     {
+        
     }
 
-    private void doBeforeProcessing(ServletRequest request, ServletResponse response)
-            throws IOException, ServletException
+    private void doBeforeProcessing(ServletRequest request, ServletResponse response)throws IOException, ServletException
     {
         if (debug)
         {

@@ -42,6 +42,14 @@ public class AutenticarDAO extends AbstractDAO
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
+            int idCliente = 0;
+            int idPrestador = 0;
+            
+            if(entidade instanceof Cliente)
+                idCliente = entidade.getId();
+            else
+                idPrestador = entidade.getId();
+            
         try
         {
             Usuario usuario = (Usuario) entidade;
@@ -55,7 +63,13 @@ public class AutenticarDAO extends AbstractDAO
             //criando sql para insert no banco
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO LOGIN ");
-            sql.append("(EMAIL,SENHA,STATUS,ID_CLIENTE,TIPO_CONTA) ");
+            sql.append("(EMAIL,SENHA,STATUS,TIPO_CONTA");
+            
+            if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append(",ID_CLIENTE) ");
+            else
+                sql.append(",ID_PRESTADOR) ");
+            
             sql.append("VALUES(?,?,?,?,?)");
 
             //conexao.setAutoCommit(false);//setando auto commit para false
@@ -65,8 +79,8 @@ public class AutenticarDAO extends AbstractDAO
             pst.setString(1, usuario.getEmail());
             pst.setString(2, usuario.getSenha());
             pst.setInt(3, usuario.getStatus());
-            pst.setInt(4, entidade.getId());
-            pst.setString(5, usuario.getTipoConta());
+            pst.setString(4, usuario.getTipoConta());
+            pst.setInt(5, entidade.getId());
 
             pst.execute();//executando a query no banco de dados
 
@@ -99,7 +113,7 @@ public class AutenticarDAO extends AbstractDAO
             sql.append("EMAIL = ?, ");
             sql.append("SENHA = ?,");
             sql.append("STATUS = ? ");
-            sql.append("WHERE ID_CLIENTE = ?");  //criando sql para update no banco
+            sql.append("WHERE ID = ?");  //criando sql para update no banco
 
             pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
 
@@ -215,9 +229,10 @@ public class AutenticarDAO extends AbstractDAO
                     prestador.setEmail(rs.getString("email"));
                     prestador.setTipoConta(rs.getString("tipo_conta"));
                     prestador.setStatus(rs.getInt("status"));
-
+                    prestador.setUsuarioID(rs.getInt("id"));
+                    
                     dao = new PrestadorServicoDAO(conexao);
-
+                    
                     dao.consultarUm(prestador);
 
                     return prestador;
@@ -226,10 +241,10 @@ public class AutenticarDAO extends AbstractDAO
                     Cliente cliente = new Cliente();
                     cliente.setId(rs.getInt("id_cliente"));
                     cliente.setEmail(rs.getString("email"));
-                    cliente.setSenha(rs.getString("senha"));
                     cliente.setStatus(rs.getInt("status"));
                     cliente.setTipoConta(rs.getString("tipo_conta"));
-
+                    cliente.setUsuarioID(rs.getInt("id"));
+                    
                     dao = new ClienteDAO(conexao);
 
                     dao.consultarUm(cliente);
@@ -286,6 +301,114 @@ public class AutenticarDAO extends AbstractDAO
         } else
         {
             return null;
+        }
+    }
+    /**
+     * Método para atualizar um email de um usuário! (Cliente ou Prestador)
+     * @param entidade EntidadeDominio contendo ID do usuário e Email
+     */
+    public void atualizaEmail(EntidadeDominio entidade) throws SQLException
+    {
+        pst = null;
+        StringBuilder sql = new StringBuilder();
+        Usuario usuario = (Usuario) entidade;
+        try
+        {
+            openConnection();   //abrindo conexao com o  banco de dados
+            
+            conexao.setAutoCommit(false);   //setando commit para false
+            
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET EMAIL = ? ");
+            sql.append("WHERE ID = ?");
+            
+            pst = conexao.prepareStatement(sql.toString()); //passando SQL para o PST!!!
+            
+            pst.setString(1, usuario.getEmail());   //parametro de email
+            pst.setInt(2, usuario.getUsuarioID());     // parametro de senha
+            
+            pst.executeUpdate();    //executando a query no banco!
+            
+            conexao.commit();  //commitando as alteraçoes no banco de dados!
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+                pst.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * Método para atualizar apenas a senha de um usuário
+     * @param entidade Usuario contendo a nova senha
+     * @throws java.sql.SQLException lança um erro caso de alguma coisa errada na atualização
+     */
+    public void atualizaSenha(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        StringBuilder sql = new StringBuilder();
+        
+        try
+        {
+            openConnection();   //abrindo conexao com o banco de dados!
+            conexao.setAutoCommit(false);
+            
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET SENHA = ? ");
+            sql.append("WHERE ID = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, usuario.getSenha());
+            pst.setInt(2, usuario.getUsuarioID());
+            
+            pst.executeUpdate();
+            
+            conexao.commit();   //commitando todas as alterações no banco
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback(); //desfez todas as alterações caso de algum problema
+            }
+            catch(SQLException ex1)
+            {
+              ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                pst.close();
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
 }
