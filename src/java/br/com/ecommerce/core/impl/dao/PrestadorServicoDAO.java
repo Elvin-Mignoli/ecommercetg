@@ -5,11 +5,13 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,49 +39,63 @@ public class PrestadorServicoDAO extends AbstractDAO
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection(); //Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
-        //criando sql para insert no banco
-        String sql = "INSERT INTO PRESTADOR_SERVICOS(NOME,SOBRENOME,DATA_NASCIMENTO,CPF,TELEFONE,CELULAR,SEXO,ID_ENDERECO) VALUES(?,?,?,?,?,?,?,?)";
-
-        //pegando o id do endereço e salvando endereco
-        EnderecoDAO endDAO = new EnderecoDAO();
-        endDAO.salvar(prestador.getEndereco());
-
+        
         try
         {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
+            PrestadorServico prestador= (PrestadorServico) entidade;
+            
+            openConnection(); //Abrir conexão com banco
+            
+            conexao.setAutoCommit(false);
+            
+            //salvando dados do Endereco!
+            IDAO dao = new EnderecoDAO(conexao);
+            
+            dao.salvar(prestador.getEndereco());
+            
+            //criando sql para insert no banco
+            StringBuilder sql = new StringBuilder();
+            sql.append("INSERT INTO PRESTADOR_SERVICOS ");
+            sql.append("(NOME,SOBRENOME,CPF,CNPJ,ID_ENDERECO) ");
+            sql.append("VALUES(?,?,?,?,?)");
+            
+            //criando caminho para conexao no banco de dados e retornando o ID do ultimo insert!
+            pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+
             //setando parametros do insert
-            preparador.setString(1, prestador.getNome());
-            preparador.setString(2, prestador.getSobrenome());
-            java.sql.Date sqlData = new java.sql.Date(prestador.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
-            preparador.setDate(3, sqlData);
-            preparador.setString(4, prestador.getCnpj());
-            preparador.setString(5, prestador.getContato().getTelefone());
-            preparador.setString(6, prestador.getContato().getCelular());
-            preparador.setString(7, prestador.getSexo());
-            preparador.setInt(8, prestador.getEndereco().getId());
-            preparador.executeUpdate();//executando a query no banco de dados
-            ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
+            pst.setString(1, prestador.getNome());
+            pst.setString(2, prestador.getSobrenome());
+            pst.setString(3, prestador.getCpf());
+            pst.setString(4, prestador.getCnpj());
+            pst.setInt(5, prestador.getEndereco().getId());
+            
+            pst.executeUpdate();
+            
+            ResultSet resultado = pst.getGeneratedKeys(); //pegando id da ultima insercao no banco
+
             if (resultado.next())            //se conseguir interar pelo menos 1 vez
             {//conseguiu iterar
-                entidade.setId(resultado.getInt(1));
+                entidade.setId(resultado.getInt("id"));
             }
-            conexao.commit();//confirmando alteracoes no banco
-            //insercao dos dados de login
-            AutenticarDAO autenticar = new AutenticarDAO();
-            autenticar.salvar(prestador);
-            //inserção das competencias
-            CompetenciaDAO compDAO = new CompetenciaDAO();
-            compDAO.salvar(prestador);
+            
+            //salvando dados de Login!
+            dao = new AutenticarDAO(conexao);
+            
+            dao.salvar(entidade);
+            
+            conexao.commit();   //commitando as alteracoes feitas no banco!
 
         } catch (SQLException ex)
         {
-            endDAO.excluir(prestador.getEndereco());
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
             ex.printStackTrace();
-            throw new SQLException();
+            throw new SQLException(ex);
         } finally
         {
             try
@@ -95,49 +111,73 @@ public class PrestadorServicoDAO extends AbstractDAO
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
-        String sql = "UPDATE PRESTADOR_SERVICOS SET NOME = ?, SOBRENOME = ?, DATA_NASCIMENTO = ?, "
-                + " TELEFONE = ?,  CELULAR = ? ,  SEXO = ? WHERE ID = ?";  //criando sql para insert no banco
+        
         try
-        {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
-            //setando parametros do insert
-            preparador.setString(1, prestador.getNome());
-            preparador.setString(2, prestador.getSobrenome());
-            java.sql.Date sqlData = new java.sql.Date(prestador.getDataNascimento().getTime());  //atribuir a data de nascimento para um objeto do tipo sql Date
-            preparador.setDate(3, sqlData);
-            preparador.setString(4, prestador.getContato().getTelefone());
-            preparador.setString(5, prestador.getContato().getCelular());
-            preparador.setString(6, prestador.getSexo());
-            preparador.setInt(7, prestador.getId());
-            preparador.executeUpdate();//executando a query no banco de dados
-            conexao.commit();//confirmando alteracoes no banco
-            //Atualizar o endereço
-            EnderecoDAO endDAO = new EnderecoDAO();
-            endDAO.atualizar(prestador.getEndereco());
-            //Atualizar Login
-            AutenticarDAO login = new AutenticarDAO();
-            login.atualizar(prestador);
-            //Atualizar competencias
-            CompetenciaDAO compDAO = new CompetenciaDAO();
-            compDAO.atualizar(prestador);
-        } catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
+        {  
+            PrestadorServico prestador = (PrestadorServico) entidade;
+            
+            StringBuilder sql = new StringBuilder();
+                sql.append("UPDATE PRESTADOR_SERVICOS SET ");
+                sql.append("NOME = ?, ");
+                sql.append("SOBRENOME = ?, ");
+                sql.append("DATA_NASCIMENTO = ?, ");
+                sql.append("TELEFONE = ?, ");
+                sql.append("CELULAR = ? , ");
+                sql.append("SEXO = ? ");
+                sql.append("WHERE ID = ?");  //criando sql para insert no banco
+                
+                openConnection();//Abrir conexão com banco
+                conexao.setAutoCommit(false);//setando auto commit para false
+                IDAO dao = new EnderecoDAO(conexao);
+
+                dao.atualizar(prestador.getEndereco());   //atualizando dados do endereco!
+                
+                pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
+                //setando parametros do insert
+                pst.setString(1, prestador.getNome());
+                pst.setString(2, prestador.getSobrenome());
+                if(prestador.getDataNascimento()!= null)
+                    pst.setDate(3, new Date(prestador.getDataNascimento().getTime()));
+                else
+                    pst.setDate(3, null);
+                pst.setString(4, prestador.getContato().getTelefone());
+                pst.setString(5, prestador.getContato().getCelular());
+                pst.setString(6, prestador.getSexo());
+                pst.setInt(7, prestador.getId());
+                pst.executeUpdate();//executando a query no banco de dados
+                
+                if(prestador.getHabilidades()!=null) //a lista de skills está vazia?
+                {//cheia
+                    //Atualizar competencias
+                    CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
+                    PrestadorServico comp = new PrestadorServico();
+                    comp.setId(prestador.getId());
+                    comp = (PrestadorServico)compDAO.consultarUm(comp);
+                    //Por enquanto que não possa alterar as habilidades
+                    if(comp!= null && comp.getHabilidades().isEmpty()) // existe alguma competencia?
+                        compDAO.atualizar(prestador);
+                    else
+                    {
+                        compDAO.salvar(prestador);
+                    }
+                }
+                conexao.commit();//confirmando alteracoes no banco
+            } catch (SQLException ex)
             {
-                conexao.close();
-            } catch (SQLException e)
-            {
+                conexao.rollback();
+                ex.printStackTrace();
                 throw new SQLException();
+            } finally
+            {
+                try
+                {
+                    conexao.close();
+                } catch (SQLException e)
+                {
+                    e.printStackTrace();
+                    throw new SQLException();
+                }
             }
-        }
     }
 
     @Override
@@ -271,15 +311,14 @@ public class PrestadorServicoDAO extends AbstractDAO
                 prestador.setEndereco((Endereco) endDao.consultarUm(end));
                 //pegar o id do banco 
                 prestador.setId(resultado.getInt("id"));
-                //pegar os dados do login
-                AutenticarDAO autenticar = new AutenticarDAO();
-                autenticar.consultarUm(prestador);
+               
                 //pegar os dados do contato
                 Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
                 prestador.setContato(contato);
                 //
                 prestador.setNome(resultado.getString("nome"));
-                prestador.setCnpj(resultado.getString("cpf"));
+                prestador.setCpf(resultado.getString("cpf"));
+                prestador.setCnpj(resultado.getString("cnpj"));
                 prestador.setDataNascimento(resultado.getDate("data_nascimento"));
                 prestador.setSexo(resultado.getString("sexo"));
                 prestador.setSobrenome(resultado.getString("sobrenome"));
@@ -290,6 +329,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             }
         } catch (SQLException ex)
         {
+            conexao.close();
             ex.printStackTrace();
             throw new SQLException();
         } finally
@@ -303,5 +343,51 @@ public class PrestadorServicoDAO extends AbstractDAO
             }
         }
 
+    }
+    
+    public EntidadeDominio consultaPrestadorCPF(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+           PrestadorServico prestador = (PrestadorServico) entidade;
+            
+            openConnection();
+            
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT NOME FROM PRESTADOR_SERVICOS ");
+            sql.append("WHERE CPF = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, prestador.getCpf());
+                        
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next())   //retornou algum cliente?
+            {
+                return prestador;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch(SQLException ex)
+        {
+            conexao.close();
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 }

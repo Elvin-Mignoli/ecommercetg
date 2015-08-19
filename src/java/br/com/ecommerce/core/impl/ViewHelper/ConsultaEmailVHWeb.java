@@ -11,6 +11,8 @@ import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.ExisteEmail;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.PrestadorServico;
+import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -41,21 +43,22 @@ public class ConsultaEmailVHWeb implements IViewHelper
 
         if (email.contains("@") && email.contains(".") && email.contains("com"))
         {
-            Cliente cliente = new Cliente();
-            cliente.setEmail(email);
-
             IStrategy business = new ExisteEmail();
+            //decidino qual CPF buscar Cliente ou Prestador
+           
+                Usuario usuario = new Usuario();
+                usuario.setEmail(email);
+                Resultado rs = business.processar(usuario);
 
-            Resultado rs = business.processar(cliente);
-
-            if (rs.getMensagemSimples() != null)
-            {
-                out.print("Já existe alguém com esse Email!");
-            }
-        }
-        else
-        {
-            out.print("Email Inválido!");
-        }
+                if (rs.getMensagemSimples() != null)
+                
+                    out.print("Já existe alguém com esse Email!");
+                }
+                else
+                {{
+                    out.print("Email Inválido!");
+                }
+           
+        }//if
     }
 }

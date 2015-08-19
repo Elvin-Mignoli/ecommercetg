@@ -28,7 +28,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(filterName = "FilterBusiness", urlPatterns =
 {
-    "/JSP/Cliente/CPF","/JSP/Cliente/Email","/JSP/Cliente/CEP"
+    "/JSP/Cliente/CPF", "/JSP/PrestadorServico/CPF","/JSP/Cliente/Email","/JSP/PrestadorServico/Email","/JSP/Cliente/CEP", "/JSP/PrestadorServico/CEP",
+    "/JSP/PrestadorServico/AlterarEmail", "/JSP/PrestadorServico/AlterarSenha"
+        
 })
 public class FilterBusiness implements Filter
 {

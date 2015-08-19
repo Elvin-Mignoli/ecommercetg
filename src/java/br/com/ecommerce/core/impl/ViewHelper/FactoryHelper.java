@@ -22,14 +22,23 @@ public abstract class FactoryHelper
     //esse bloco de codigo carrega quando a classe é carregada!
     static
     {
-        helpers.put("/Ecommerce/Cliente/SalvarCliente", new SalvarClienteVHWeb());
-        helpers.put("/Ecommerce/Cliente/ConsultarUmCliente", new ConsultarUmClienteVHWeb());
+       
         helpers.put("/Ecommerce/JSP/Cliente/SalvarCliente", new SalvarClienteVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/CPF", new ConsultaCPFVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/Email", new ConsultaEmailVHWeb());
         helpers.put("/Ecommerce/ValidarUsuario", new ValidaUsuarioVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/CEP", new ConsultaCEPVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/AtualizarCliente", new AtualizarClienteVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/SalvarPrestador", new SalvarPrestadorVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/CPF", new ConsultaCPFVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Email", new ConsultaEmailVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/AtualizarPrestador", new AtualizarPrestadorVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/CEP", new ConsultaCEPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarEmail", new AlterarEmailVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarSenha", new AlterarSenhaVHWeb());
+        
+        
+        
     }
     
     /**

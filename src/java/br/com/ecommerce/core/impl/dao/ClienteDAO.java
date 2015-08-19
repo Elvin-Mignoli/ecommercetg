@@ -150,7 +150,7 @@ public class ClienteDAO extends AbstractDAO
             //setando parametros do insert
             pst.setString(1, cliente.getNome());
             pst.setString(2, cliente.getSobrenome());
-            if(cliente.getData() != null)
+            if(cliente.getDataNascimento()!= null)
                 pst.setDate(3, new Date(cliente.getDataNascimento().getTime()));
             else
                 pst.setDate(3, null);

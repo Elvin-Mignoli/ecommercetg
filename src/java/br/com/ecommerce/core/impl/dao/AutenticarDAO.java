@@ -52,10 +52,16 @@ public class AutenticarDAO extends AbstractDAO
                 conexao.setAutoCommit(false);
             } //Abrir conexão com banco
 
-            //criando sql para insert no banco
+           //criando sql para insert no banco
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO LOGIN ");
-            sql.append("(EMAIL,SENHA,STATUS,ID_CLIENTE,TIPO_CONTA) ");
+            sql.append("(EMAIL,SENHA,STATUS,TIPO_CONTA");
+            
+            if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append(",ID_CLIENTE) ");
+            else
+                sql.append(",ID_PRESTADOR) ");
+            
             sql.append("VALUES(?,?,?,?,?)");
 
             //conexao.setAutoCommit(false);//setando auto commit para false
@@ -65,8 +71,8 @@ public class AutenticarDAO extends AbstractDAO
             pst.setString(1, usuario.getEmail());
             pst.setString(2, usuario.getSenha());
             pst.setInt(3, usuario.getStatus());
-            pst.setInt(4, entidade.getId());
-            pst.setString(5, usuario.getTipoConta());
+            pst.setString(4, usuario.getTipoConta());
+            pst.setInt(5, entidade.getId());
 
             pst.execute();//executando a query no banco de dados
 
@@ -213,8 +219,9 @@ public class AutenticarDAO extends AbstractDAO
                     PrestadorServico prestador = new PrestadorServico();
                     prestador.setId(rs.getInt("id_prestador"));
                     prestador.setEmail(rs.getString("email"));
-                    prestador.setTipoConta(rs.getString("tipo_conta"));
                     prestador.setStatus(rs.getInt("status"));
+                    prestador.setTipoConta(rs.getString("tipo_conta"));
+                   
 
                     dao = new PrestadorServicoDAO(conexao);
 
@@ -226,7 +233,6 @@ public class AutenticarDAO extends AbstractDAO
                     Cliente cliente = new Cliente();
                     cliente.setId(rs.getInt("id_cliente"));
                     cliente.setEmail(rs.getString("email"));
-                    cliente.setSenha(rs.getString("senha"));
                     cliente.setStatus(rs.getInt("status"));
                     cliente.setTipoConta(rs.getString("tipo_conta"));
 
@@ -263,7 +269,48 @@ public class AutenticarDAO extends AbstractDAO
         }
         return null;
     }
+    //método para apenas fazer um update na coluna email
+    public void alterarEmail(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        openConnection();
 
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE LOGIN ");
+        sql.append("SET EMAIL = ?");
+        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append("WHERE ID_CLIENTE = ?) ");
+            else
+                sql.append("WHERE ID_PRESTADOR = ? ");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, usuario.getEmail());
+        pst.setInt(2, usuario.getId());
+        pst.executeUpdate();
+        conexao.close();
+    }
+    //método para apenas fazer um update na coluna senha
+    public void alterarSenha(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        openConnection();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE LOGIN ");
+        sql.append("SET SENHA = ?");
+        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append("WHERE ID_CLIENTE = ?) ");
+            else
+                sql.append("WHERE ID_PRESTADOR = ? ");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, usuario.getSenha());
+        pst.setInt(2, usuario.getId());
+        pst.executeUpdate();
+        conexao.close();
+    }
     public EntidadeDominio existeEmail(EntidadeDominio entidade) throws SQLException
     {
         Usuario usuario = (Usuario) entidade;
@@ -282,9 +329,11 @@ public class AutenticarDAO extends AbstractDAO
 
         if (rs.next())   //Retornou um Usuario?
         {
+            conexao.close();
             return usuario;
         } else
         {
+            conexao.close();
             return null;
         }
     }

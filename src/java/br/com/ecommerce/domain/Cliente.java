@@ -15,34 +15,15 @@ import java.util.Date;
 
 public class Cliente extends Usuario
 {
-    private String cpf;
-
-    public Cliente(String cpf)
-    {
-        this.cpf = cpf;
-    }
-    
-    public Cliente()
+   public Cliente()
     {
     }//default
-
-    public String getCpf()
-    {
-        return cpf;
-    }
-
-    public void setCpf(String cpf)
-    {
-        this.cpf = cpf;
-    }
     
-    public Cliente(String cpf, String nome, String sobrenome)
+    public Cliente(String cpf)
     {
-        this.cpf = cpf;
+        super(cpf);
     }
 
-    public Cliente(String cpf, String nome, String sobrenome, Date dataNascimento, Contato contato, Endereco endereco, String idade, String sexo, String estadoCivil)
-    {
-        this.cpf = cpf;
-    }
+ 
+    
 }

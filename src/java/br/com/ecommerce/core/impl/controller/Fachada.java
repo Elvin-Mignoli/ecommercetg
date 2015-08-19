@@ -11,6 +11,7 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
+import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
@@ -57,9 +58,19 @@ public class Fachada implements IFachada
         Map<String, List<IStrategy>> rnsCliente = new HashMap<>();   //Mapa de regras!
         rnsCliente.put("Salvar", rnsSalvarCliente);
         //Fim das regras do Cliente
-
+        
+        //--> Regras de Negocio SalvarPrestador!
+        List<IStrategy> rnsSalvarPrestador = new ArrayList<>();
+        rnsSalvarPrestador.add(new ValidaCPF());  // verificar depois
+        rnsSalvarPrestador.add(new ExistePrestador());
+        
+        Map<String, List<IStrategy>> rnsPrestador = new HashMap<>();   //Mapa de regras!
+        rnsPrestador.put("Salvar", rnsSalvarPrestador);
+        //Fim das regras do Prestador de serviço
+        
         //Map final com todas as regras separados por operacao!
         rns.put(Cliente.class.getName(), rnsCliente);
+        rns.put(PrestadorServico.class.getName(), rnsPrestador);
     }
 
     @Override

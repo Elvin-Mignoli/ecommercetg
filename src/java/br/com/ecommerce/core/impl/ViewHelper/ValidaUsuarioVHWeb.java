@@ -33,7 +33,7 @@ public class ValidaUsuarioVHWeb implements IViewHelper
         String email = request.getParameter("txtEmail");
         String senha = request.getParameter("txtPassword");
         
-        Usuario usuario = new Cliente();
+        Usuario usuario = new Usuario();
         
         usuario.setEmail(email);
         usuario.setSenha(senha);
@@ -58,7 +58,7 @@ public class ValidaUsuarioVHWeb implements IViewHelper
             }
             else if(resultado.getEntidade() instanceof PrestadorServico)
             {
-                request.getRequestDispatcher("../../index.jsp");
+                response.sendRedirect("./JSP/PrestadorServico/PrestadorDashboard.jsp");
             }
         }       
     }   
