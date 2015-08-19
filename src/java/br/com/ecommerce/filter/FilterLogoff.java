@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(filterName = "FilterLogoff", urlPatterns =
 {
-    "/JSP/Cliente/logoff"
+    "/JSP/Cliente/logoff", "/JSP/PrestadorServico/logoff"
 })
 public class FilterLogoff implements Filter
 {

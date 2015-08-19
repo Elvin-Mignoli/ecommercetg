@@ -3,98 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-$(document).ready(function ()
-{
-    $('#submit').click(function (event) //evento botão de click
-    {
-        var username = $('#user').val();
-        $.post('ActionServlet', {user: username}, function (responseJson) {
-            $('#welcometext').text(responseJson);
-        });
-    });
-    
-    $('#photoModal').on('show.bs.modal',function ()
-    {
-        $('#myInput').focus();
-    });
-        
-
-    $('#validade').mask('99/99');
-
-    //Codigo para carregar os campos de atualização
-    $("#editar_dados").on("click", function (e) {
-        $("#panel-heading").html("Dados Pessoais");
-        e.preventDefault(); //eliminamos o evento
-        var path = $(this).attr("href"); //Pegamos o caminho
-        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
-        return false;
-    });
-
-    //Codigo para chamar o formulário de Alteracao de Email
-    $("#editar_email").on("click", function (e) {
-        $("#panel-heading").html("Dados Pessoais");
-        e.preventDefault(); //eliminamos o evento
-        var path = $(this).attr("href"); //Pegamos o caminho
-        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
-        return false;
-    });
-
-    //Codigo para chamar o formulário de Alteracao da senha
-    $("#editar_senha").on("click", function (e) {
-        $("#panel-heading").html("Dados Pessoais");
-        e.preventDefault(); //eliminamos o evento
-        var path = $(this).attr("href"); //Pegamos o caminho
-        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
-        return false;
-    });
-
-    //Codigo para chamar o formulário de alteração do cartão de crédito
-    $("#editar_cartao").on("click", function (e) {
-        $("#panel-heading").html("Dados do Cartão");
-        e.preventDefault(); //eliminamos o evento
-        var path = $(this).attr("href"); //Pegamos o caminho
-        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
-        return false;
-    });
-    
-    //funcao para carregar a imagem do cliente com ajax
-    $('#imagePerfil').on("click",function (e)
-    {    
-        var file = document.getElementById("buttonGroups");
-        
-        if(file.getAttribute("hidden") === "true")
-        {
-            $('#buttonGroups').attr("hidden",false);
-        }
-    });
-});
-
 //funcao ajax para o CPF
 function validaCPF()
 {
     var cpf = $('#input_cpf').val();
     $.post("CPF", {cpf: cpf}, function (responseJson)
     {
+
         var resposta = responseJson;
         if (resposta === "CPF Inválido!")
         {
@@ -129,7 +44,6 @@ function validaEmail()
     $.post("Email", {email: email}, function (responseJson)
     {
         var resposta = responseJson;
-
         if (resposta === "Já existe alguém com esse Email!")
         {
             $("#div_email").removeClass();
@@ -174,8 +88,79 @@ function loadEditarDados(id)
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
+    if ($("#input_email").val() === "")
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_confirm").addClass("text-warning");
+        $("#status_confirm").text("Digite antes um novo E-mail!");
+    } else if ($("#input_email").val() !== $("#input_confirm").val())
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_confirm").addClass("text-warning");
+        $("#status_confirm").text("Os dois novos E-mails não conferem, tente novamente!");
+    } else
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-success has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
+        $("#status_confirm").text("");
+    }
+    //Modificou o email novamente
+    $("#input_email").on("click", function (e)
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group");
+        $("#span_confirm").removeClass();
+        $("#status_confirm").text("");
+        $("#input_confirm").val("");
+    });
 }
+//função ajax para identificar se o campo confirma senha esta igual ao digitado anteriomente 
+function confirmSenha()
+{
 
+    if ($("#input_senha").val() === "")
+    {
+        $("#div_senha_confirm").removeClass();
+        $("#div_senha_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_senha_confirm").removeClass();
+        $("#span_senha_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_senha_confirm").addClass("text-warning");
+        $("#status_senha_confirm").text("Digite antes um nova senha!");
+    } else if ($("#input_senha").val() !== $("#input_senha_confirm").val())
+    {
+        $("#div_senha_confirm").removeClass();
+        $("#div_senha_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_senha_confirm").removeClass();
+        $("#span_senha_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_senha_confirm").addClass("text-warning");
+        $("#status_senha_confirm").text("Os dois novas  não conferem, tente novamente!");
+    } else
+    {
+        $("#div_senha_confirm").removeClass();
+        $("#div_senha_confirm").addClass("form-group has-success has-feedback");
+        $("#span_senha_confirm").removeClass();
+        $("#span_senha_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
+        $("#status_senha_confirm").text("");
+    }
+    //Modificou a senha novamente
+    $("#input_senha").on("click", function (e)
+    {
+        $("#div_senha_confirm").removeClass();
+        $("#div_senha_confirm").addClass("form-group");
+        $("#span_senha_confirm").removeClass();
+        $("#status_senha_confirm").val("");
+        $("#input_senha_confirm").val("");
+    });
+
+}
 //função ajax para buscar um CEP
 function loadEndereco()
 {
@@ -216,10 +201,10 @@ function validaBandeira()
 
         if (content.length === 13)
             $('#numero_cartao').mask('9999999999999');
-        
+
         $("#div_cartao").removeClass();
         $("#div_cartao").addClass("form-group col-lg-4 has-success has-feedback");
-        
+
     }
     else if (content.substring(0, 1) === '5')
     {
@@ -228,7 +213,7 @@ function validaBandeira()
 
         if (content.length === 16)
             $('#numero_cartao').mask('9999999999999');
-        
+
         $("#div_cartao").removeClass();
         $("#div_cartao").addClass("form-group col-lg-4 has-success has-feedback");
     }
@@ -239,7 +224,7 @@ function validaBandeira()
 
         if (content.length === 16)
             $('#numero_cartao').mask('9999999999999');
-        
+
         $("#div_cartao").removeClass();
         $("#div_cartao").addClass("form-group col-lg-4 has-success has-feedback");
     }
@@ -249,7 +234,7 @@ function validaBandeira()
         $("#div_cartao").addClass("form-group col-lg-4 has-error has-feedback");
         $("#span_cartao").removeClass();
         $("#span_cartao").addClass("glyphicon glyphicon-remove form-control-feedback ");
-        
+
         $('#ico_card').attr("src", "");
         $('#secure_number').mask('9999999');
     }
@@ -258,5 +243,45 @@ function validaBandeira()
 //funcao para carregar a foto do cliente
 function loadPhoto(file)
 {
-    
+
+}
+
+//função ajax para identificar se o campo confirma email esta igual ao digitado anteriomente 
+function confirmEmail()
+{
+    if ($("#input_email").val() === "")
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_confirm").addClass("text-warning");
+        $("#status_confirm").text("Digite antes um novo E-mail!");
+    } 
+    else if ($("#input_email").val() !== $("#input_confirm").val())
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-warning has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#status_confirm").addClass("text-warning");
+        $("#status_confirm").text("Os dois novos E-mails não conferem, tente novamente!");
+    } 
+    else    //deu tudo certo?
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group has-success has-feedback");
+        $("#span_confirm").removeClass();
+        $("#span_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
+        $("#status_confirm").text("");
+    }
+    //Modificou o email novamente
+    $("#input_email").on("click", function (e)
+    {
+        $("#div_confirm").removeClass();
+        $("#div_confirm").addClass("form-group");
+        $("#span_confirm").removeClass();
+        $("#status_confirm").text("");
+        $("#input_confirm").val("");
+    });
 }
