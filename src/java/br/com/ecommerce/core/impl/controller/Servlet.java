@@ -40,14 +40,17 @@ public class Servlet extends HttpServlet
         
         vh.setView(resultado, request, response);
     }
-
+    
+    /**
+     * Método utilizado para upload de imagens
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
-    {
-        /*
-            Executa um doPost por enquanto
-            se precisarem utilizar fica critério de vocês
-        */
-        doPost(req, resp);
+    {        
+        
     }
 }

@@ -7,13 +7,13 @@
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/JSP/Cliente/SalvarCliente</url-pattern>
+        <url-pattern>/JSP/Cliente/AtualizaCartao</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>
-        <url-pattern>/Cliente/SalvarCliente</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/AtualizarPrestador</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            120
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>

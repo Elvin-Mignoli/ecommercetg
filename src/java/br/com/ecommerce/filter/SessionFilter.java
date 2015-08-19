@@ -9,9 +9,6 @@ import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,7 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(filterName = "SessionFilter", urlPatterns =
 {
-    "/JSP/Cliente/ClienteDashboard.jsp"
+    "/JSP/Cliente/ClienteDashboard.jsp","/JSP/Cliente/AtualizarCliente",
+    "/JSP/Cliente/ClienteDashboard.jsp", "/JSP/PrestadorServico/PrestadorDashboard.jsp"
 })
 public class SessionFilter implements Filter
 {

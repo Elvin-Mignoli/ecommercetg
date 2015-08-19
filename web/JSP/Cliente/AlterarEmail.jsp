@@ -24,39 +24,42 @@
         <script src="../../js/ajaxFuntions.js"></script>
     </head>
     <body>
-        <form action="ConfigurarConta" method="post">
+        <form action="AtualizaEmail" method="post">
             <div class="container">
-                <h2 class="text-left">Mudar Email ou Senha</h2>
                 <div class="row">
-                    <div class="form-group col-sm-3">
+                    <div class="alert alert-info col-lg-5 alert-dismissable" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;
+                            </span>
+                        </button>
+                        <strong>Atenção!</strong> Por motivos de segurança, é obrigatório o preenchimento dos dados de Email e Senha.
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
                         <div class="input-group">
                             <span class="input-group-addon">Email</span>
-                            <input type="text" name="txtEmail" id="email" value="${sessionScope.user.email}" class="form-control"/>
-                        </div>
+                            <input type="email" name="txtEmail" class="form-control" required="required" placeholder="Email atual"/>
+                        </div> 
                     </div>
-
-                    <div class="form-group col-sm-3">
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-3">
                         <div class="input-group">
-                            <span class="input-group-addon">Confirmar</span>
-                            <input type="text"  name="txtEmail2" id="email2" class="form-control"/>
+                            <span class="input-group-addon">Senha</span>
+                            <input type="password" name="txtSenha" class="form-control" placeholder="Senha atual"/>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-sm-3">
+                    <div class="form-group col-lg-3">
                         <div class="input-group">
-                            <span class="input-group-addon">Confirmar</span>
-                            <input type="text" name="txtEmail" id="email" value="${sessionScope.user.email}" class="form-control"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group col-sm-3">
-                        <div class="input-group">
-                            <span class="input-group-addon">Confirmar</span>
-                            <input type="password"  name="txtSenha" id="senha" value="${sessionScope.user.senha}" class="form-control"/>
+                            <span class="input-group-addon">Novo Email</span>
+                            <input type="email" name="txtNovoEmail" required="required" class="form-control" placeholder="Novo Email"/>
                         </div>
                     </div>
                 </div>
+                <input type="submit" name="txtNovoEmail" class="btn btn-success" value="Alterar" id="changeEmail"/>  
             </div>
         </form>
     </body>

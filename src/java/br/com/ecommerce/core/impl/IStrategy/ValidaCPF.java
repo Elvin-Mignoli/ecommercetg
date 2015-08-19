@@ -7,8 +7,9 @@ package br.com.ecommerce.core.impl.IStrategy;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
-import br.com.ecommerce.domain.Cliente;
+
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.Usuario;
 import java.util.InputMismatchException;
 
 /**
@@ -21,11 +22,10 @@ public class ValidaCPF implements IStrategy
      @Override
     public Resultado processar(EntidadeDominio entidade)
     {
-        Cliente cli = (Cliente) entidade;
-        //String cpf = (cli.getCpf() == null || cli.getCpf().trim().equals("")) ? "" : cli.getCpf();
+        Usuario user = (Usuario) entidade;
         Resultado resultado = new Resultado();
         
-        String cpf = cli.getCpf().replace(".", "").replace("-", "");
+        String cpf = user.getCpf().replace(".", "").replace("-", "");
         
         if(cpf.length() < 11)//CPF contem todos os digitos?
         {
@@ -34,12 +34,12 @@ public class ValidaCPF implements IStrategy
         }    //Envia mensagem para o usuario, pois CPF esta errado
         else if(isCPF(cpf))
         {
-            cli.setCpf(cpf);
+            user.setCpf(cpf);
             return resultado;
         }
         else
         {
-            resultado.addMensagens("O CPF digitado é inválido");
+            resultado.addMensagens("O CPF digitado Ã© invÃ¡lido");
             return resultado;
         }
     }

@@ -17,13 +17,14 @@
         <meta name="author" content="">
 
         <title>Bem Vindo</title>
-
         <!-- Bootstrap core CSS -->
         <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <link href="bootstrap/dist/css/jumbotron.css" rel="stylesheet">
-
+        <!--Para funcionar o collapsed-->
+        <script src="js/libs/jquery-1.11.1.min.js"></script>
+        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -58,7 +59,7 @@
                         <button type="submit" class="btn btn-success">Entrar</button>
                         <a href="JSP/Cliente/ClienteSalvar.jsp" class="btn btn-link">Não possui cadastro?</a>
                         <!-- <input type="button" class="btn btn-link" value="Não possui cadastro?"/> -->
-                        <a href="" class="btn btn-link">Quero prestar Serviço</a>
+                        <a href="JSP/PrestadorServico/PrestadorSalvar.jsp" class="btn btn-link">Quero prestar Serviço</a>
                     </form>
                 </div><!--/.navbar-collapse -->
             </div>
@@ -99,12 +100,14 @@
                 <p>&copy; Company 2014</p>
             </footer>
         </div> <!-- /container -->
-
-
+        
+        
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        
     </body>
 </html>
-l>
+
