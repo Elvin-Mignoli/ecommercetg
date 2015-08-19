@@ -7,7 +7,6 @@ package br.com.ecommerce.core.impl.IStrategy;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
-import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Usuario;
 import java.util.InputMismatchException;

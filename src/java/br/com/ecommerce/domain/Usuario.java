@@ -28,6 +28,7 @@ public class Usuario extends EntidadeDominio
     private String estadoCivil;
     private int usuarioID;
     private String cpf;
+    private String imagem;
     
     public Usuario(String tipoConta, int status, String email, String senha, String nome, String sobrenome)
     {
@@ -54,6 +55,16 @@ public class Usuario extends EntidadeDominio
         this.senha = senha;
         this.nome = nome;
         this.sobrenome = sobrenome;
+    }
+
+    public String getImagem()
+    {
+        return imagem;
+    }
+
+    public void setImagem(String imagem)
+    {
+        this.imagem = imagem;
     }
     
     public Usuario()

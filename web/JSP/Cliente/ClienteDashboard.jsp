@@ -24,6 +24,7 @@
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -37,6 +38,28 @@
         </nav>
 
         <div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" placeholder="Seu Nome?" id="myInput" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row profile">
                 <div class="col-md-3">
                     <div class="panel panel-default">
@@ -47,16 +70,19 @@
                                     <div class="profile-userpic">
                                         <div class="media">
                                             <div class="media-left media-middle">
-                                                <a href="" id="file">
-                                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive">
+                                                <a href="#" id="file">
+                                                    <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive"> -->
+                                                    <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil">
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- SIDEBAR BUTTONS -->
                                     <div class="profile-userbuttons">
-                                        <input type="file" value="c:/" name="uploadImage"class="form-control" accept="image/*"/>
-                                        <input type="submit" class="btn btn-success"/>
+                                        <div id="buttonGroups" hidden="true">
+                                            <input type="file" name="uploadImage" class="form-control" accept="image/*" id="file"/>
+                                            <input type="submit" class="btn btn-success"/>
+                                        </div>
                                     </div>
                                     <!-- END SIDEBAR BUTTONS -->
                                 </form>
@@ -117,7 +143,7 @@
                                         </li>
                                         <ul class="nav nav-divider"></ul>
                                         <li>
-                                            <a href="#">
+                                            <a href="#" data-toggle="modal" data-target="#photoModal">
                                                 <i class="glyphicon glyphicon-flag"></i>
                                                 Ajuda </a>
                                         </li>
@@ -160,6 +186,6 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </body>
 </html>

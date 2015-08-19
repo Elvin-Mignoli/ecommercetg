@@ -230,6 +230,7 @@ public class AutenticarDAO extends AbstractDAO
                     prestador.setTipoConta(rs.getString("tipo_conta"));
                     prestador.setStatus(rs.getInt("status"));
                     prestador.setUsuarioID(rs.getInt("id"));
+                    prestador.setImagem(rs.getString("imagem"));
                     
                     dao = new PrestadorServicoDAO(conexao);
                     
@@ -244,6 +245,7 @@ public class AutenticarDAO extends AbstractDAO
                     cliente.setStatus(rs.getInt("status"));
                     cliente.setTipoConta(rs.getString("tipo_conta"));
                     cliente.setUsuarioID(rs.getInt("id"));
+                    cliente.setImagem(rs.getString("imagem"));
                     
                     dao = new ClienteDAO(conexao);
 
@@ -282,6 +284,7 @@ public class AutenticarDAO extends AbstractDAO
     public EntidadeDominio existeEmail(EntidadeDominio entidade) throws SQLException
     {
         Usuario usuario = (Usuario) entidade;
+        
         openConnection();
 
         StringBuilder sql = new StringBuilder();
@@ -397,6 +400,59 @@ public class AutenticarDAO extends AbstractDAO
               ex1.printStackTrace();
             }
             ex.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                pst.close();
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void AtualizaImagem(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario user = (Usuario) entidade;
+        StringBuilder sql = new StringBuilder();
+        
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+            
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET imagem = ?");
+            sql.append("WHERE ID = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, user.getImagem());
+            pst.setInt(2, user.getUsuarioID());
+            
+            pst.executeUpdate();
+            
+            conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException(ex);
         }
         finally
         {

@@ -12,6 +12,12 @@ $(document).ready(function ()
             $('#welcometext').text(responseJson);
         });
     });
+    
+    $('#photoModal').on('show.bs.modal',function ()
+    {
+        $('#myInput').focus();
+    });
+        
 
     $('#validade').mask('99/99');
 
@@ -69,6 +75,17 @@ $(document).ready(function ()
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
+    });
+    
+    //funcao para carregar a imagem do cliente com ajax
+    $('#imagePerfil').on("click",function (e)
+    {    
+        var file = document.getElementById("buttonGroups");
+        
+        if(file.getAttribute("hidden") === "true")
+        {
+            $('#buttonGroups').attr("hidden",false);
+        }
     });
 });
 

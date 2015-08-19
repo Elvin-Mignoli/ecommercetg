@@ -38,30 +38,39 @@ public class AtualizarEmailVHWeb implements IViewHelper
         String email = request.getParameter("txtEmail");
         String novoEmail = request.getParameter("txtNovoEmail");
         String senha = request.getParameter("txtSenha");
-        
+
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
-        
-        if(usuario.getEmail().equals(email) && usuario.getSenha().equals(senha))
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+        AutenticarDAO dao = new AutenticarDAO();
+
+        try
         {
-            AutenticarDAO dao = new AutenticarDAO();
-            
-            usuario.setEmail(novoEmail);
-            try
+            if (dao.consultarUm(usuario) != null)
             {
-                dao.atualizaEmail(usuario);
-                request.setAttribute("MsgAtualiza", "Email atualizado com sucesso!");
-            } catch (SQLException ex)
+                usuario.setEmail(novoEmail);
+                try
+                {
+                    dao.atualizaEmail(usuario);
+                    request.setAttribute("MsgAtualiza", "Email atualizado com sucesso!");
+                } catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                    request.setAttribute("MsgAtualiza", "Ocorreu um erro ao processar sua solitação, tente novamente mais tarde!");
+                }
+            } else
             {
-                ex.printStackTrace();
-                request.setAttribute("MsgAtualiza", "Ocorreu um erro ao processar sua solitação, tente novamente mais tarde!");
+                request.setAttribute("MsgAtualiza", "Email ou senha não correspondem!");
             }
-        }
-        else
+
+        } catch (SQLException ex)
         {
-            request.setAttribute("MsgAtualiza", "Email e Senha não correspondem!");
+            ex.printStackTrace();
+            request.setAttribute("MsgAtualiza", "Algum erro ocorreu, tente novamente mais tarde!");
+        } finally
+        {
+            request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
         }
-        
-        request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }
-    
+
 }

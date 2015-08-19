@@ -48,7 +48,7 @@
                     <div class="form-group col-lg-3">
                         <div class="input-group">
                             <span class="input-group-addon">Nova Senha</span>
-                            <input type="password" name="txtNovaSenha" class="form-control" placeholder="Nova Senha"/>
+                            <input type="password" name="txtNovaSenha" class="form-control" placeholder="Nova Senha" required="required"/>
                         </div>
                     </div>
                 </div>

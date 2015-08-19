@@ -35,25 +35,33 @@ public class AtualizarSenhaVHWeb implements IViewHelper
         String senha = request.getParameter("txtSenha");
         String novaSenha = request.getParameter("txtNovaSenha");
         Usuario us = (Usuario) request.getSession().getAttribute("user");
-        
-        if(senha.equals(us.getSenha())) //senha é igual??
+
+        us.setSenha(senha);
+
+        AutenticarDAO dao = new AutenticarDAO();
+
+        try
         {
-            AutenticarDAO dao = new AutenticarDAO();
-            us.setSenha(novaSenha);
-            try
+            if (dao.consultarUm(us) != null) //conseguiu validar o usuario?
             {
-                dao.atualizaSenha(us);
-                request.setAttribute("MsgAtualiza", "Senha alterada com sucesso!");
-            }
-            catch(SQLException ex)
+                us.setSenha(novaSenha);
+                try
+                {
+                    dao.atualizaSenha(us);
+                    request.setAttribute("MsgAtualiza", "Senha alterada com sucesso!");
+                } catch (SQLException ex)
+                {
+                    ex.printStackTrace();
+                    request.setAttribute("MsgAtualiza", "Algum erro ocorreu, tente novamente mais tarde!");
+                }
+            } else
             {
-                ex.printStackTrace();
-                request.setAttribute("MsgAtualiza", "Algum erro ocorreu, tente novamente mais tarde!");
+                request.setAttribute("MsgAtualiza", "Senha atual incorreta");
             }
-        }
-        else
+        } catch (SQLException ex)
         {
-            request.setAttribute("MsgAtualiza","Senha atual incorreta");
+            ex.printStackTrace();
+            request.setAttribute("MsgAtualiza", "Algum erro inesperado ocorreu. Tente novamente mais tarde");
         }
         request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }
