@@ -9,9 +9,11 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
+import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,13 +51,13 @@ public class ConsultaCPFVHWeb implements IViewHelper
         //decidino qual CPF buscar Cliente ou Prestador
         if (request.getRequestURI().contains("Cliente"))
         {
-            if (rs.getMensagens().isEmpty()) //Não existe um CPF cadastrado?
+            if (rs.getMensagens().isEmpty()) //NÃ£o existe um CPF cadastrado?
             {
                 bussines = new ExisteCliente();
 
                 rs = bussines.processar(new Cliente(cpf));
 
-                if (!rs.getMensagens().isEmpty()) //O CPF já existe?
+                if (!rs.getMensagens().isEmpty()) //O CPF jÃ¡ existe?
                 {
                     out.print("Já existe um usuário com esse CPF!");
                 }
@@ -65,7 +67,20 @@ public class ConsultaCPFVHWeb implements IViewHelper
             }
         } else if (request.getRequestURI().contains("Prestador"))
         {
+            if (rs.getMensagens().isEmpty()) //NÃ£o existe um CPF cadastrado?
+            {
+                bussines = new ExistePrestador();
 
+                rs = bussines.processar(new PrestadorServico(cpf));
+
+                if (!rs.getMensagens().isEmpty()) //O CPF jÃ¡ existe?
+                {
+                    out.print("Já existe um usuário com esse CPF!");
+                }
+            } else
+            {
+                out.print("CPF Inválido!");
+            }
         }
     }
 }

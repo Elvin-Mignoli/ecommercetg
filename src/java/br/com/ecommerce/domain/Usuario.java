@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class Usuario extends EntidadeDominio
 {
-    private String tipoConta; // se o usuário é do tipo cliente ou prestador de serviço
+    private String tipoConta; // se o usuÃ¡rio Ã© do tipo cliente ou prestador de serviÃ§o
     private int status;  // 0 - inativo   e  1 - ativo
     private String email;
     private String senha;
@@ -29,6 +29,25 @@ public class Usuario extends EntidadeDominio
     private int usuarioID;
     private String cpf;
     private String imagem;
+
+    public Usuario(String tipoConta, int status, String senha, String nome, String sobrenome, String dataNascimento, Contato contato, Endereco endereco, String sexo, String cpf, String email) {
+        this.tipoConta = tipoConta;
+        this.status = status;
+        this.senha = senha;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        Date date = new Date(dataNascimento);
+        this.dataNascimento = date;
+        this.contato = contato;
+        this.endereco = endereco;
+        this.sexo = sexo;
+        this.cpf = cpf;
+        this.email=email;
+    }
+
+    
+    
+    
     
     public Usuario(String tipoConta, int status, String email, String senha, String nome, String sobrenome)
     {
@@ -241,4 +260,5 @@ public class Usuario extends EntidadeDominio
     {
         this.status = status;
     }
+
 }

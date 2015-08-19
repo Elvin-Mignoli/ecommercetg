@@ -60,7 +60,7 @@ public class AutenticarDAO extends AbstractDAO
                 conexao.setAutoCommit(false);
             } //Abrir conexão com banco
 
-            //criando sql para insert no banco
+           //criando sql para insert no banco
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO LOGIN ");
             sql.append("(EMAIL,SENHA,STATUS,TIPO_CONTA");
@@ -227,11 +227,10 @@ public class AutenticarDAO extends AbstractDAO
                     PrestadorServico prestador = new PrestadorServico();
                     prestador.setId(rs.getInt("id_prestador"));
                     prestador.setEmail(rs.getString("email"));
-                    prestador.setTipoConta(rs.getString("tipo_conta"));
                     prestador.setStatus(rs.getInt("status"));
-                    prestador.setUsuarioID(rs.getInt("id"));
-                    prestador.setImagem(rs.getString("imagem"));
-                    
+                    prestador.setTipoConta(rs.getString("tipo_conta"));
+                   
+
                     dao = new PrestadorServicoDAO(conexao);
                     
                     dao.consultarUm(prestador);
@@ -280,7 +279,48 @@ public class AutenticarDAO extends AbstractDAO
         }
         return null;
     }
+    //método para apenas fazer um update na coluna email
+    public void alterarEmail(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        openConnection();
 
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE LOGIN ");
+        sql.append("SET EMAIL = ?");
+        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append("WHERE ID_CLIENTE = ?) ");
+            else
+                sql.append("WHERE ID_PRESTADOR = ? ");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, usuario.getEmail());
+        pst.setInt(2, usuario.getId());
+        pst.executeUpdate();
+        conexao.close();
+    }
+    //método para apenas fazer um update na coluna senha
+    public void alterarSenha(EntidadeDominio entidade) throws SQLException
+    {
+        Usuario usuario = (Usuario) entidade;
+        openConnection();
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("UPDATE LOGIN ");
+        sql.append("SET SENHA = ?");
+        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                sql.append("WHERE ID_CLIENTE = ?) ");
+            else
+                sql.append("WHERE ID_PRESTADOR = ? ");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, usuario.getSenha());
+        pst.setInt(2, usuario.getId());
+        pst.executeUpdate();
+        conexao.close();
+    }
     public EntidadeDominio existeEmail(EntidadeDominio entidade) throws SQLException
     {
         Usuario usuario = (Usuario) entidade;
@@ -300,9 +340,11 @@ public class AutenticarDAO extends AbstractDAO
 
         if (rs.next())   //Retornou um Usuario?
         {
+            conexao.close();
             return usuario;
         } else
         {
+            conexao.close();
             return null;
         }
     }

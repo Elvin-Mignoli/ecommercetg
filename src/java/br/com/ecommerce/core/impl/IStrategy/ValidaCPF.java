@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.IStrategy;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
+
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Usuario;
 import java.util.InputMismatchException;
@@ -38,7 +39,7 @@ public class ValidaCPF implements IStrategy
         }
         else
         {
-            resultado.addMensagens("O CPF digitado é inválido");
+            resultado.addMensagens("O CPF digitado Ã© invÃ¡lido");
             return resultado;
         }
     }

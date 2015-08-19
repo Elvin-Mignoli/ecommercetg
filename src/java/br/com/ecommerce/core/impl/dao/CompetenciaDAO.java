@@ -9,6 +9,7 @@ import br.com.ecommerce.core.impl.dao.AbstractDAO;
 import br.com.ecommerce.domain.Competencia;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,78 +23,92 @@ import java.util.List;
  */
 public class CompetenciaDAO extends AbstractDAO{
 
+    public CompetenciaDAO() {
+    }
+
+    public CompetenciaDAO(Connection conexao) {
+        super(conexao);
+    }
+
+    
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException {
-        openConnection(); //Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
-        for(Competencia comp: prestador.getHabilidades())
+        try
         {
-            String sql = "INSERT INTO COMPETENCIAS(DESCRICAO) VALUES(?)";
-             try
-        {
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
-            //setando parametros do insert
-            preparador.setString(1, comp.getDescricao());
-            preparador.executeUpdate();//executando a query no banco de dados
-            ResultSet resultado = preparador.getGeneratedKeys(); //pegando id da ultima insercao no banco
-            if (resultado.next())            //se conseguir interar pelo menos 1 vez
-            {//conseguiu iterar
-                //end.setId(resultado.getInt(1));
-                comp.setId(resultado.getInt(1));
-            }
-            conexao.commit();//confirmando alteracoes no banco
-            String sql2 = "INSERT INTO PRESTADOR_COMPETENCIAS(ID_PRESTADOR,ID_COMPETENCIAS) VALUES(?,?)";
-            conexao.setAutoCommit(false);//setando auto commit para false
-            preparador = conexao.prepareStatement(sql2);//criando caminho para conexao no banco de dados
-            preparador.setInt(1, prestador.getId());
-            preparador.setInt(2, comp.getId());
-            preparador.execute();
-            conexao.commit();
-            } catch (SQLException ex)
+            if (conexao == null || conexao.isClosed())//Abrir conexão com banco
+                {
+                    openConnection();
+                    conexao.setAutoCommit(false);//setando auto commit para false
+                }
+            PrestadorServico prestador = (PrestadorServico) entidade;
+            for(Competencia comp: prestador.getHabilidades())
             {
-                ex.printStackTrace();
-                throw new SQLException();
-            } 
-        }//for
-        conexao.close();
+                String sql = "INSERT INTO COMPETENCIAS(DESCRICAO) VALUES(?)";
+
+
+                pst = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);//criando caminho para conexao no banco de dados
+                //setando parametros do insert
+                pst.setString(1, comp.getDescricao());
+                pst.executeUpdate();//executando a query no banco de dados
+                ResultSet resultado =  pst.getGeneratedKeys(); //pegando id da ultima insercao no banco
+                if (resultado.next())            //se conseguir interar pelo menos 1 vez
+                {//conseguiu iterar
+                    //end.setId(resultado.getInt(1));
+                    comp.setId(resultado.getInt(1));
+                }
+
+                String sql2 = "INSERT INTO PRESTADOR_COMPETENCIAS(ID_PRESTADOR,ID_COMPETENCIAS) VALUES(?,?)";
+
+                pst = conexao.prepareStatement(sql2);//criando caminho para conexao no banco de dados
+                pst.setInt(1, prestador.getId());
+                pst.setInt(2, comp.getId());
+                pst.executeUpdate();
+            }//for
+         } catch (SQLException ex)
+         {
+            ex.printStackTrace();
+            throw new SQLException();
+         } 
+        
     }
 
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
-        for(Competencia comp: prestador.getHabilidades())
+         try
         {
-            String sql = "UPDATE COMPETENCIAS SET DESCRICAO = ? WHERE ID = ?";  //criando sql para insert no banco
+            if (conexao == null || conexao.isClosed())
+            {
+                openConnection();//Abrir conexão com banco
+            }
+            PrestadorServico prestador = (PrestadorServico) entidade;
+            for(Competencia comp: prestador.getHabilidades())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.append("UPDATE COMPETENCIAS SET ");
+                sql.append("DESCRICAO = ? ");
+                sql.append("WHERE ID = ?");  //criando sql para insert no banco
+
+                pst = conexao.prepareStatement(sql.toString());//criando caminho para conexao no banco de dados
+                //setando parametros do insert
+                pst.setString(1, comp.getDescricao());
+                pst.setInt(2, comp.getId());
+
+                pst.executeUpdate();//executando a query no banco de dados
+                
+            }///for
+            // O Commite é feito por outra Classe DAO (Cliente ou PrestadorServico)
+        } catch (SQLException ex)
+        {
             try
             {
-                conexao.setAutoCommit(false);//setando auto commit para false
-                preparador = conexao.prepareStatement(sql);//criando caminho para conexao no banco de dados
-                //setando parametros do insert
-                preparador.setString(1,comp.getDescricao());
-                preparador.setInt(2,comp.getId());
-
-                preparador.executeUpdate();//executando a query no banco de dados
-                conexao.commit();//confirmando alteracoes no banco
-            } catch (SQLException ex)
+                conexao.rollback();
+            } catch (SQLException ex1)
             {
-                ex.printStackTrace();
-                throw new SQLException();
-            } finally
-            {
-                try
-                {
-                    conexao.close();
-                } catch (SQLException e)
-                {
-                    throw new SQLException();
-                }
+                ex1.printStackTrace();
             }
+            ex.printStackTrace();
+            throw new SQLException();
         }
-        
     }
 
     @Override
@@ -135,49 +150,47 @@ public class CompetenciaDAO extends AbstractDAO{
 
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException {
-        openConnection();//Abrir conexão com banco
-        PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
-        String sql = "SELECT COMPETENCIAS.ID, COMPETENCIAS.DESCRICAO FROM COMPETENCIAS,PRESTADOR_COMPETENCIAS "
-                + "WHERE COMPETENCIAS.ID = PRESTADOR_COMPETENCIAS.ID_COMPETENCIAS\n" +
-                 " AND PRESTADOR_COMPETENCIAS.ID_PRESTADOR = ?";
-        try{
-        conexao.setAutoCommit(false);
-        preparador = conexao.prepareStatement(sql);
-        preparador.setInt(1,prestador.getId());
-        ResultSet  resultado = preparador.executeQuery();
-        resultado.next();
-        conexao.commit();
-        if(resultado.getRow()== 0)
-        {
-            return null;
-        }else
-        {
-            ArrayList<Competencia> listaComp = new ArrayList<>();
-            do{
-                Competencia comp = new Competencia();
-                comp.setId(resultado.getInt("id"));
-                comp.setDescricao(resultado.getString("descricao"));
-                listaComp.add(comp);
-            }while(resultado.next());
-            prestador.setHabilidades(listaComp);
-            return prestador;
-        }
-        }catch (SQLException ex)
-        {
-            ex.printStackTrace();
-            throw new SQLException();
-        } finally
-        {
-            try
+       try{
+            if(conexao == null || conexao.isClosed())
+             {
+                    openConnection();//Abrir conexão com banco
+                    conexao.setAutoCommit(false);
+             }
+            PrestadorServico prestador = (PrestadorServico) entidade;
+
+            String sql = "SELECT COMPETENCIAS.ID, COMPETENCIAS.DESCRICAO FROM COMPETENCIAS,PRESTADOR_COMPETENCIAS "
+                    + "WHERE COMPETENCIAS.ID = PRESTADOR_COMPETENCIAS.ID_COMPETENCIAS\n" +
+                     " AND PRESTADOR_COMPETENCIAS.ID_PRESTADOR = ?";
+
+
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1,prestador.getId());
+            ResultSet  resultado = pst.executeQuery();
+            resultado.next();
+
+            if(resultado.getRow()== 0)
             {
-                conexao.close();
-            } catch (SQLException e)
+                return null;
+            }else
             {
-                throw new SQLException();
+                ArrayList<Competencia> listaComp = new ArrayList<>();
+                do{
+                    Competencia comp = new Competencia();
+                    comp.setId(resultado.getInt("id"));
+                    comp.setDescricao(resultado.getString("descricao"));
+                    listaComp.add(comp);
+                }while(resultado.next());
+                prestador.setHabilidades(listaComp);
+                return prestador;
             }
-        }
+            }catch (SQLException ex)
+            {
+                ex.printStackTrace();
+                throw new SQLException();
+            } 
     }
     
+    public EntidadeDominio consultarCometencia(){return null;}
+    public EntidadeDominio salvarCompetencia_prestador(){return null;}
     
 }

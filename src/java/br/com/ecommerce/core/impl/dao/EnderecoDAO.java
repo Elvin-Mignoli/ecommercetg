@@ -103,7 +103,6 @@ public class EnderecoDAO extends AbstractDAO
                 openConnection();//Abrir conexão com banco
             }
             Endereco end = (Endereco) entidade;
-            PreparedStatement pst;
             StringBuilder sql = new StringBuilder();
             sql.append("UPDATE ENDERECOS SET ");
             sql.append("LOGRADOURO = ?, ");

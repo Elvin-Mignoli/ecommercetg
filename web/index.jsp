@@ -59,7 +59,7 @@
                         <button type="submit" class="btn btn-success">Entrar</button>
                         <a href="JSP/Cliente/ClienteSalvar.jsp" class="btn btn-link">Não possui cadastro?</a>
                         <!-- <input type="button" class="btn btn-link" value="Não possui cadastro?"/> -->
-                        <a href="" class="btn btn-link">Quero prestar Serviço</a>
+                        <a href="JSP/PrestadorServico/PrestadorSalvar.jsp" class="btn btn-link">Quero prestar Serviço</a>
                     </form>
                 </div><!--/.navbar-collapse -->
             </div>
@@ -100,12 +100,14 @@
                 <p>&copy; Company 2014</p>
             </footer>
         </div> <!-- /container -->
-
-
+        
+        
         <!-- Bootstrap core JavaScript
         ================================================== -->
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+        
+        
     </body>
 </html>
-l>
+
