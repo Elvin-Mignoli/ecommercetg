@@ -17,17 +17,14 @@
         <meta name="author" content="">
 
         <title>Bem Vindo</title>
-        
         <!-- Bootstrap core CSS -->
         <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <link href="bootstrap/dist/css/jumbotron.css" rel="stylesheet">
-        
         <!--Para funcionar o collapsed-->
         <script src="js/libs/jquery-1.11.1.min.js"></script>
         <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-        
     </head>
 
     <body>

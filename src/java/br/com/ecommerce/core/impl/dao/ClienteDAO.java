@@ -6,11 +6,11 @@
 package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.Usuario;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -60,11 +60,16 @@ public class ClienteDAO extends AbstractDAO
             
             dao.salvar(cliente.getEndereco());
             
+            //salvando dados do Cartão
+            dao = new CartaoCreditoDAO(conexao);
+            
+            dao.salvar(cliente.getCartao());
+            
             //criando sql para insert no banco
             StringBuilder sql = new StringBuilder();
             sql.append("INSERT INTO CLIENTES ");
-            sql.append("(NOME,SOBRENOME,CPF,ID_ENDERECO) ");
-            sql.append("VALUES(?,?,?,?)");
+            sql.append("(NOME,SOBRENOME,CPF,ID_ENDERECO,ID_CARTAO) ");
+            sql.append("VALUES(?,?,?,?,?)");
             
             //criando caminho para conexao no banco de dados e retornando o ID do ultimo insert!
             pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
@@ -74,6 +79,7 @@ public class ClienteDAO extends AbstractDAO
             pst.setString(2, cliente.getSobrenome());
             pst.setString(3, cliente.getCpf());
             pst.setInt(4, cliente.getEndereco().getId());
+            pst.setInt(5, cliente.getCartao().getId());
             
             pst.executeUpdate();
             
@@ -150,10 +156,11 @@ public class ClienteDAO extends AbstractDAO
             //setando parametros do insert
             pst.setString(1, cliente.getNome());
             pst.setString(2, cliente.getSobrenome());
-            if(cliente.getDataNascimento()!= null)
+            if(cliente.getDataNascimento() != null)
                 pst.setDate(3, new Date(cliente.getDataNascimento().getTime()));
             else
                 pst.setDate(3, null);
+            
             pst.setString(4, cliente.getContato().getTelefone());
             pst.setString(5, cliente.getContato().getCelular());
             pst.setString(6, cliente.getSexo());
@@ -238,7 +245,12 @@ public class ClienteDAO extends AbstractDAO
                 cliente.setDataNascimento(rs.getDate("data_nascimento"));
                 cliente.setSexo(rs.getString("sexo"));
                 cliente.setSobrenome(rs.getString("sobrenome"));
-
+                
+                //pegando dados do cartao
+                cliente.setCartao(new CartaoCredito());
+                cliente.getCartao().setId(rs.getInt("id_cartao"));
+                
+                
                 //pegando dados do endereco!
                 cliente.setEndereco(new Endereco());
                 IDAO dao = new EnderecoDAO(); // --> Criando instancia do DAO de Endereco!
@@ -280,27 +292,35 @@ public class ClienteDAO extends AbstractDAO
 
             pst.setInt(1, cliente.getId());
 
-            ResultSet resultado = pst.executeQuery();
+            ResultSet rs = pst.executeQuery();
 
-            if (resultado.next())
+            if (rs.next())
             {
                 //pegar os dados de  endereço
                 EnderecoDAO endDao = new EnderecoDAO();
                 Endereco end = new Endereco();
-                end.setId(resultado.getInt("id_endereco"));
+                end.setId(rs.getInt("id_endereco"));
                 cliente.setEndereco((Endereco) endDao.consultarUm(end));
                 //pegar o id do banco 
-                cliente.setId(resultado.getInt("id"));
+                cliente.setId(rs.getInt("id"));
 
                 //pegar os dados do contato
-                Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
+                Contato contato = new Contato(rs.getString("telefone"), rs.getString("celular"));
                 cliente.setContato(contato);
                 //
-                cliente.setNome(resultado.getString("nome"));
-                cliente.setCpf(resultado.getString("cpf"));
-                cliente.setDataNascimento(resultado.getDate("data_nascimento"));
-                cliente.setSexo(resultado.getString("sexo"));
-                cliente.setSobrenome(resultado.getString("sobrenome"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setDataNascimento(rs.getDate("data_nascimento"));
+                cliente.setSexo(rs.getString("sexo"));
+                cliente.setSobrenome(rs.getString("sobrenome"));
+                
+                //pegando dados do cartao
+                cliente.setCartao(new CartaoCredito());
+                cliente.getCartao().setId(rs.getInt("id_cartao"));
+                CartaoCreditoDAO dao = new CartaoCreditoDAO(conexao);
+                
+                dao.consultarUm(cliente.getCartao());
+                
                 return cliente;
             }
             return null;

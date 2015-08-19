@@ -15,7 +15,9 @@ import java.util.Date;
 
 public class Cliente extends Usuario
 {
-   public Cliente()
+    private CartaoCredito cartao; 
+    
+    public Cliente()
     {
     }//default
     
@@ -24,6 +26,13 @@ public class Cliente extends Usuario
         super(cpf);
     }
 
- 
-    
+    public CartaoCredito getCartao()
+    {
+        return cartao;
+    }
+
+    public void setCartao(CartaoCredito cartao)
+    {
+        this.cartao = cartao;
+    }
 }

@@ -43,6 +43,9 @@ public class ConsultaEmailVHWeb implements IViewHelper
 
         if (email.contains("@") && email.contains(".") && email.contains("com"))
         {
+            Usuario usuaria = new Usuario();
+            usuaria.setEmail(email);
+
             IStrategy business = new ExisteEmail();
             //decidino qual CPF buscar Cliente ou Prestador
            

@@ -76,9 +76,9 @@
                                                 Meu Perfil </a>
                                         </li>
                                        
-                                         <li>
+                                        <li class="active">
                                              <a  data-toggle="collapse" href="#collapseMenu" aria-expanded="false"  >
-                                                <i class="glyphicon glyphicon-user"></i>
+                                                <i class="glyphicon glyphicon-cog"></i>
                                                 Config.Conta </a>
                                         </li>
                                         <div class="collase active" id="collapseMenu">

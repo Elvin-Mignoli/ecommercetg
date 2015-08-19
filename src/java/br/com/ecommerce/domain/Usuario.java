@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Elvin
  */
-public  class Usuario extends EntidadeDominio
+public class Usuario extends EntidadeDominio
 {
     private String tipoConta; // se o usuÃ¡rio Ã© do tipo cliente ou prestador de serviÃ§o
     private int status;  // 0 - inativo   e  1 - ativo
@@ -28,6 +28,7 @@ public  class Usuario extends EntidadeDominio
     private String estadoCivil;
     private int usuarioID;
     private String cpf;
+    private String imagem;
 
     public Usuario(String tipoConta, int status, String senha, String nome, String sobrenome, String dataNascimento, Contato contato, Endereco endereco, String sexo, String cpf, String email) {
         this.tipoConta = tipoConta;
@@ -73,6 +74,16 @@ public  class Usuario extends EntidadeDominio
         this.senha = senha;
         this.nome = nome;
         this.sobrenome = sobrenome;
+    }
+
+    public String getImagem()
+    {
+        return imagem;
+    }
+
+    public void setImagem(String imagem)
+    {
+        this.imagem = imagem;
     }
     
     public Usuario()

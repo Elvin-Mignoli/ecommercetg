@@ -18,11 +18,14 @@
         <script src="../../js/libs/jquery.maskedinput.js"></script>
         <!-- implementando bootstrap na página -->
         <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/dropdown.js"></script>
         <script src="../../bootstrap/js/collapse.js"></script>
         <script src="../../bootstrap/js/tab.js"></script>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
+        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -36,15 +39,54 @@
         </nav>
 
         <div class="container">
+            <!-- Modal -->
+            <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" placeholder="Seu Nome?" id="myInput" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-success">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row profile">
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="profile-sidebar">
                                 <!-- SIDEBAR USERPIC -->
-                                <div class="profile-userpic">
-                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
-                                </div>
+                                <form method="post" action="Imagem" enctype="multipart/form-data">
+                                    <div class="profile-userpic">
+                                        <div class="media">
+                                            <div class="media-left media-middle">
+                                                <a href="#" id="file">
+                                                    <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive"> -->
+                                                    <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- SIDEBAR BUTTONS -->
+                                    <div class="profile-userbuttons">
+                                        <div id="buttonGroups" hidden="true">
+                                            <input type="file" name="uploadImage" class="form-control" accept="image/*" id="file"/>
+                                            <input type="submit" class="btn btn-success"/>
+                                        </div>
+                                    </div>
+                                    <!-- END SIDEBAR BUTTONS -->
+                                </form>
                                 <!-- END SIDEBAR USERPIC -->
                                 <!-- SIDEBAR USER TITLE -->
                                 <div class="profile-usertitle">
@@ -56,13 +98,7 @@
                                     </div>
                                 </div>
                                 <!-- END SIDEBAR USER TITLE -->
-                                <!-- SIDEBAR BUTTONS -->
-                                <div class="profile-userbuttons">
-                                    <button type="button" class="btn btn-success">Follow</button>
-                                    <button type="button" class="btn btn-danger">Message</button>
-                                    <button type="button" class="btn btn-primary" id="danilo" onclick="danilo()">Danilo!</button>
-                                </div>
-                                <!-- END SIDEBAR BUTTONS -->
+
                                 <!-- SIDEBAR MENU -->
                                 <div class="profile-usermenu">
                                     <ul class="nav">
@@ -71,27 +107,44 @@
                                                 <i class="glyphicon glyphicon-home"></i>
                                                 Meu Perfil </a>
                                         </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="glyphicon glyphicon-user"></i>
-                                                Config.Conta </a>
-                                            <ul class="nav">
-
-                                            </ul>
+                                        <li class="active" id="listConfig">
+                                            <a href="#collapseMenu" data-toggle="collapse" aria-expanded="false">
+                                                <i class="glyphicon glyphicon-cog"></i>
+                                                Configurações da Conta
+                                            </a>
                                         </li>
+                                        <div class="collapse active" id="collapseMenu">
+                                            <ul id="option_config">
+                                                <a href="AlterarEmail.jsp" id="editar_email">
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    Editar Email
+                                                </a>
+                                                <br/>
+                                                <a href="AlterarSenha.jsp" id="editar_senha">
+                                                    <i class="glyphicon glyphicon-lock"></i>
+                                                    Editar Senha
+                                                </a>
+                                                <br/>
+                                                <a href="AlterarCartao.jsp" id="editar_cartao">
+                                                    <i class="glyphicon glyphicon-credit-card"></i>
+                                                    Editar Cartão
+                                                </a>
+                                            </ul>
+                                        </div>
                                         <li>
-                                            <a href="ClienteAtualizar.jsp" id="ajax" data-titulo="Editar Dados">
+                                            <a href="ClienteAtualizar.jsp" id="editar_dados" data-titulo="Editar Dados">
                                                 <i class="glyphicon glyphicon-pencil"></i>
-                                                Editar Dados </a>
+                                                Editar meus dados </a>
                                         </li>
                                         <li>
                                             <a href="#">
                                                 <i class="glyphicon glyphicon-stats"></i>
-                                                Meus Dados
+                                                Meus Pedidos
                                             </a>
                                         </li>
+                                        <ul class="nav nav-divider"></ul>
                                         <li>
-                                            <a href="#">
+                                            <a href="#" data-toggle="modal" data-target="#photoModal">
                                                 <i class="glyphicon glyphicon-flag"></i>
                                                 Ajuda </a>
                                         </li>
@@ -120,7 +173,7 @@
                                                 <span aria-hidden="true">&times;
                                                 </span>
                                             </button>
-                                            ${requestScope.MsgAtualiza}
+                                            ${requestScope.MsgAtualiza} <!-- Mostra a mensagem --> 
                                         </div>
                                         <% request.setAttribute("MsgAtualiza", null);%>
                                     </c:if>
@@ -134,6 +187,6 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </body>
 </html>
