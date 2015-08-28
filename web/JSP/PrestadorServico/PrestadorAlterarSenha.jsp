@@ -57,7 +57,7 @@
       
       <div class="container">
             <div class="form-group form-inline">
-                <input type="submit" value="Alterar" class="btn btn-success" id="bt_alterar"/>
+                <input type="button" value="Alterar" class="btn btn-success" id="submit"/>
                 <a href="PrestadorDashboard.jsp" class="btn btn-primary">Voltar</a>
             </div>
       </div>  

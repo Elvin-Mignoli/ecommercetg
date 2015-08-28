@@ -33,7 +33,7 @@
                 $("#input_cpf").mask("999.999.999-99");
                 $("#input_cnpj").mask("99.999.999/9999-99");
                 $("#numero").blur(function () {
-                    $("#input_nome").focus();
+                    $("#input_nome").focus();               
                 });
             })
         </script>
@@ -45,11 +45,11 @@
         
          <!-- DIV CONTAINER DA APLICAÇÂO -->
         <div class="container">
-            <form id="form_cadastro" method="POST" action="SalvarPrestador">
+            <form id="form_cadastro"  method="POST" action="SalvarPrestador" id="form_cadastrar">
                 <div class="row">
                     <input type="text" hidden="true" name="operacao" value="Salvar"/>
                     <div class="panel panel-success col-lg-5">
-                        <div class="panel panel-heading text-center">Informações Pessoais</div>
+                        <div class="panel panel-heading text-center ">Informações Pessoais</div>
                         <div class="panel-body">
                             <!-- Conteudo dos Panels! -->
                             <div class="form-group">
@@ -65,15 +65,19 @@
                                     <input type="text" name="txtSobrenome" class="form-control" placeholder="Digite seu Sobrenome" required="required" value="${requestScope.prestador.sobrenome}"/>
                                 </div>
                             </div>
-                                <script>
-                                     $("#input_cnpj").on("click",function(e))
-                                    {
-                                      alert("oi");
-                                         $("#input_cpf").addClass("disabled");
-                                          alert("oi");
-                                    });
-                                </script>  
-                            <div class="form-group" id="div_cpf">
+                                               
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Escolha o documento de identificação</span>
+                                    <select class="form-control" name=select" id="select_doc" required="required" onchange="indentificarSelect()">
+                                        <option value="">Selecione</option>
+                                        <option value="CPF">CPF</option>
+                                        <option value="CNPJ">CNPJ</option>
+                                     </select>
+                                </div>
+                           </div>
+                         
+                            <div class="form-group" id="div_cpf"  hidden="false">
                                 <!--Status CPF -->
                                 <div id="statusCPF"></div>
                                 <div class="input-group">
@@ -82,10 +86,14 @@
                                      <span id="span_cpf"></span>
                                 </div>
                             </div>
-                           <div class="form-group" id="div_cnpj">
+                             <!--div CNPJ -->        
+                            <div class="form-group" id="div_cnpj" hidden="false">
+                                <!--Status CPF -->
+                                <div id="statusCNPJ"></div>
                                 <div class="input-group">
                                     <span class="input-group-addon">CNPJ</span>
-                                    <input type="text" name="txtCnpj" class="form-control" id="input_cnpj"  value="${requestScope.prestador.cnpj}"/>
+                                    <input type="text" name="txtCnpj" class="form-control" id="input_cnpj"  value="${requestScope.prestador.cnpj}" onchange="validaCNPJ()"/>
+                                    <span id="span_cnpj"></span>
                                 </div>
                             </div>     
                         </div>
@@ -109,17 +117,30 @@
                                 <span id="span_email"></span>
                             </div>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Senha</span>
-                                    <input type="password" required="required" name="txtSenha" class="form-control"/>
-                                </div>
-                            </div>
+                            <!--Input digite um nova senha -->
+                           <div class="form-group " id="div_senha">
+                               <div class="input-group ">
+                                   <span class="input-group-addon">
+                                       Senha
+                                   </span>
+                                   <input type="password" name="txtSenha" placeholder="*************" required="required" 
+                                          id="input_senha" class="form-control" />
+                                    <span id="span_senha"></span>
+                               </div>
+                           </div>   
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">Confirmar Senha</span>
-                                    <input type="password" required="required" name="txtSenha2" class="form-control" />
+                            <!-- Status da confirmação da no senha -->
+                            <div id="status_senha_confirm"></div>
+                            <!-- Input confirmar a nova senha-->
+                            <div class="form-group" id="div_senha_confirm">
+                                <div class="input-group ">
+                                    <span class="input-group-addon">
+                                        Confirma Senha
+                                    </span>
+                                    <input type="password" name="txtConfirmSenha" placeholder="**************" 
+                                           id="input_senha_confirm" required="required"  class="form-control"
+                                           onchange="confirmSenha()"/>
+                                    <span id="span_senha_confirm"></span>
                                 </div>
                             </div>
                         </div>
@@ -129,7 +150,7 @@
                 <div class="row center-block">
                     <div class="form-group">
                         <div class="form-inline">
-                            <input type="submit" value="Cadastrar!" class="btn btn-success" />
+                            <input type="button" value="Cadastrar!" class="btn btn-success" id="bt_cadastro" onclick="confirmCadastro()"/>
                             <a href="../../index.jsp" class="btn btn-primary">Voltar</a>
                         </div>
                     </div>
@@ -141,6 +162,9 @@
                 <c:forEach var="alert" items="${requestScope.MsgSalvarCliente}">
                     <div class="alert alert-danger">
                         ${alert}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
                     </div>
                 </c:forEach>
             </c:if>

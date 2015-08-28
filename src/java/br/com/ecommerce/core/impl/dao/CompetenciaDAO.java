@@ -113,27 +113,29 @@ public class CompetenciaDAO extends AbstractDAO{
 
     @Override
     public void excluir(EntidadeDominio entidade) throws SQLException {
-       openConnection();//Abrir conexão com banco
+        if(conexao == null || conexao.isClosed())
+        {
+            openConnection();//Abrir conexão com banco
+            conexao.setAutoCommit(false);
+        }
         PrestadorServico prestador = (PrestadorServico) entidade;
-        PreparedStatement preparador;
         for(Competencia comp : prestador.getHabilidades())
         {
              try{
                 //deletar as competencias ligadas ao prestador 
                 String sql2 = "DELETE FROM PRESTADOR_COMPETENCIAS WHERE ID_PRESTADOR = ? AND ID_COMPETENCIAS = ?";
-                conexao.setAutoCommit(false);
-                preparador = conexao.prepareStatement(sql2);
-                preparador.setInt(1, prestador.getId());
-                preparador.setInt(2,comp.getId());
-                preparador.executeUpdate();
-                conexao.commit();
+               
+                pst = conexao.prepareStatement(sql2);
+                pst.setInt(1, prestador.getId());
+                pst.setInt(2,comp.getId());
+                pst.executeUpdate();
+                
                 //deletar competencias
                 String sql = "DELETE FROM COMPETENCIAS WHERE ID = ?";
                 conexao.setAutoCommit(false);
-                preparador = conexao.prepareStatement(sql);
-                preparador.setInt(1,comp.getId());
-                preparador.executeUpdate();
-                conexao.commit();
+                pst = conexao.prepareStatement(sql);
+                pst.setInt(1,comp.getId());
+                pst.executeUpdate();
                 }catch (SQLException ex)
                 {
                     ex.printStackTrace();

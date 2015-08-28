@@ -7,34 +7,42 @@
 function validaCPF()
 {
     var cpf = $('#input_cpf').val();
-    $.post("CPF", {cpf: cpf}, function (responseJson)
+    if($('#input_cpf').val()!== "")
     {
+        $.post("CPF", {cpf: cpf}, function (responseJson)
+        {
 
-        var resposta = responseJson;
-        if (resposta === "CPF Inválido!")
-        {
-            $("#div_cpf").addClass("form-group has-error has-feedback");
-            $("#span_cpf").addClass("glyphicon glyphicon-remove form-control-feedback");
-            $("#statusCPF").addClass("text-danger");
-        }
-        else if (resposta === "Já existe um usuário com esse CPF!")
-        {
-            $("#div_cpf").removeClass();
-            $("#div_cpf").addClass("form-group has-warning has-feedback");
-            $("#span_cpf").removeClass();
-            $("#span_cpf").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
-            $("#statusCPF").addClass("text-warning");
-        }
-        else
-        {
-            $("#div_cpf").removeClass();
-            $("#div_cpf").addClass("form-group has-success has-feedback");
-            $("#span_cpf").removeClass();
-            $("#span_cpf").addClass("glyphicon glyphicon-ok form-control-feedback");
-        }
+            var resposta = responseJson;
+            if (resposta === "CPF Inválido!")
+            {
+                $("#div_cpf").addClass("form-group has-error has-feedback");
+                $("#span_cpf").addClass("glyphicon glyphicon-remove form-control-feedback");
+                $("#statusCPF").addClass("text-danger");
+            }
+            else if (resposta === "Já existe um usuário com esse CPF!")
+            {
+                $("#div_cpf").removeClass();
+                $("#div_cpf").addClass("form-group has-warning has-feedback");
+                $("#span_cpf").removeClass();
+                $("#span_cpf").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+                $("#statusCPF").addClass("text-warning");
+            }
+            else
+            {
+                $("#div_cpf").removeClass();
+                $("#div_cpf").addClass("form-group has-success has-feedback");
+                $("#span_cpf").removeClass();
+                $("#span_cpf").addClass("glyphicon glyphicon-ok form-control-feedback");
+            }
 
-        $("#statusCPF").text(responseJson);
-    });
+            $("#statusCPF").text(responseJson);
+        });
+    }else
+    {
+        $("#div_cpf").removeClass();
+        $("#span_cpf").removeClass();
+        $("#statusCPF").text("");
+    }
 }
 
 //funcao ajax para email
@@ -71,6 +79,7 @@ function validaEmail()
         $("#statusEmail").text(responseJson);
     });
 }
+
 
 //carrega pagina de edição de dados do cliente - Método inutilizado
 function loadEditarDados(id)
@@ -149,6 +158,7 @@ function confirmSenha()
         $("#span_senha_confirm").removeClass();
         $("#span_senha_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
         $("#status_senha_confirm").text("");
+        $("#submit").prop("type","submit");
     }
     //Modificou a senha novamente
     $("#input_senha").on("click", function (e)
@@ -156,7 +166,8 @@ function confirmSenha()
         $("#div_senha_confirm").removeClass();
         $("#div_senha_confirm").addClass("form-group");
         $("#span_senha_confirm").removeClass();
-        $("#status_senha_confirm").val("");
+        $("#status_senha_confirm").removeClass();
+        $("#status_senha_confirm").text("");
         $("#input_senha_confirm").val("");
     });
 
@@ -254,7 +265,7 @@ function confirmEmail()
         $("#div_confirm").removeClass();
         $("#div_confirm").addClass("form-group has-warning has-feedback");
         $("#span_confirm").removeClass();
-        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+        $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback ");
         $("#status_confirm").addClass("text-warning");
         $("#status_confirm").text("Digite antes um novo E-mail!");
     } 
@@ -274,6 +285,7 @@ function confirmEmail()
         $("#span_confirm").removeClass();
         $("#span_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
         $("#status_confirm").text("");
+        $("#submit").prop("type","submit");
     }
     //Modificou o email novamente
     $("#input_email").on("click", function (e)
@@ -284,4 +296,102 @@ function confirmEmail()
         $("#status_confirm").text("");
         $("#input_confirm").val("");
     });
+}
+    //função que verifica se há algum erro nos campos do cadastro
+    function confirmCadastro()
+    {
+        var select = $("#select_doc").val();
+        var cpf = $("#statusCPF").text();
+        var cnpj = $("#statusCNPJ").text();
+        var email = $("#statusEmail").text();
+        var senha = $("#status_senha_confirm").text();
+        //alert(cpf); alert(email);alert(senha);alert($("#status_senha_confirm").text());alert(select);alert(cnpj);
+        if(select === "CPF")//o usuário selecionou o documento CPF?
+        {//sim
+            if(cpf === "")
+            {
+                if(email === "")
+                {
+                    if(senha === "")
+                    {
+                        $("#bt_cadastro").prop("type","submit");
+                    }
+                }
+            }
+        }else if(select === "CNPJ")//o usuário selecionou o documento CNPJ?
+        {//sim
+           if(cnpj === "")
+            {
+                if(email === "")
+                {
+                    if(senha === "")
+                    {
+                        $("#bt_cadastro").prop("type","submit");
+                    }
+                }
+            } 
+        }else if(select === "")//o usuário selecionounenhum documento?
+        {//não
+           $("#select_doc").focus() ;
+        }
+
+    }//fim 
+    
+    //função para identificar o documentação CPF ou CNPJ
+    function indentificarSelect()
+    {
+        if( $("#select_doc").val()=== "CPF"){
+            $("#div_cnpj").toggle(false);
+            $("#div_cpf").toggle(true);
+        }else if($("#select_doc").val() === "CNPJ")
+        {
+             $("#div_cpf").toggle(false);
+             $("#div_cnpj").toggle(true);
+        }else if($("#select_doc").val() === "")
+        {
+            $("#div_cpf").toggle(false);
+            $("#div_cnpj").toggle(false);
+        }
+     };   
+
+//funcao ajax para o CNPJ
+function validaCNPJ()
+{
+    var cnpj = $('#input_cnpj').val();
+    if($('#input_cnpj').val()!== "")
+    {
+        $.post("CNPJ", {cnpj: cnpj}, function (responseJson)
+        {
+
+            var resposta = responseJson;
+            if (resposta === "CNPJ Inválido!")
+            {
+                $("#div_cnpj").addClass("form-group has-error has-feedback");
+                $("#span_cnpj").addClass("glyphicon glyphicon-remove form-control-feedback");
+                $("#statusCNPJ").addClass("text-danger");
+            }
+            else if (resposta === "Já existe um usuário com esse CNPJ!")
+            {
+                $("#div_cnpj").removeClass();
+                $("#div_cnpj").addClass("form-group has-warning has-feedback");
+                $("#span_cnpj").removeClass();
+                $("#span_cnpj").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
+                $("#statusCNPJ").addClass("text-warning");
+            }
+            else
+            {
+                $("#div_cnpj").removeClass();
+                $("#div_cnpj").addClass("form-group has-success has-feedback");
+                $("#span_cnpj").removeClass();
+                $("#span_cnpj").addClass("glyphicon glyphicon-ok form-control-feedback");
+            }
+
+            $("#statusCNPJ").text(responseJson);
+        });
+    }else
+    {
+        $("#div_cnpj").removeClass();
+        $("#span_cnpj").removeClass();
+        $("#statusCNPJ").text("");
+    }
 }

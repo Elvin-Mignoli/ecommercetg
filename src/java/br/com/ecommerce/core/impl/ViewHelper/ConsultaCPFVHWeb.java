@@ -57,7 +57,7 @@ public class ConsultaCPFVHWeb implements IViewHelper
 
                 rs = bussines.processar(new Cliente(cpf));
 
-                if (!rs.getMensagens().isEmpty()) //O CPF jÃ¡ existe?
+                if (!rs.getMensagens().isEmpty()) //O CPF já existe?
                 {
                     out.print("Já existe um usuário com esse CPF!");
                 }
@@ -67,13 +67,13 @@ public class ConsultaCPFVHWeb implements IViewHelper
             }
         } else if (request.getRequestURI().contains("Prestador"))
         {
-            if (rs.getMensagens().isEmpty()) //NÃ£o existe um CPF cadastrado?
+            if (rs.getMensagens().isEmpty()) //Não existe um CPF cadastrado?
             {
                 bussines = new ExistePrestador();
 
                 rs = bussines.processar(new PrestadorServico(cpf));
 
-                if (!rs.getMensagens().isEmpty()) //O CPF jÃ¡ existe?
+                if (!rs.getMensagens().isEmpty()) //O CPF já existe?
                 {
                     out.print("Já existe um usuário com esse CPF!");
                 }

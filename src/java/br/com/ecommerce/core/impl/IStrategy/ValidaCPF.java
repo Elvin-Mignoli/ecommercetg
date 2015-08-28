@@ -39,7 +39,7 @@ public class ValidaCPF implements IStrategy
         }
         else
         {
-            resultado.addMensagens("O CPF digitado Ã© invÃ¡lido");
+            resultado.addMensagens("O CPF digitado é inválido");
             return resultado;
         }
     }

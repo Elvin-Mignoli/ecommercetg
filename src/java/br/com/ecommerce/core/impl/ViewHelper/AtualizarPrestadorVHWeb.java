@@ -7,7 +7,6 @@ package br.com.ecommerce.core.impl.ViewHelper;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IViewHelper;
-import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Competencia;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;

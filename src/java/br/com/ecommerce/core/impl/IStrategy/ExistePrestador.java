@@ -23,21 +23,34 @@ public class ExistePrestador implements IStrategy{
     @Override
     public Resultado processar(EntidadeDominio entidade) {
         PrestadorServico prestador = (PrestadorServico) entidade;
-        Usuario usuario = (Usuario) entidade;
         Resultado resultado = new Resultado();
         
         PrestadorServicoDAO dao = new PrestadorServicoDAO();
         
         try
         {
-            if(dao.consultaPrestadorCPF(entidade) == null)
+            if(prestador.getCpf() != null)
             {
-                return resultado;
-            }
-            else
+                if(dao.consultaPrestadorCPF(entidade) == null)
+                {
+                    return resultado;
+                }
+                else
+                {
+                    resultado.addMensagens("Já existe um cliente com esse CPF!");
+                    return resultado;
+                }
+            }else
             {
-                resultado.addMensagens("Já existe um cliente com esse CPF!");
-                return resultado;
+                if(dao.consultaPrestadorCNPJ(entidade) == null)
+                {
+                    return resultado;
+                }
+                else
+                {
+                    resultado.addMensagens("Já existe um cliente com esse CNPJ!");
+                    return resultado;
+                }  
             }
         } catch (SQLException ex)
         {
