@@ -5,6 +5,18 @@
  */
 $(document).ready(function ()
 {
+    //array contendo as possiveis tags
+    var tagsource = 
+    [
+        'ajax','Java', 'servlet','JSP','JPA','JSF',
+        'GIT','Java Swing', 'J2EE'
+    ];
+    //habilitando tags no campo"!
+    $('#require_habilities').tagging(tagsource);
+    
+    //habilitando tags no campo"!
+    $('#my_habilities').tagging(tagsource);
+    
     //ajax para carregar dados do cliente
     $('#submit').click(function (event) //evento botão de click
     {
@@ -13,15 +25,24 @@ $(document).ready(function ()
             $('#welcometext').text(responseJson);
         });
     });
-
-    $('#photoModal').on('show.bs.modal', function ()
-    {
-        $('#myInput').focus();
-    });
-
-
+        
     $('#validade').mask('99/99');
-
+    
+    //Codigo para carregar os campos do cadastro de pedidos!
+    $("#criar_pedido").on("click",function (e)
+    {
+        $("#panel-heading").html("Dados do Pedido");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    
     //Codigo para carregar os campos de atualização
     $("#editar_dados").on("click", function (e) {
         $("#panel-heading").html("Dados Pessoais");
@@ -146,7 +167,7 @@ $(document).ready(function ()
     $('#submit').on("click", function ()
     {
         var status = $('#span_confirm').val();
-        
+
         if (status === "")
         {
             $("#form_alterarEmail").submit();   //submetendo a página

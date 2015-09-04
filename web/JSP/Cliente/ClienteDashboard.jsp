@@ -136,12 +136,20 @@
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 Editar meus dados </a>
                                         </li>
-                                        <li>
-                                            <a href="#">
+                                        <li class="active" id="listPedidos">
+                                            <a href="#collapsePedidos" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-stats"></i>
                                                 Meus Pedidos
                                             </a>
                                         </li>
+                                        <div class="collapse active" id="collapsePedidos">
+                                            <ul id="collapse_pedidos">
+                                                <a href="Pedidos.jsp" id="criar_pedido">
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    Abrir Pedido
+                                                </a>
+                                            </ul>
+                                        </div>
                                         <ul class="nav nav-divider"></ul>
                                         <li>
                                             <a href="#" data-toggle="modal" data-target="#photoModal">
