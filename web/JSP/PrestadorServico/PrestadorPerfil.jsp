@@ -237,18 +237,17 @@
        </div><!--panel-->
         <!--Panel informações Competências -->
        <div class="panel  panel-primary col-lg-10" >
-           
-                        <div class="panel panel-heading text-center" id="panel_info">Competências</div>
-                        <div class="panel-body">
-                            <!-- Conteudo dos Panels! -->
-                             <div class="form-group">
-                                <div class="input-group col-lg-3">
-                                    <textarea  rows="3" id="show_skill" style="width:642px; height:100px "
-                                              
-                                               readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:choose><c:when test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:when><c:otherwise></c:otherwise></c:choose></c:forEach></textarea>
-                                </div>
-                            </div>
-                        </div><!--panel body-->
+            <div class="panel panel-heading text-center" id="panel_info">Competências</div>
+            <div class="panel-body">
+                <!-- Conteudo dos Panels! -->
+                 <div class="form-group">
+                    <div class="input-group col-lg-3">
+                        <textarea  rows="3" id="show_skill" style="width:642px; height:100px "
+
+                                   readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:choose><c:when test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:when><c:otherwise></c:otherwise></c:choose></c:forEach></textarea>
+                    </div>
+                </div>
+            </div><!--panel body-->
        </div><!--panel-->
        
        

@@ -1,0 +1,32 @@
+@font-face {
+
+      font-family: "segoe_ui";
+      src: url("segoe_ui.ttf") format("truetype");
+
+      }
+      
+@font-face {
+
+      font-family: "segoe-ui-light";
+      src: url("segoe-ui-light.ttf") format("truetype");
+
+      }
+      
+@font-face {
+
+font-family: "Calibri";
+src: url("Calibri.ttf") format("truetype");
+
+}
+
+.segoe-ui-font{
+           font-family: "segoe_ui";
+       }
+.segoe-ui-light-font{
+    font-family: "segoe-ui-light";  
+       }
+.calibri-font{
+           font-family: "Calibri";
+       }
+       
+       

@@ -32,16 +32,24 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
     public EntidadeDominio getEntidade(HttpServletRequest request) {
         //tratamento da string de competencias
         PrestadorServico sessionCliente = (PrestadorServico) request.getSession().getAttribute("user");
+        prestador.setEntrada(sessionCliente.getEntrada());
         ArrayList<Competencia> listComp = new ArrayList<>();
-        String[] listSkill = request.getParameter("txtSkill").split(" ");
+        String[] listSkill = request.getParameter("txtSkill").split(",");
+        int contador = listSkill.length;
          for(String skill: listSkill)
             {
                 if(skill.equals(""))
                     continue;
                 skill = skill.trim();
+                skill= skill.toUpperCase();
+                if(contador >1){
+                    skill= skill.concat(",");
+                    contador--;
+                }
                 Competencia comp = new Competencia();
                 comp.setDescricao(skill);
                 listComp.add(comp);
+               
 
              }
         if(!listComp.isEmpty())

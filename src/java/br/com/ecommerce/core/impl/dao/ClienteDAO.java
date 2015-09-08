@@ -6,6 +6,7 @@
 package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Contato;
@@ -94,6 +95,13 @@ public class ClienteDAO extends AbstractDAO
             dao = new AutenticarDAO(conexao);
             
             dao.salvar(entidade);
+            
+            
+            //criando caixa de entrada para o cliente!
+            dao = new CaixaEntradaDAO(conexao);
+            
+            dao.salvar(new CaixaEntrada(cliente, null));
+
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 

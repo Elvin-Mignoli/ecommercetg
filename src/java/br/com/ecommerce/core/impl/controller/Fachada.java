@@ -15,9 +15,11 @@ import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
+import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.PrestadorServico;
@@ -51,7 +53,7 @@ public class Fachada implements IFachada
         daos.put(Cliente.class.getName(), new ClienteDAO());
         daos.put(PrestadorServico.class.getName(), new PrestadorServicoDAO());
         daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
-
+        daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
         /* 
          Lista de Regras de negocio! 
          */
@@ -201,7 +203,7 @@ public class Fachada implements IFachada
 
         if (regrasOperacao == null)  //nao existem regras para essa entidade?
         {
-            return null;
+            return resultado;
         }
 
         if (!regrasOperacao.isEmpty())   //lista nao eh vazia?

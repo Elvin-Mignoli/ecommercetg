@@ -1,0 +1,27 @@
+ //css da page OpenMensagem
+        
+   
+    #remetente{
+       width: 875px;
+       font-size: 14px;
+       line-height: 20px;
+       font-style: normal; 
+    }
+    #destinatario{
+       width: 875px;
+       font-size: 12px;
+       line-height: 17px;
+       font-style: normal; 
+    }
+    #descricao{
+       width: 875px;
+       font-size: 15px;
+       line-height: 21px;
+       font-style: normal; 
+    }
+    #assunto{
+    width: 870px;
+    font-size: 21px;
+    line-height: 30px;
+    font-style: normal;
+    }

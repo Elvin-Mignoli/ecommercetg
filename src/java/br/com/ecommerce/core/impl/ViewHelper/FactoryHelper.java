@@ -41,8 +41,9 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarEmail", new AlterarEmailVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarSenha", new AlterarSenhaVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CNPJ", new ConsultaCNPJVHWeb());
-        
-        
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagem", new ExcluirMsgPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagemFront", new ExcluirMsgFrontPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ResponderMensagem", new ResponderMensagemVHWeb());
     }
     
     /**

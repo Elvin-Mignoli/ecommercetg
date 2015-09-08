@@ -26,8 +26,18 @@
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+        <!--Ajax Function e Loading menus -->
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <!--Jquery Skill Bar -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
+        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
+        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+        <link href="../../js/libs/jQuery-Tags/css/typeahead.tagging.css" rel="stylesheet" type="text/css"/>
+         <a href="../../js/libs/jQuery-Tags/css/typeahead.tagging.less"></a>
+         
+         
         <script>
             $(document).ready(function () {
                 $("#input_cpf").mask("999.999.999-99");
@@ -219,39 +229,21 @@
                </div>    
                <div class="form-group">
                    <div class="input-group col-lg-5">
-                       <input type="text" id="write_skill" placeholder="escreva sua habilidade" class="form-control" />
-                       <span class="input-group-addon ">
-                           <input type="button" id="input_skill" value="Adicionar" />
-                       </span>
+                      <input id="skill_bar" class="tags-input" value="<c:forEach var="list" items="${sessionScope.user.habilidades}"><c:if test='${sessionScope.user.habilidades != null}'>${list.descricao}</c:if></c:forEach>" name="txtSkill"/>
                    </div>
                </div>
-
-               <div class="form-group">
-                   <div class="input-group col-lg-5">
-                       <textarea  rows="3" id="show_skill" style="width:475px; height:100px" readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:if test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:if></c:forEach></textarea>
-                   </div>
-               </div>
+             <script>
                  
-            <!--Jquery adicionar skill na textarea -->        
-               <script>
-                   $("#input_skill").on("click", function (e) {
-                       e.preventDefault();
-                      // alert($('#show_skill').val())
-                       var input = $('#write_skill').val();// var input receve o conteudo digitado no campo 
-                       var show = $('#show_skill').text();//var show recebe a conteudo da textarea
-                       input = input.toUpperCase(); // var input fica com caixa alta
-                       if(show === "" ||show=== " " ) // textarea esta vazio?
-                        show = show.concat(input);
-                       else//não esta
-
-                        show = show.concat(" ",input);// var show concatena seu conteudo com o novo digitado, separdo com " - "
-                        show = show.toUpperCase(); //var show fica com caixa alta
-                       $('#show_skill').text(show); //textarea recebe o conteudo da var show
-                       $('#write_skill').val("");//o limpar campo pra digitaÃ§Ã£o 
-                      // alert($('#show_skill').text());
-                   });
-               </script>
-
+                 var tagsource = [
+                'jquery-libs', 'jquery-multilingual-news',
+                'jquert-typeahead-tagging', 'jquery-multilingual-tags',
+                'jquery-forms-ajaxified', 'jquery-project-template',
+                'jquery-development-fabfile', 'jquery-user-media',
+                'jquery-feedback-form', 'jquery-review', 'jquery-hero-slider',
+                'jquery-document-library', 'jquery-paypal-express-checkout'
+                ];
+                $('#skill_bar').tagging(tagsource);
+             </script>    
            </div>
            <br>
            <div class="container">
