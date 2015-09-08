@@ -175,17 +175,5 @@ $(document).ready(function ()
             alert("submetido");
         }
     });
-    
-    //array contendo as possiveis tags
-    var tagsource = 
-    [
-        'ajax','Java', 'servlet','JSP','JPA','JSF',
-        'GIT','Java Swing', 'J2EE'
-    ];
-    //habilitando tags no campo!
-    $('#require_habilities').tagging(tagsource);
-    
-    //habilitando tags no campo"!
-    $('#my_habilities').tagging(tagsource);
 });
 
