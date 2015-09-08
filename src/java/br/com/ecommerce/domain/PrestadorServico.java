@@ -5,7 +5,6 @@
  */
 package br.com.ecommerce.domain;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -18,7 +17,7 @@ public class PrestadorServico extends Usuario
 
     private ArrayList<Competencia> habilidades;
     private String cnpj;
-
+    
     public PrestadorServico(String nome,String sobrenome,String data,String cpf,Endereco end,Contato cont,String sexo,String tipoConta,
             String email,String senha,int status,ArrayList habilidades) {
         super(tipoConta, status, senha, nome, sobrenome,data, cont, end, sexo, cpf,email);
@@ -49,7 +48,7 @@ public class PrestadorServico extends Usuario
     {
         super();
     }//default
-
+    
     public String getCnpj()
     {
         return cnpj;
