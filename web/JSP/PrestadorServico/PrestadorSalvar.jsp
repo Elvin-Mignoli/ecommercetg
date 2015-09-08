@@ -7,36 +7,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
- <!-- Importando jquery-->
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
 <html>
     <head>
          <!--Meta -->
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="description" content="Cadastrar Prestador de Serviço" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
- 
-         <!-- implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
         <title>Cadastrar Prestador de Serviço</title>
-        
-        <!--Mask -->
-        <script>
-            $(document).ready(function(){
-                $("#input_cpf").mask("999.999.999-99");
-                $("#input_cnpj").mask("99.999.999/9999-99");
-                $("#numero").blur(function () {
-                    $("#input_nome").focus();               
-                });
-            })
-        </script>
     </head>
     <body>
         <div class="page-header text-center">
@@ -177,6 +156,27 @@
                 </c:forEach>
             </c:if>
         </div>
-
+                                <!-- Scripts da Pagina -->
+                                <!-- Importando jquery-->
+        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
+        <script src="../../js/libs/jquery-ui.min.js"></script>
+        <script src="../../js/libs/jquery.maskedinput.js"></script>
+         <!-- implementando bootstrap na página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Mask -->
+        <script>
+            $(document).ready(function(){
+                $("#input_cpf").mask("999.999.999-99");
+                $("#input_cnpj").mask("99.999.999/9999-99");
+                $("#numero").blur(function () 
+                {
+                    $("#input_nome").focus();               
+                });
+            })
+        </script>
+        
+        <!-- Scripts personalizados -->
+        <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </body>
     </html>

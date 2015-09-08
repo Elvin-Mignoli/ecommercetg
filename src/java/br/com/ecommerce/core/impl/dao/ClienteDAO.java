@@ -96,12 +96,10 @@ public class ClienteDAO extends AbstractDAO
             
             dao.salvar(entidade);
             
-            
             //criando caixa de entrada para o cliente!
             dao = new CaixaEntradaDAO(conexao);
             
             dao.salvar(new CaixaEntrada(cliente, null));
-
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 

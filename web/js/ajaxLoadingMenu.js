@@ -13,17 +13,24 @@ $(document).ready(function ()
             $('#welcometext').text(responseJson);
         });
     });
-
-    $('#photoModal').on('show.bs.modal', function ()
+    //Codigo para carregar os campos do cadastro de pedidos!
+    $("#criar_pedido").on("click",function (e)
     {
-        $('#myInput').focus();
+        $("#panel-heading").html("Dados do Pedido");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
     });
-
-
-    $('#validade').mask('99/99');
-
+    
     //Codigo para carregar os campos de atualização
-    $("#editar_dados").on("click", function (e) {
+    $("#editar_dados").on("click", function (e) 
+    {
         $("#panel-heading").html("Dados Pessoais");
         e.preventDefault(); //eliminamos o evento
         var path = $(this).attr("href"); //Pegamos o caminho
@@ -158,10 +165,15 @@ $(document).ready(function ()
     });
     
 
-    
-           
-    
-    
-    
+    $('#submit').on("click", function ()
+    {
+        var status = $('#span_confirm').val();
+
+        if (status === "")
+        {
+            $("#form_alterarEmail").submit();   //submetendo a página
+            alert("submetido");
+        }
+    });
 });
 
