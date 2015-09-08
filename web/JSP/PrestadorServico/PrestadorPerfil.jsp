@@ -41,10 +41,10 @@
         #input_nome,#input_sexo,#input_data,
         #input_cpf,#input_telefone,#input_celular,
         #input_cep,#input_rua,#input_numero,#input_bairro,
-        #input_cidade,#input_estado,#input_complemento{
+        #input_cidade,#input_estado,#input_complemento,#input_cnpj{
             background-color: white;
         }
-        #span_nome,#span_sexo,#span_cpf,
+        #span_nome,#span_sexo,#span_cpf,#span_cnpj,
         #span_data,#span_telefone,#span_celular{
             background-color: #dff0d8;
             border: 1px solid #3c763d;
@@ -59,15 +59,15 @@
     <body>
        <!--Verificar se há algum dado pendente-->
        <c:if test="${sessionScope.user.dataNascimento == null || 
-                    sessionScope.user.contato.telefone == null||
-                    sessionScope.user.sexo == null ||
-                    sessionScope.user.contato.celular == null ||
-                    sessionScope.user.endereco.cep == null||
-                    sessionScope.user.endereco.logradouro == null||
-                    sessionScope.user.endereco.numero == null||
-                    sessionScope.user.endereco.bairro == null||
-                    sessionScope.user.endereco.cidade == null||
-                    sessionScope.user.endereco.estado == null||
+                    sessionScope.user.contato.telefone == ''||
+                    sessionScope.user.sexo == '' ||
+                    sessionScope.user.contato.celular == ''||
+                    sessionScope.user.endereco.cep == ''||
+                    sessionScope.user.endereco.logradouro == ''||
+                    sessionScope.user.endereco.numero == ''||
+                    sessionScope.user.endereco.bairro == ''||
+                    sessionScope.user.endereco.cidade == ''||
+                    sessionScope.user.endereco.estado == ''||
                     sessionScope.user.habilidades== null}">
              
               <div class="alert alert-info alert-dismissible" role="alert">
@@ -111,15 +111,30 @@
                                         </c:choose>
                                     </div>
                             </div>
-                            <!--CPF-->
-                            <div class="form-group">
-                                <div class="input-group col-lg-5">
-                                    <span class="input-group-addon"  id="span_cpf">
-                                        CPF
-                                    </span>
-                                    <input type="text"  id="input_cpf" value="${sessionScope.user.cpf}" readonly="readonly"  class="form-control"/>
-                                </div>
-                            </div>
+                            <c:choose>
+                                <c:when test="${sessionScope.user.cpf != null}">
+                                    <!--CPF-->
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-5">
+                                            <span class="input-group-addon"  id="span_cpf">
+                                                CPF
+                                            </span>
+                                            <input type="text"  id="input_cpf" value="${sessionScope.user.cpf}" readonly="readonly"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${sessionScope.user.cnpj != null}">
+                                    <!--CNPJ-->
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-5">
+                                            <span class="input-group-addon"  id="span_cnpj">
+                                                CNPJ
+                                            </span>
+                                            <input type="text"  id="input_cnpj" value="${sessionScope.user.cnpj}" readonly="readonly"  class="form-control"/>
+                                        </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
                              <!--Data de nascimento-->
                             <div class="form-group">
                                 <div class="input-group col-lg-5">
@@ -222,18 +237,17 @@
        </div><!--panel-->
         <!--Panel informações Competências -->
        <div class="panel  panel-primary col-lg-10" >
-           
-                        <div class="panel panel-heading text-center" id="panel_info">Competências</div>
-                        <div class="panel-body">
-                            <!-- Conteudo dos Panels! -->
-                             <div class="form-group">
-                                <div class="input-group col-lg-3">
-                                    <textarea  rows="3" id="show_skill" style="width:642px; height:100px "
-                                              
-                                               readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:choose><c:when test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:when><c:otherwise></c:otherwise></c:choose></c:forEach></textarea>
-                                </div>
-                            </div>
-                        </div><!--panel body-->
+            <div class="panel panel-heading text-center" id="panel_info">Competências</div>
+            <div class="panel-body">
+                <!-- Conteudo dos Panels! -->
+                 <div class="form-group">
+                    <div class="input-group col-lg-3">
+                        <textarea  rows="3" id="show_skill" style="width:642px; height:100px "
+
+                                   readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:choose><c:when test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:when><c:otherwise></c:otherwise></c:choose></c:forEach></textarea>
+                    </div>
+                </div>
+            </div><!--panel body-->
        </div><!--panel-->
        
        

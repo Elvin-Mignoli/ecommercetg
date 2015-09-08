@@ -70,8 +70,11 @@ public class CaixaEntradaDAO extends AbstractDAO
             pst.executeUpdate();
             
             ResultSet rs = pst.getGeneratedKeys();  //executando a query no banco de dados!
+            if (rs.next())            //se conseguir interar pelo menos 1 vez
+            {//conseguiu iterar
+                entrada.setId(rs.getInt("id"));
+            }
             
-            entrada.setId(rs.getInt("id"));
         }
         catch(SQLException ex)
         {
@@ -84,6 +87,7 @@ public class CaixaEntradaDAO extends AbstractDAO
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException
     {
+           
             IDAO dao = new MensagemDAO();
             
             dao.salvar(entidade);
@@ -150,6 +154,7 @@ public class CaixaEntradaDAO extends AbstractDAO
         catch(SQLException ex)
         {
             ex.printStackTrace();
+            
             return null;
         }
         finally

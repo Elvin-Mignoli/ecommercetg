@@ -46,6 +46,14 @@ public class Usuario extends EntidadeDominio
         this.email=email;
     }
 
+    public CaixaEntrada getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(CaixaEntrada entrada) {
+        this.entrada = entrada;
+    }
+
     
     
     

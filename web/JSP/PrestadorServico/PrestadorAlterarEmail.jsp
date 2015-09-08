@@ -25,7 +25,7 @@
 
     </head>
     <body>
-        <form method="POST" action="AlterarEmail" id="form_alterarEmail">
+        <form method="POST" action="AlterarEmail" name="form_alterarEmail">
             <input type="text" name="operacao" value="AlterarEmail" hidden="true"/>
             <div class="container">
                 <!--E-mail atual-->
@@ -62,12 +62,12 @@
                         </span>
                         <input type="text" name="txtConfirmEmail" placeholder="exemplo@exemplo.com"
                                id="input_confirm" required="required"  class="form-control"
-                               onchange="confirmEmail()"/>
+                               onchange="confirmEmail()" />
                         <span id="span_confirm"></span>
                     </div>
                 </div>
             </div>
-
+           
             <div class="container">
                 <div class="form-group form-inline">
                     <input type="button" value="Alterar" class="btn btn-success" id="submit"/>

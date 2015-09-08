@@ -28,6 +28,8 @@ public class Servlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        //definir o Enconding
+        request.setCharacterEncoding("UTF-8");
         //retorna o helper específico da view resultante
         IViewHelper vh = FactoryHelper.getInstance(request.getRequestURI());
         

@@ -138,7 +138,21 @@ $(document).ready(function ()
 
     //ajax mostrar o perfil do  prestador de serviço
     $("#meu_perfil").on("click", function (e) {
+         e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Perfil");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+    
+    //ajax mostrar o caixa de mensagens do  prestador de serviço
+    $("#caixa_entrada").on("click", function (e) {
+        $("#panel-heading").html("Caixa de Entrada");
         e.preventDefault(); //eliminamos o evento
         var path = $(this).attr("href"); //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
@@ -149,6 +163,7 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
+    
 
     $('#submit').on("click", function ()
     {
@@ -160,17 +175,5 @@ $(document).ready(function ()
             alert("submetido");
         }
     });
-    
-    //array contendo as possiveis tags
-    var tagsource = 
-    [
-        'ajax','Java', 'servlet','JSP','JPA','JSF',
-        'GIT','Java Swing', 'J2EE'
-    ];
-    //habilitando tags no campo!
-    $('#require_habilities').tagging(tagsource);
-    
-    //habilitando tags no campo"!
-    $('#my_habilities').tagging(tagsource);
 });
 

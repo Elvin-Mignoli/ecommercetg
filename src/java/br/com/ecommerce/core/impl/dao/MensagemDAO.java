@@ -5,10 +5,13 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Mensagem;
+import br.com.ecommerce.domain.Usuario;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
@@ -40,21 +43,24 @@ public class MensagemDAO extends AbstractDAO
         
         try
         {
-            if(conexao == null || conexao.isClosed())
-            {
-                throw new SQLDataException("Desculpe, ocorreu um erro inesperado!!");
-            }
+            openConnection();
+            conexao.setAutoCommit(false);
+            
+            //procurar a caixa de mensagem do destinatario
             
             StringBuilder sql = new StringBuilder();
             
             sql.append("INSERT INTO MENSAGENS ");
-            sql.append("(id_caixa_entrada,mensagem) VALUES(?,?)");
+            sql.append("(id_caixa_entrada,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente) VALUES(?,?,NOW(),?,?,?,?)");
             
             pst = conexao.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
             
-            pst.setInt(1,entrada.getId());
+            pst.setInt(1,entrada.getMensagem().getId_caixa_remetente());
             pst.setString(2, entrada.getMensagem().getDescricao());
-            
+            pst.setString(3, entrada.getMensagem().getAssunto());
+            pst.setString(4, entrada.getMensagem().getRemetente());
+            pst.setString(5, entrada.getMensagem().getDestinatario());
+            pst.setInt(6, entrada.getId());
             pst.executeUpdate();
             
             ResultSet rs = pst.getGeneratedKeys();
@@ -69,6 +75,7 @@ public class MensagemDAO extends AbstractDAO
         catch(SQLException ex)
         {
             ex.printStackTrace();
+            throw new SQLException(ex);
         }
         finally
         {
@@ -97,6 +104,7 @@ public class MensagemDAO extends AbstractDAO
         try
         {
             openConnection();
+            conexao.setAutoCommit(false);
             
             StringBuilder sql = new StringBuilder();
             
@@ -108,7 +116,7 @@ public class MensagemDAO extends AbstractDAO
             pst.setInt(1, entrada.getId());
             pst.setInt(2, entrada.getMensagem().getId());
             
-            pst.execute();
+            pst.executeUpdate();
             
             conexao.commit();
         }
@@ -133,6 +141,7 @@ public class MensagemDAO extends AbstractDAO
     public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
     {
         CaixaEntrada entrada = (CaixaEntrada) entidade;
+        
         List<EntidadeDominio> mensagens = new ArrayList<>();
         try
         {
@@ -141,8 +150,8 @@ public class MensagemDAO extends AbstractDAO
             
             StringBuilder sql = new StringBuilder();
             
-            sql.append("SELECT M.* FROM MENSAGENS as M, CAIXA_ENTRADA as C");
-            sql.append("WHERE M.id_caixa_entrada = ? ");
+            sql.append("SELECT M.* FROM MENSAGENS as M, CAIXA_ENTRADA as C  WHERE M.ID_CAIXA_ENTRADA = C.ID and M.ID_CAIXA_ENTRADA = ? ORDER BY  M.DATA_MSG ");
+        
             
             pst = conexao.prepareStatement(sql.toString());
             
@@ -156,6 +165,11 @@ public class MensagemDAO extends AbstractDAO
                 
                 msg.setDescricao(rs.getString("Mensagem"));
                 msg.setId(rs.getInt("id"));
+                msg.setData_msg(rs.getDate("data_msg"));
+                msg.setAssunto(rs.getString("assunto"));
+                msg.setRemetente(rs.getString("remetente"));
+                msg.setDestinatario(rs.getString("destinatario"));
+                msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
                 
                 mensagens.add(msg);
             }

@@ -11,6 +11,7 @@ import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  *
@@ -97,6 +98,8 @@ public class TesteClienteDAO {
             Cliente cliente4 = new Cliente("Pedro", "Mignoli","0000000000" , end, contato, "M", "1998/05/11", "Cliente", "pedro-mig@hotmail.com","1235");
             cliente4.setId(16);
             clienteDAO.atualizar(cliente4);*/
+          
             
+           
     }
 }

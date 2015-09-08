@@ -7,6 +7,7 @@ import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
+import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
@@ -69,9 +70,10 @@ public class Fachada implements IFachada
         Map<String,List<IStrategy>> rnsCartao = new HashMap<>();
         rnsCartao.put("Atualizar", rnsAtualizarCartao);
         //Fim das regras do Cartão!
+        
         //--> Regras de Negocio SalvarPrestador!
         List<IStrategy> rnsSalvarPrestador = new ArrayList<>();
-        rnsSalvarPrestador.add(new ValidaCPF());  // verificar depois
+        rnsSalvarPrestador.add(new IdentificarDocumento());  // verificar depois
         rnsSalvarPrestador.add(new ExistePrestador());
         
         Map<String, List<IStrategy>> rnsPrestador = new HashMap<>();   //Mapa de regras!

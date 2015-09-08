@@ -33,13 +33,8 @@ public class SalvarPrestadorVHWeb implements IViewHelper{
         prestador.setSobrenome(request.getParameter("txtSobrenome"));
         if(request.getParameter("txtCpf") != "")
             prestador.setCpf(request.getParameter("txtCpf"));
-        else
-            prestador.setCpf(request.getParameter(""));
         if(request.getParameter("txtCnpj") != "")
-            prestador.setCnpj(request.getParameter("txtCnpj"));
-        else
-             prestador.setCnpj(request.getParameter(" "));
-             
+            prestador.setCnpj(request.getParameter("txtCnpj")); 
         prestador.setEmail(request.getParameter("txtLogin"));
         prestador.setSenha(request.getParameter("txtSenha"));
         prestador.setTipoConta("Prestador");
