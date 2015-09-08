@@ -4,12 +4,14 @@
     Author     : Elvin
 --%>
 
+<%@page import="br.com.ecommerce.domain.PrestadorServico"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
         <title>Bem Vindo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -25,6 +27,26 @@
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </head>
+    <script>
+        $(document).ready(
+        function() {
+            setInterval(function() {
+                if($('#panel-heading').html() === "Caixa de Entrada")
+                {
+                    var url = "PrestadorCaixaEntrada.jsp";
+                    $("#panel-heading").html("Caixa de Entrada");
+                    var path = url; //Pegamos o caminh"o
+                    var titulo = "Mensagem"; //pegamos o titulo da página
+                    document.title = titulo; // Alterar o titulo da página
+                    window.history.pushState("", titulo, path);
+                    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+                    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+                    window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp'); 
+                }
+            }, 60000);
+        });  
+    </script>
+   
     <body>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -93,10 +115,6 @@
                                                     Alterar Senha
                                                 </a>
                                                 <br/>
-                                                <a href="#" id="editar_cartao">
-                                                    <i class="glyphicon glyphicon-credit-card"></i>
-                                                    Editar Cartão
-                                                </a>
                                             </ul>
                                         </div>
                                         <li>
@@ -106,8 +124,8 @@
                                                 Editar Dados </a>
                                         </li>
                                         <li class="active">
-                                            <a href="#" id="meu_perfil" data-titulo="Mensagens" >
-                                                <i class="glyphicon glyphicon-envelope" data-titulo="Mensagens"></i>
+                                            <a href="PrestadorCaixaEntrada.jsp" id="caixa_entrada" data-titulo="Caixa de Entrada" >
+                                                <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens </a>
                                         </li>
                                         <li>
@@ -120,6 +138,7 @@
                                                 <i class="glyphicon glyphicon-off"></i>
                                                 Sair</a>
                                         </li>
+                                        
                                     </ul>
                                 </div>
                                 <!-- END MENU -->

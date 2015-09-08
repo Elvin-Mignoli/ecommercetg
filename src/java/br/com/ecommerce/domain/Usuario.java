@@ -29,6 +29,7 @@ public class Usuario extends EntidadeDominio
     private int usuarioID;
     private String cpf;
     private String imagem;
+    private CaixaEntrada entrada;
 
     public Usuario(String tipoConta, int status, String senha, String nome, String sobrenome, String dataNascimento, Contato contato, Endereco endereco, String sexo, String cpf, String email) {
         this.tipoConta = tipoConta;
@@ -43,6 +44,14 @@ public class Usuario extends EntidadeDominio
         this.sexo = sexo;
         this.cpf = cpf;
         this.email=email;
+    }
+
+    public CaixaEntrada getEntrada() {
+        return entrada;
+    }
+
+    public void setEntrada(CaixaEntrada entrada) {
+        this.entrada = entrada;
     }
 
     

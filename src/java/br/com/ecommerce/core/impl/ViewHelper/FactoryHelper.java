@@ -33,6 +33,7 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/Cliente/AtualizaSenha", new AtualizarSenhaVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/AtualizaCartao", new AtualizarCartaoVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/Imagem", new AlterarImageClienteVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/SalvarPedido", new SalvarPedidoVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/SalvarPrestador", new SalvarPrestadorVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CPF", new ConsultaCPFVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/Email", new ConsultaEmailVHWeb());
@@ -40,9 +41,10 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/CEP", new ConsultaCEPVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarEmail", new AlterarEmailVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarSenha", new AlterarSenhaVHWeb());
-        
-        
-        
+        helpers.put("/Ecommerce/JSP/PrestadorServico/CNPJ", new ConsultaCNPJVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagem", new ExcluirMsgPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagemFront", new ExcluirMsgFrontPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ResponderMensagem", new ResponderMensagemVHWeb());
     }
     
     /**

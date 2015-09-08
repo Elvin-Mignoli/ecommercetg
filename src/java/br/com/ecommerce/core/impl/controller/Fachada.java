@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.ecommerce.core.impl.controller;
 
 import br.com.ecommerce.core.IFachada;
@@ -12,13 +7,18 @@ import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
+import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
+import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,9 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author Felipe Monteiro 
- * Fachada para encapsular todos os métodos do sistema!
+ * Fachada Generica para encapsular todos os métodos do sistema!
+ * @author Felipe Monteiro
  */
 public class Fachada implements IFachada
 {
@@ -50,7 +49,8 @@ public class Fachada implements IFachada
         daos.put(Cliente.class.getName(), new ClienteDAO());
         daos.put(PrestadorServico.class.getName(), new PrestadorServicoDAO());
         daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
-
+        daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
+        daos.put(Pedido.class.getName(), new PedidoDAO()); 
         /* 
          Lista de Regras de negocio! 
          */
@@ -70,9 +70,10 @@ public class Fachada implements IFachada
         Map<String,List<IStrategy>> rnsCartao = new HashMap<>();
         rnsCartao.put("Atualizar", rnsAtualizarCartao);
         //Fim das regras do Cartão!
+        
         //--> Regras de Negocio SalvarPrestador!
         List<IStrategy> rnsSalvarPrestador = new ArrayList<>();
-        rnsSalvarPrestador.add(new ValidaCPF());  // verificar depois
+        rnsSalvarPrestador.add(new IdentificarDocumento());  // verificar depois
         rnsSalvarPrestador.add(new ExistePrestador());
         
         Map<String, List<IStrategy>> rnsPrestador = new HashMap<>();   //Mapa de regras!
@@ -199,7 +200,7 @@ public class Fachada implements IFachada
 
         if (regrasOperacao == null)  //nao existem regras para essa entidade?
         {
-            return null;
+            return resultado;
         }
 
         if (!regrasOperacao.isEmpty())   //lista nao eh vazia?

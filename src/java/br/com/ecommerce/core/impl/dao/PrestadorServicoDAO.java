@@ -6,6 +6,7 @@
 package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
@@ -81,7 +82,18 @@ public class PrestadorServicoDAO extends AbstractDAO
             //salvando dados de Login!
             dao = new AutenticarDAO(conexao);
             
-            dao.salvar(entidade);
+            dao.salvar(entidade);         
+            
+            //salvando dados da caixa de caixa
+            dao = new CaixaEntradaDAO(conexao);
+            
+            dao.salvar(new CaixaEntrada(null, prestador));
+
+            
+            //salvando dados da caixa de entrada
+            dao = new CaixaEntradaDAO(conexao);
+            
+            dao.salvar(new CaixaEntrada(null, prestador));
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 
@@ -149,17 +161,15 @@ public class PrestadorServicoDAO extends AbstractDAO
                 if(prestador.getHabilidades()!=null) //a lista de skills está vazia?
                 {//cheia
                     //Atualizar competencias
-                    CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
-                    PrestadorServico comp = new PrestadorServico();
-                    comp.setId(prestador.getId());
-                    comp = (PrestadorServico)compDAO.consultarUm(comp);
-                    //Por enquanto que não possa alterar as habilidades
-                    if(comp!= null && comp.getHabilidades().isEmpty()) // existe alguma competencia?
-                        compDAO.atualizar(prestador);
-                    else
-                    {
-                        compDAO.salvar(prestador);
-                    }
+                    CompetenciaDAO competenciaDAO = new CompetenciaDAO(conexao);
+                    PrestadorServico prestadorComp = new PrestadorServico();
+                    prestadorComp.setId(prestador.getId());
+                    //buscar as competencias do prestador
+                    prestadorComp = (PrestadorServico)competenciaDAO.consultarUm(prestadorComp);
+                    //excluir competencias somente do prestador e depois salvar as novas
+                    if(prestadorComp!= null)
+                        competenciaDAO.excluir(prestadorComp);
+                    competenciaDAO.salvar(prestador);
                 }
                 conexao.commit();//confirmando alteracoes no banco
             } catch (SQLException ex)
@@ -325,6 +335,12 @@ public class PrestadorServicoDAO extends AbstractDAO
                 //recuperar as competencias
                 CompetenciaDAO compDAO = new CompetenciaDAO();
                 compDAO.consultarUm(prestador);
+                
+                //recuperar a caixa de caixa
+                CaixaEntradaDAO entradaDAO = new CaixaEntradaDAO(conexao);
+                CaixaEntrada caixa = new CaixaEntrada(null, prestador);
+                caixa = (CaixaEntrada)entradaDAO.consultarUm(caixa);
+                prestador.setEntrada(caixa);
                 return prestador;
             }
         } catch (SQLException ex)
@@ -344,7 +360,7 @@ public class PrestadorServicoDAO extends AbstractDAO
         }
 
     }
-    
+    //Método para identificar se já existe um prestador com um determinado CPF
     public EntidadeDominio consultaPrestadorCPF(EntidadeDominio entidade) throws SQLException
     {
         try
@@ -360,6 +376,52 @@ public class PrestadorServicoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql.toString());
             
             pst.setString(1, prestador.getCpf());
+                        
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next())   //retornou algum cliente?
+            {
+                return prestador;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        catch(SQLException ex)
+        {
+            conexao.close();
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    //Método para identificar se já existe um prestador com um determinado CNPJ
+    public EntidadeDominio consultaPrestadorCNPJ(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+           PrestadorServico prestador = (PrestadorServico) entidade;
+            
+            openConnection();
+            
+            StringBuilder sql = new StringBuilder();
+            sql.append("SELECT NOME FROM PRESTADOR_SERVICOS ");
+            sql.append("WHERE CNPJ = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, prestador.getCnpj());
                         
             ResultSet rs = pst.executeQuery();
             
