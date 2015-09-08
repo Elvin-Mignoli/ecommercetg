@@ -5,18 +5,6 @@
  */
 $(document).ready(function ()
 {
-    //array contendo as possiveis tags
-    var tagsource = 
-    [
-        'ajax','Java', 'servlet','JSP','JPA','JSF',
-        'GIT','Java Swing', 'J2EE'
-    ];
-    //habilitando tags no campo"!
-    $('#require_habilities').tagging(tagsource);
-    
-    //habilitando tags no campo"!
-    $('#my_habilities').tagging(tagsource);
-    
     //ajax para carregar dados do cliente
     $('#submit').click(function (event) //evento botão de click
     {
@@ -25,9 +13,6 @@ $(document).ready(function ()
             $('#welcometext').text(responseJson);
         });
     });
-        
-    $('#validade').mask('99/99');
-    
     //Codigo para carregar os campos do cadastro de pedidos!
     $("#criar_pedido").on("click",function (e)
     {
@@ -44,7 +29,8 @@ $(document).ready(function ()
     });
     
     //Codigo para carregar os campos de atualização
-    $("#editar_dados").on("click", function (e) {
+    $("#editar_dados").on("click", function (e) 
+    {
         $("#panel-heading").html("Dados Pessoais");
         e.preventDefault(); //eliminamos o evento
         var path = $(this).attr("href"); //Pegamos o caminho
@@ -174,5 +160,17 @@ $(document).ready(function ()
             alert("submetido");
         }
     });
+    
+    //array contendo as possiveis tags
+    var tagsource = 
+    [
+        'ajax','Java', 'servlet','JSP','JPA','JSF',
+        'GIT','Java Swing', 'J2EE'
+    ];
+    //habilitando tags no campo!
+    $('#require_habilities').tagging(tagsource);
+    
+    //habilitando tags no campo"!
+    $('#my_habilities').tagging(tagsource);
 });
 

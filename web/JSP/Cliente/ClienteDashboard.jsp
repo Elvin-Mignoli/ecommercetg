@@ -13,19 +13,8 @@
         <title>Bem Vindo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!-- implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/dropdown.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </head>
     <body>
         <nav class="navbar navbar-default">
@@ -72,8 +61,8 @@
                                         <div class="media">
                                             <div class="media-left media-middle">
                                                 <a href="#" id="file">
-                                                    <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive"> -->
-                                                    <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil">
+                                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive">
+                                                    <!-- <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil"> -->
                                                 </a>
                                             </div>
                                         </div>
@@ -196,5 +185,22 @@
                 </div>
             </div>
         </div>
+        <!-- Arquivos JS da pagina -->
+        <script src="../../js/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/jquery.maskedinput.js"></script>
+        <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
+        <!-- Arquivos bootstrap da página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/dropdown.js"></script>
+        <script src="../../bootstrap/js/collapse.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script>
+        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
+        <!-- Arquivos JS para carregar tag inputs do bootstrap -->
+        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
+        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
+        <!-- Implementando script de load de paginas de funcoes -->
+        <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </body>
 </html>

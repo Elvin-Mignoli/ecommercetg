@@ -22,10 +22,10 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.fileupload.FileItemIterator;
+/*import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload.servlet.ServletFileUpload; */
 
 /**
  *
@@ -49,7 +49,8 @@ public class AlterarImageClienteVHWeb extends HttpServlet implements IViewHelper
     @Override
     public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-         boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        /* 
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
          
          Usuario usuario = (Usuario) request.getSession().getAttribute("user");
          
@@ -116,6 +117,6 @@ public class AlterarImageClienteVHWeb extends HttpServlet implements IViewHelper
              {
                 request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
              }
-         }
+         } */
     }
 }

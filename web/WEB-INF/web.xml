@@ -8,9 +8,10 @@
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/JSP/Cliente/SalvarCliente</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizaCartao</url-pattern>
-        <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>
-        <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
         <url-pattern>/JSP/PrestadorServico/AtualizarPrestador</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
+        <url-pattern>/JSP/Cliente/SalvarPedido</url-pattern>
+        <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

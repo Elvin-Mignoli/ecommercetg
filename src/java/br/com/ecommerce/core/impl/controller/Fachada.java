@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.ecommerce.core.impl.controller;
 
 import br.com.ecommerce.core.IFachada;
@@ -17,10 +12,12 @@ import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,9 +26,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author Felipe Monteiro 
  * Fachada Generica para encapsular todos os métodos do sistema!
+ * @author Felipe Monteiro
  */
 public class Fachada implements IFachada
 {
@@ -53,6 +49,7 @@ public class Fachada implements IFachada
         daos.put(PrestadorServico.class.getName(), new PrestadorServicoDAO());
         daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
         daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
+        daos.put(Pedido.class.getName(), new PedidoDAO()); 
         /* 
          Lista de Regras de negocio! 
          */
