@@ -11,20 +11,11 @@
 <html>
     <head>
        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Custom styles for this template -->
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
         <!-- CSS das fontes -->
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
@@ -70,5 +61,17 @@
             </table>
             </Form>
          </div>
+                             
+        <!-- Scripts da Pagina -->
+        <!-- Importando jquery-->
+          <!--<script src="../../js/libs/jquery-1.11.1.min.js"></script>
+        <script src="../../js/libs/jquery-ui.min.js"></script>-->
+         <!--implementando bootstrap na página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/collapse.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script>
+         <!-- Scripts personalizados -->
+        <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
     </body>
 </html>

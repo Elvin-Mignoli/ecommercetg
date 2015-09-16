@@ -11,11 +11,12 @@
         <url-pattern>/JSP/PrestadorServico/AtualizarPrestador</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagemFront</url-pattern>
-       <url-pattern>/JSP/PrestadorServico/ResponderMensagem</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/ResponderMensagem</url-pattern>
        
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
         <url-pattern>/JSP/Cliente/SalvarPedido</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>
+         <url-pattern>/JSP/PrestadorServico/Mural</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>

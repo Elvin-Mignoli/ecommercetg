@@ -7,8 +7,11 @@ package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,6 +21,14 @@ import java.util.List;
 public class PedidoDAO extends AbstractDAO
 {
 
+    public PedidoDAO() {
+    }
+
+    public PedidoDAO(Connection conexao) {
+        super(conexao);
+    }
+
+    
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
@@ -90,9 +101,8 @@ public class PedidoDAO extends AbstractDAO
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
     @Override
     public void excluir(EntidadeDominio entidade) throws SQLException
     {
@@ -102,7 +112,40 @@ public class PedidoDAO extends AbstractDAO
     @Override
     public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try{    
+            openConnection();
+            Pedido pedido = new Pedido();
+            pedido = (Pedido)entidade;
+            ArrayList<EntidadeDominio> lista = new ArrayList<>();
+            String sql = "SELECT * FROM PEDIDOS";
+            pst = conexao.prepareStatement(sql);
+            ResultSet resultado = pst.executeQuery();
+            while(resultado.next()){
+                
+                pedido.setDescricao(resultado.getString("descricao"));
+                pedido.setDataFim(resultado.getDate("data_fim"));
+                pedido.setDataInicio(resultado.getDate("data_inicio"));
+                pedido.setId(resultado.getInt("id"));
+                InteressadorDAO dao = new InteressadorDAO(conexao);
+                pedido.setPrestadores(dao.consultar(pedido));
+                lista.add(pedido);
+            }
+            pedido.setListaPedidos(lista);
+            return lista;
+        }catch (SQLException ex)
+            {
+                ex.printStackTrace();
+                throw new SQLException();
+            } finally
+            {
+                try
+                {
+                    conexao.close();
+                } catch (SQLException e)
+                {
+                    throw new SQLException();
+                }
+            }
     }
 
     @Override

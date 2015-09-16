@@ -15,38 +15,15 @@
         <title>Bem Vindo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!-- implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
+       
+        <!-- Custom styles for this template -->
+        <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <!-- CSS das fontes -->
+        <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
     </head>
-    <script>
-        $(document).ready(
-        function() {
-            setInterval(function() {
-                if($('#panel-heading').html() === "Caixa de Entrada")
-                {
-                    var url = "PrestadorCaixaEntrada.jsp";
-                    $("#panel-heading").html("Caixa de Entrada");
-                    var path = url; //Pegamos o caminh"o
-                    var titulo = "Mensagem"; //pegamos o titulo da página
-                    document.title = titulo; // Alterar o titulo da página
-                    window.history.pushState("", titulo, path);
-                    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-                    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-                    window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp'); 
-                }
-            }, 60000);
-        });  
-    </script>
-   
     <body>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
@@ -124,7 +101,7 @@
                                                 Editar Dados </a>
                                         </li>
                                         <li class="active">
-                                            <a href="PrestadorCaixaEntrada.jsp" id="caixa_entrada" data-titulo="Caixa de Entrada" >
+                                            <a href= "/Ecommerce/JSP/PrestadorServico/CaixaEntrada" id="caixa_entrada" data-titulo="Caixa de Entrada" >
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens </a>
                                         </li>
@@ -165,7 +142,18 @@
                                     </c:if>
                                     <!-- Aqui vai toda as informações que o usuário precisar! -->
                                     <main id="conteudo">
-
+                                        <div class="container-fluid">
+                                            <div class="row-fluid ">
+                                                <c:forEach var="list" items="${requestScope.pedidos.listaPedidos}">
+                                                    <div class="panel panel-success col-lg-12">
+                                                        <div class="panel panel-heading text-center">Pedido</div>
+                                                        <div class="panel-body">
+                                                            <span>Descrição:${list.descricao}</span>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
                                     </main>
                                 </div>
                             </div>
@@ -173,7 +161,63 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
+        <!--form para resgatar os pedidos para o mural -->
+        <form action="Mural" method="POST">
+            <input type="hidden" value="Consultar" name="operacao"/>
+            <input type="submit"  hidden="false"id="sub"/>
+        </form>
+        <!-- Scripts da Pagina -->
+       <!-- Arquivos JS da pagina -->
+        <script src="../../js/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/jquery.maskedinput.js"></script>
+        <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
+        <!-- Arquivos bootstrap da página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/dropdown.js"></script>
+        <script src="../../bootstrap/js/collapse.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script>
+        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
+        <!-- Arquivos JS para carregar tag inputs do bootstrap -->
+        <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
+        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+        <!-- Implementando script de load de paginas de funcoes -->
+        <script src="../../js/ajaxFuntions.js"></script>
+        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <script>
+        $(document).ready(    
+        function() {
+            //definindo o nome do pabel-heading
+                $('#panel-heading').html("Mural de Pedidos");
+            //AJAX para Caixa de entrada
+            setInterval(function() {
+                if($('#panel-heading').html() === "Caixa de Entrada")
+                {
+                      $("#caixa_entrada").trigger("click");
+                }else if($('#panel-heading').html() === "Mural de Pedidos")
+                    $("#sub").trigger("click");
+            }, 60000);
+            if(${requestScope.pedidos == null})
+            {                
+                $("#sub").trigger("click");
+            }
+          
+             //$("#sub").prop("type","submit");
+            //script para o mural de pedidos
+            /*var operacao = "Consultar";
+            $.post("Mural", {operacao: operacao}, function(responseJson){
+                alert(responseJson);
+                var path ="MuralPedidos.jsp"; //Pegamos o caminho
+                var titulo = "Mural Pedidos"; //pegamos o titulo da página
+                document.title = titulo; // Alterar o titulo da página
+                window.history.pushState("", titulo, path);
+                $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+                $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+                window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+            });*/
+        });  
+        </script>
     </body>
 </html>
 

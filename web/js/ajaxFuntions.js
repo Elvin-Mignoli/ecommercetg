@@ -438,15 +438,7 @@ function excluirMensagemFront(op,id_entrada,id_msg)
                  if (resposta === "Mensagem excluida com sucesso!")
                 {
                     alert("Mensagem excluída com sucesso!");
-                    var url = "PrestadorCaixaEntrada.jsp";
-                    $("#panel-heading").html("Caixa de Entrada");
-                    var path = url; //Pegamos o caminh"o
-                    var titulo = "Mensagem"; //pegamos o titulo da página
-                    document.title = titulo; // Alterar o titulo da página
-                    window.history.pushState("", titulo, path);
-                    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-                    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-                    window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp'); 
+                    $("#caixa_entrada").trigger("click");
                 }else{
                     $("#div_fail").toggle(true);
                 }

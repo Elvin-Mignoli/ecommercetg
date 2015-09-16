@@ -23,11 +23,12 @@ public class Pedido extends EntidadeDominio
     private Date dataFim;
     private String descricao;
     private PrestadorServico prestadorFinalista;
-    private List<PrestadorServico> prestadores;
+    private List<EntidadeDominio> prestadores;
     private Cliente cliente;
     private Double valor;
     private Integer qtdeInteressados;
     private Calendar horaConsultoria;
+    private ArrayList<EntidadeDominio> listaPedidos;
 
     public List<String> getHabilidadePrestador()
     {
@@ -42,6 +43,14 @@ public class Pedido extends EntidadeDominio
     public List<String> getHabilidadeCliente()
     {
         return habilidadeCliente;
+    }
+
+    public ArrayList<EntidadeDominio> getListaPedidos() {
+        return listaPedidos;
+    }
+
+    public void setListaPedidos(ArrayList<EntidadeDominio> listaPedidos) {
+        this.listaPedidos = listaPedidos;
     }
     
     
@@ -101,12 +110,12 @@ public class Pedido extends EntidadeDominio
         this.prestadorFinalista = prestadorFinalista;
     }
 
-    public List<PrestadorServico> getPrestadores()
+    public List<EntidadeDominio> getPrestadores()
     {
         return prestadores;
     }
 
-    public void setPrestadores(List<PrestadorServico> prestadores)
+    public void setPrestadores(List<EntidadeDominio> prestadores)
     {
         this.prestadores = prestadores;
     }

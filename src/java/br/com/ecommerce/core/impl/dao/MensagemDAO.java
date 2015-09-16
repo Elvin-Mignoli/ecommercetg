@@ -134,6 +134,15 @@ public class MensagemDAO extends AbstractDAO
             ex.printStackTrace();
             
             throw new SQLException("Desculpe, algum erro inesperado aconteceu!");
+        } finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException e)
+            {
+                throw new SQLException();
+            }
         }
     }
 
@@ -172,8 +181,7 @@ public class MensagemDAO extends AbstractDAO
                 msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
                 
                 mensagens.add(msg);
-            }
-            
+            }           
             return mensagens;
         }
         catch(SQLException ex)
@@ -181,23 +189,35 @@ public class MensagemDAO extends AbstractDAO
             ex.printStackTrace();
             throw new SQLException("Erro ao consultar as mensagens!");
         }
-        finally
-        {
-            try
-            {
-                conexao.close();
-            }
-            catch(SQLException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+        
     }
 
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       CaixaEntrada entrada = (CaixaEntrada) entidade;
+       openConnection();
+       
+       String sql = "SELECT * FROM MENSAGENS WHERE ID=?";
+       
+       pst = conexao.prepareStatement(sql);
+       pst.setInt(1, entrada.getMensagem().getId());
+       ResultSet rs = pst.executeQuery();
+       if(rs.next())
+       {
+           Mensagem msg  = new Mensagem();
+           msg.setId(rs.getInt("id"));
+           msg.setAssunto(rs.getString("assunto"));
+           msg.setData_msg(rs.getDate("data_msg"));
+           msg.setDescricao(rs.getString("mensagem"));
+           msg.setDestinatario(rs.getString("destinatario"));
+           msg.setRemetente(rs.getString("remetente"));
+           msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
+           entrada.setMensagem(msg);
+       }
+       conexao.close();
+       return entrada;
+       
     }
     
 }

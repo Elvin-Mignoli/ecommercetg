@@ -75,5 +75,25 @@ public class PrestadorServico extends Usuario
         this.habilidades = habilidades;
     }
 
-   
+   @Override
+    public boolean equals(Object o)
+    {
+        PrestadorServico entidade = null;
+        
+        if(!(o instanceof EntidadeDominio))
+        {
+            throw new ClassCastException("Requerido um objeto EntidadeDominio, ou subclasses");
+        }
+        else
+        {
+          entidade = (PrestadorServico) o;   
+        }
+
+        if (entidade == null)
+        {
+            throw new NullPointerException("EntidadeDominio não pode ser NULL");
+        } 
+        else 
+            return entidade.getId().equals(this.getId()); //return super.equals(o); //To change body of generated methods, choose Tools | Templates.
+    }
 }

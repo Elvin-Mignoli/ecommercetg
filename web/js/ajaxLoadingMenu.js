@@ -163,17 +163,6 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
-
-    $('#submit').on("click", function ()
-    {
-        var status = $('#span_confirm').val();
-
-        if (status === "")
-        {
-            $("#form_alterarEmail").submit();   //submetendo a página
-            alert("submetido");
-        }
-    });
+   
 });
 
