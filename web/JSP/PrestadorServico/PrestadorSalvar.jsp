@@ -158,8 +158,8 @@
         </div>
                                 <!-- Scripts da Pagina -->
                                 <!-- Importando jquery-->
-  <!--<script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>-->
+        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
+        <script src="../../js/libs/jquery-ui.min.js"></script>
         <script src="../../js/libs/jquery.maskedinput.js"></script>
          <!-- implementando bootstrap na página -->
         <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
@@ -172,11 +172,11 @@
                 {
                     $("#input_nome").focus();               
                 });
-            })
+            });
         </script>
         <!-- Scripts personalizados -->
         <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        
         
     </body>
     </html>

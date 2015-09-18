@@ -47,6 +47,10 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/ResponderMensagem", new ResponderMensagemVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CaixaEntrada", new CaixaEntradaVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/Mural", new MuralPedidoVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Candidatar", new CandidatarVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Candidaturas", new CandidaturasVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ConsultarPedido", new ConsultarPedidoVHWeb());  
+         helpers.put("/Ecommerce/JSP/PrestadorServico/Consultorias", new PrestadorConsultoriasVHWeb());  
        
     }
     

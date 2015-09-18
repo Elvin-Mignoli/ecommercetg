@@ -254,7 +254,7 @@
         <script src="../../bootstrap/js/collapse.js"></script>
         <script src="../../bootstrap/js/tab.js"></script>
          <!-- Scripts personalizados -->
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <!--<script src="../../js/ajaxFuntions.js"></script>-->
+        
     </body>
 </html>

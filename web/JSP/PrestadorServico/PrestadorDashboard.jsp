@@ -3,7 +3,7 @@
     Created on : 06/08/2015, 15:39:17
     Author     : Elvin
 --%>
-
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
 <%@page import="br.com.ecommerce.domain.PrestadorServico"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -83,7 +83,7 @@
                                         <div class="collase active" id="collapseMenu">
                                             <ul id="option-config">
                                                 <a href="PrestadorAlterarEmail.jsp" id="alterar_email" data-titulo="Alterar Login/E-mail">
-                                                    <i class="glyphicon glyphicon-envelope" data-titulo="Alterar Login/E-mail"></i>
+                                                    <i class="glyphicon glyphicon-pencil" data-titulo="Alterar Login/E-mail"></i>
                                                     Alterar Login/E-mail
                                                 </a>
                                                 <br/>
@@ -105,6 +105,27 @@
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens </a>
                                         </li>
+                                        <li class="active" id="listConsult">
+                                            <a href="#collapseMenuConsult" data-toggle="collapse" aria-expanded="false">
+                                                <i class="glyphicon glyphicon-chevron-down"></i>
+                                                Consultorias
+                                            </a>
+                                        </li>
+                                        <div class="collapse active" id="collapseMenuConsult">
+                                            <ul id="option_consultoria">
+                                                <a href="Consultorias?operacao=Consultar" id="minhas_consultorias" data-titulo="Minhas Consultorias">
+                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                    Minhas Consultorias
+                                                </a>
+                                                <br/>
+                                                <a href="Candidaturas?operacao=Consultar" id="candidaturas" data-titulo="Candidaturas">
+                                                    <i class="glyphicon glyphicon-question-sign"></i>
+                                                    Candidaturas
+                                                </a>
+                                                <br/>
+                                                
+                                            </ul>
+                                        </div>
                                         <li>
                                             <a href="#">
                                                 <i class="glyphicon glyphicon-flag"></i>
@@ -129,27 +150,52 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="panel-heading"></div>
                                 <div class="panel-body">
-
                                     <c:if test="${requestScope.MsgAtualiza ne null}">
                                         <div class="alert alert-info alert-dismissible" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="alert_msg">
                                                 <span aria-hidden="true">&times;
                                                 </span>
                                             </button>
                                             ${requestScope.MsgAtualiza}
                                         </div>
-                                        <% request.setAttribute("MsgAtualiza", null);%>
                                     </c:if>
                                     <!-- Aqui vai toda as informações que o usuário precisar! -->
                                     <main id="conteudo">
                                         <div class="container-fluid">
                                             <div class="row-fluid ">
-                                                <c:forEach var="list" items="${requestScope.pedidos.listaPedidos}">
+                                                <c:forEach var="list" items="${requestScope.ListaPedido.pedidos}">
                                                     <div class="panel panel-success col-lg-12">
                                                         <div class="panel panel-heading text-center">Pedido</div>
                                                         <div class="panel-body">
-                                                            <span>Descrição:${list.descricao}</span>
-                                                        </div>
+                                                            <!-- Span descrição do pedido-->
+                                                            <span><b>Descrição:</b> &nbsp;${list.descricao}</span><br>
+                                                            <div class="text-center">
+                                                                <span class="text-center"><b>Datas da consultoria:</b></span><br><br>
+                                                            </div>
+                                                            <!--span da datas do pedidos -->
+                                                            <span><b>Data de início: &nbsp;</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataInicio}"></f:formatDate>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;<b>Data de fim:</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataFim}"></f:formatDate></span>
+                                                            <br>
+                                                            <!-- hora da consultoria-->
+                                                            <br>
+                                                            <span><b>Hora:&nbsp;</b><f:formatDate type="time"  value="${list.horaConsultoria.getTime()}"></f:formatDate></span>
+                                                            <br>
+                                                            <!--span das habilidades requeridas pelo cliente -->
+                                                            <span><b>Habilidades requeridas: &nbsp;</b>${list.habilidadePrestador.toString().replace("[","").replace("]","")}</span>
+                                                            <br>
+                                                            <span><b>Habilidades do cliente:&nbsp;</b>${list.habilidadeCliente.toString().replace("[","").replace("]","")}</span>
+                                                            <br>
+                                                            <c:if test="${!list.prestadores.contains(sessionScope.user)}">
+                                                                <form action="Candidatar" method="POST">
+                                                                    <input type="hidden" name="id_prestador" id="id_prestador" value="${sessionScope.user.id}"/>
+                                                                    <input type="hidden" name="id_pedido" id="id_prestador" value="${list.id}"/>
+                                                                    <button type="submit" class="btn btn-success" name="bt_candidatar" id="bt_candidatar">Candidatar-se</button>
+                                                                </form>
+                                                            </c:if>
+                                                            <c:if test="${list.prestadores.contains(sessionScope.user)}">
+                                                                <button type="button" class="btn btn-success"disabled="true">Já candidatou-se</button>
+                                                            </c:if>
+                                                        </div>     
                                                     </div>
                                                 </c:forEach>
                                             </div>
@@ -189,33 +235,33 @@
         $(document).ready(    
         function() {
             //definindo o nome do pabel-heading
-                $('#panel-heading').html("Mural de Pedidos");
+            $('#panel-heading').html("Mural de Pedidos");
+            
             //AJAX para Caixa de entrada
             setInterval(function() {
-                if($('#panel-heading').html() === "Caixa de Entrada")
-                {
+                if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
+                {//sim
                       $("#caixa_entrada").trigger("click");
-                }else if($('#panel-heading').html() === "Mural de Pedidos")
+                      
+                }else if($('#panel-heading').html() === "Mural de Pedidos")//est na page do mural de pedidos?
+                {//dim
                     $("#sub").trigger("click");
-            }, 60000);
-            if(${requestScope.pedidos == null})
-            {                
+                }
+                    
+            }, 60000);//fim do ajax
+            
+            if(${requestScope.MsgAtualiza == null})//existe mensagem de alerta?
+            {//não
+               if(${requestScope.ListaPedido == null})//já realizou alguma requeisição para o mural?
+               {              //não  
                 $("#sub").trigger("click");
+               } 
             }
-          
-             //$("#sub").prop("type","submit");
-            //script para o mural de pedidos
-            /*var operacao = "Consultar";
-            $.post("Mural", {operacao: operacao}, function(responseJson){
-                alert(responseJson);
-                var path ="MuralPedidos.jsp"; //Pegamos o caminho
-                var titulo = "Mural Pedidos"; //pegamos o titulo da página
-                document.title = titulo; // Alterar o titulo da página
-                window.history.pushState("", titulo, path);
-                $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-                $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-                window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
-            });*/
+           //evento: após clicar pra fechar a mensagem de 
+           //alerta se dispara uma requisição do mural de pedidos 
+           $("#alert_msg").on("click",function(){
+               $("#sub").trigger("click");
+           });
         });  
         </script>
     </body>

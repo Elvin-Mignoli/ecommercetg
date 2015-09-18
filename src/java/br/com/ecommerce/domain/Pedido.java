@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author admin
+ * @author Elvin
  */
 public class Pedido extends EntidadeDominio
 {
@@ -28,8 +28,31 @@ public class Pedido extends EntidadeDominio
     private Double valor;
     private Integer qtdeInteressados;
     private Calendar horaConsultoria;
-    private ArrayList<EntidadeDominio> listaPedidos;
+    private List<EntidadeDominio> pedidos;
+    public static final String CLIENTE = "CLIENTE";
+    public static final String PRESTADOR = "PRESTADOR";
+    public static final String MURAL = "MURAL";
+    private String consulta;
+    public String getConsulta()
+    {
+        return consulta;
+    }
 
+    public void setConsulta(String consulta)
+    {
+        this.consulta = consulta;
+    }
+    
+    public List<EntidadeDominio> getPedidos()
+    {
+        return pedidos;
+    }
+
+    public void setPedidos(List<EntidadeDominio> pedidos)
+    {
+        this.pedidos = pedidos;
+    }
+    
     public List<String> getHabilidadePrestador()
     {
         return habilidadePrestador;
@@ -44,17 +67,7 @@ public class Pedido extends EntidadeDominio
     {
         return habilidadeCliente;
     }
-
-    public ArrayList<EntidadeDominio> getListaPedidos() {
-        return listaPedidos;
-    }
-
-    public void setListaPedidos(ArrayList<EntidadeDominio> listaPedidos) {
-        this.listaPedidos = listaPedidos;
-    }
     
-    
-
     public void setHabilidadeCliente(List<String> habilidadeCliente)
     {
         this.habilidadeCliente = habilidadeCliente;

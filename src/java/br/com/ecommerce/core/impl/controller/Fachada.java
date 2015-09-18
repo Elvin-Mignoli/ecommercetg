@@ -170,8 +170,8 @@ public class Fachada implements IFachada
         {
             IDAO dao = daos.get(entidade.getClass().getName());
             
-            dao.consultar(entidade);
-            
+            List<EntidadeDominio> entidades = dao.consultar(entidade);
+            resultado.setEntidades(entidades);
             return resultado;
         }
         catch(SQLException ex)

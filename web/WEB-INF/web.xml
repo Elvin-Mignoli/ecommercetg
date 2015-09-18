@@ -16,7 +16,9 @@
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
         <url-pattern>/JSP/Cliente/SalvarPedido</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>
-         <url-pattern>/JSP/PrestadorServico/Mural</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/Mural</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/Candidaturas</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/Consultorias</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>

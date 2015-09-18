@@ -207,7 +207,7 @@
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js"></script>
          <!-- Scripts personalizados -->
         <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        
         <script>
           $(document).ready(function () {
               $("#input_cpf").mask("999.999.999-99");

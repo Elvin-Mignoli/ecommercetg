@@ -60,7 +60,7 @@ public class Resultado extends EntidadeAplicacao
 
     public void addEntidades(EntidadeDominio entidades)
     {
-        this.entidades.add(entidades);
+        this.getEntidades().add(entidades);
     }
 
     public EntidadeDominio getEntidade()
@@ -71,5 +71,12 @@ public class Resultado extends EntidadeAplicacao
     public void setEntidade(EntidadeDominio entidade)
     {
         this.entidade = entidade;
+    }
+
+    /**
+     * @param entidades the entidades to set
+     */
+    public void setEntidades(List<EntidadeDominio> entidades) {
+        this.entidades = entidades;
     }
 }

@@ -464,3 +464,9 @@ function responderMsg(id_msg){
     window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
     return false;
 }
+
+
+
+
+
+
