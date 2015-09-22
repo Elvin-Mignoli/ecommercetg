@@ -27,7 +27,8 @@
         {
             $("#numero").focus();
         }
-        $("#numero").blur(function () {
+        $("#numero").blur(function () 
+        {
             $("#input_nome").focus();
         });
 
@@ -49,7 +50,7 @@
 <body>  -->
 <form method="POST" action="AtualizarCliente">
     <input type="text" name="operacao" value="Atualizar" hidden="true"/>
-    <div class="container">
+    <div class="container-fluid">
         <div class="form-group">
             <div class="input-group col-lg-3">
                 <span class="input-group-addon">
@@ -197,11 +198,13 @@
                 <input type="text" id="complemento" placeholder="Complemento" class="form-control" name="txtComplemento" value="${sessionScope.user.endereco.complemento}"/>
             </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="form-group form-inline">
+            
+            <div class="form-group form-inline">
             <input type="submit" value="Atualizar" class="btn btn-success"/>
         </div>
+    </div>
+    <div class="container">
+        
     </div>
 </form>
 <!-- </body>

@@ -69,7 +69,6 @@ public class CompetenciaDAO extends AbstractDAO{
             ex.printStackTrace();
             throw new SQLException();
          } 
-        
     }
 
     @Override

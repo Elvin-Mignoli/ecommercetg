@@ -27,7 +27,7 @@
         <form action="AtualizaEmail" method="post">
             <div class="container">
                 <div class="row">
-                    <div class="alert alert-info col-lg-5 alert-dismissable" role="alert">
+                    <div class="alert alert-info col-lg-8 alert-dismissable" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;
                             </span>

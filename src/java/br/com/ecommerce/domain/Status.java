@@ -11,5 +11,5 @@ package br.com.ecommerce.domain;
  */
 public enum Status
 {
-    ABERTO,FECHADO,NEGOCIACAO;
+    ABERTO,FECHADO,NEGOCIACAO,EM_ANDAMENTO,SELECIONADO,NAO_SELECIONADO,CANCELADO;
 }

@@ -30,7 +30,8 @@ public class Usuario extends EntidadeDominio
     private String cpf;
     private String imagem;
     private CaixaEntrada entrada;
-
+    private Pedido pedido;
+    
     public Usuario(String tipoConta, int status, String senha, String nome, String sobrenome, String dataNascimento, Contato contato, Endereco endereco, String sexo, String cpf, String email) {
         this.tipoConta = tipoConta;
         this.status = status;
@@ -46,6 +47,16 @@ public class Usuario extends EntidadeDominio
         this.email=email;
     }
 
+    public Pedido getPedido()
+    {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido)
+    {
+        this.pedido = pedido;
+    }
+    
     public CaixaEntrada getEntrada() {
         return entrada;
     }

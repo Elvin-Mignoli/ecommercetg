@@ -23,12 +23,48 @@ public class Pedido extends EntidadeDominio
     private Date dataFim;
     private String descricao;
     private PrestadorServico prestadorFinalista;
-    private List<PrestadorServico> prestadores;
+    private List<EntidadeDominio> prestadores = new ArrayList<>();
     private Cliente cliente;
     private Double valor;
     private Integer qtdeInteressados;
-    private Calendar horaConsultoria;
+    private Calendar horaConsultoria = Calendar.getInstance();
+    private List<EntidadeDominio> pedidos;
+    public static final String CLIENTE = "CLIENTE";
+    public static final String PRESTADOR = "PRESTADOR";
+    public static final String MURAL = "MURAL";
+    private String consulta;
+    private String canal;
 
+    public String getCanal()
+    {
+        return canal;
+    }
+
+    public void setCanal(String canal)
+    {
+        this.canal = canal;
+    }
+    
+    public String getConsulta()
+    {
+        return consulta;
+    }
+
+    public void setConsulta(String consulta)
+    {
+        this.consulta = consulta;
+    }
+    
+    public List<EntidadeDominio> getPedidos()
+    {
+        return pedidos;
+    }
+
+    public void setPedidos(List<EntidadeDominio> pedidos)
+    {
+        this.pedidos = pedidos;
+    }
+    
     public List<String> getHabilidadePrestador()
     {
         return habilidadePrestador;
@@ -44,8 +80,6 @@ public class Pedido extends EntidadeDominio
         return habilidadeCliente;
     }
     
-    
-
     public void setHabilidadeCliente(List<String> habilidadeCliente)
     {
         this.habilidadeCliente = habilidadeCliente;
@@ -100,13 +134,18 @@ public class Pedido extends EntidadeDominio
     {
         this.prestadorFinalista = prestadorFinalista;
     }
-
-    public List<PrestadorServico> getPrestadores()
+    
+    public void addPrestadores(PrestadorServico prestador)
+    {
+        prestadores.add(prestador);
+    }
+    
+    public List<EntidadeDominio> getPrestadores()
     {
         return prestadores;
     }
 
-    public void setPrestadores(List<PrestadorServico> prestadores)
+    public void setPrestadores(List<EntidadeDominio> prestadores)
     {
         this.prestadores = prestadores;
     }

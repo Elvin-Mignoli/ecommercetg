@@ -27,7 +27,7 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="container-fluid">
             <!-- Modal -->
             <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row profile">
+            <div class="row-fluid profile">
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -123,7 +123,8 @@
                                         <li>
                                             <a href="ClienteAtualizar.jsp" id="editar_dados" data-titulo="Editar Dados">
                                                 <i class="glyphicon glyphicon-pencil"></i>
-                                                Editar meus dados </a>
+                                                Editar meus dados 
+                                            </a>
                                         </li>
                                         <li class="active" id="listPedidos">
                                             <a href="#collapsePedidos" data-toggle="collapse" aria-expanded="false">
@@ -138,17 +139,25 @@
                                                     Abrir Pedido
                                                 </a>
                                             </ul>
+                                            <ul id="collapse_pedidos">
+                                                <a href="/Ecommerce/JSP/Cliente/MeusPedidos?txtId=${sessionScope.user.id}&operacao=Consultar" id="consulta_pedido" data-titulo="Meus Pedidos">
+                                                    <i class="glyphicon glyphicon-th-list"></i>
+                                                    Consultar Pedidos
+                                                </a>
+                                            </ul>
                                         </div>
                                         <ul class="nav nav-divider"></ul>
                                         <li>
                                             <a href="#" data-toggle="modal" data-target="#photoModal">
                                                 <i class="glyphicon glyphicon-flag"></i>
-                                                Ajuda </a>
+                                                Ajuda 
+                                            </a>
                                         </li>
                                         <li>
                                             <a href="logoff">
                                                 <i class="glyphicon glyphicon-off"></i>
-                                                Sair</a>
+                                                Sair
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
@@ -159,7 +168,7 @@
                 </div>
                 <div class="col-md-9">
                     <div class="profile-content">
-                        <div class="row">
+                        <div class="row-fluid-fluid">
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="panel-heading"></div>
                                 <div class="panel-body">

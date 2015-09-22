@@ -10,6 +10,7 @@ import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
+import br.com.ecommerce.core.impl.IStrategy.ValidaHabilidadePedido;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
@@ -80,10 +81,19 @@ public class Fachada implements IFachada
         rnsPrestador.put("Salvar", rnsSalvarPrestador);
         //Fim das regras do Prestador de serviço
         
+        // --> Regras de Negócio SalvarPedido
+        List<IStrategy> rnsSalvarPedido = new ArrayList<>();
+        rnsSalvarPedido.add(new ValidaHabilidadePedido());
+        
+        //Map para regras do Pedido!
+        Map<String,List<IStrategy>> rnsPedido = new HashMap<>();
+        rnsPedido.put("Salvar", rnsSalvarPedido);
+        
         //Map final com todas as regras separados por operacao!
         rns.put(Cliente.class.getName(), rnsCliente);
         rns.put(PrestadorServico.class.getName(), rnsPrestador);
         rns.put(CartaoCredito.class.getName(), rnsCartao);
+        rns.put(Pedido.class.getName(), rnsPedido);
     }
 
     @Override
@@ -170,7 +180,9 @@ public class Fachada implements IFachada
         {
             IDAO dao = daos.get(entidade.getClass().getName());
             
-            dao.consultar(entidade);
+            List<EntidadeDominio> entidades = dao.consultar(entidade);
+            
+            resultado.setEntidades(entidades);
             
             return resultado;
         }

@@ -5,7 +5,6 @@
  */
 package br.com.ecommerce.core.impl.command;
 
-import br.com.ecommerce.core.ICommand;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.domain.EntidadeDominio;
 

@@ -164,7 +164,6 @@ $(document).ready(function ()
         return false;
     });
     
-
     $('#submit').on("click", function ()
     {
         var status = $('#span_confirm').val();
@@ -174,6 +173,36 @@ $(document).ready(function ()
             $("#form_alterarEmail").submit();   //submetendo a página
             alert("submetido");
         }
+    });
+    
+    //ajax mostrar o perfil do  prestador de serviço
+    $("#consulta_pedido").on("click", function (e) 
+    {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    
+    //ajax mostrar o perfil do  prestador de serviço
+    $(document).on("click", '.filtroAtualiza', function (e) 
+    {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
     });
 });
 

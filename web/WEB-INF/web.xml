@@ -6,13 +6,15 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
+        <url-pattern>/JSP/Cliente/AtualizarPedido</url-pattern>
+        <url-pattern>/JSP/Cliente/MeusPedidos</url-pattern>
         <url-pattern>/JSP/Cliente/SalvarCliente</url-pattern>
+        <url-pattern>/JSP/Cliente/DesativarPedido</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizaCartao</url-pattern>
         <url-pattern>/JSP/PrestadorServico/AtualizarPrestador</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagemFront</url-pattern>
-       <url-pattern>/JSP/PrestadorServico/ResponderMensagem</url-pattern>
-       
+        <url-pattern>/JSP/PrestadorServico/ResponderMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
         <url-pattern>/JSP/Cliente/SalvarPedido</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>

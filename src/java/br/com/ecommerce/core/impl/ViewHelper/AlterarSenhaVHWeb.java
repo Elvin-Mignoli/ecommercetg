@@ -8,7 +8,6 @@ package br.com.ecommerce.core.impl.ViewHelper;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
-import br.com.ecommerce.core.impl.IStrategy.AlterarEmail;
 import br.com.ecommerce.core.impl.IStrategy.AlterarSenha;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
@@ -27,7 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AlterarSenhaVHWeb implements IViewHelper{
 
     @Override
-    public EntidadeDominio getEntidade(HttpServletRequest request) {
+    public EntidadeDominio getEntidade(HttpServletRequest request)
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
