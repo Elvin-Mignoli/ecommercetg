@@ -163,6 +163,8 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
+    
+    
    //ajax mostrar as candidaturas de consultorias do prestador de serviço
     $("#candidaturas").on("click", function (e) {
       //  alert("oi");
@@ -210,5 +212,20 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
+    
+    //ajax mostrar as mensagens enviadas do  prestador de serviço
+     $("#mensagens_enviadas").on("click", function (e) {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Mensagens Enviadas");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+   
 });
 

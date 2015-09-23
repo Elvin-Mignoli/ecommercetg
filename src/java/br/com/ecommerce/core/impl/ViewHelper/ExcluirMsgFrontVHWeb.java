@@ -27,23 +27,28 @@ public class ExcluirMsgFrontVHWeb implements IViewHelper{
     Usuario usuario = new PrestadorServico();
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
-        
-        boolean flag = false; // flag para identificar se foi exlcuido uma mensagem na arraylist
+        String local = request.getParameter("local");
+        //boolean flag = false; // flag para identificar se foi exlcuido uma mensagem na arraylist
         usuario = (PrestadorServico)request.getSession().getAttribute("user");
         Mensagem msg = new Mensagem();
         msg.setId(Integer.parseInt(request.getParameter("txtId")));
-        usuario.getEntrada().setMensagem(msg);
+
         for(EntidadeDominio mensagens: usuario.getEntrada().getMensagens())
         {
             Mensagem m = (Mensagem) mensagens;
             if(m.getId() == msg.getId())
             {
-                usuario.getEntrada().getMensagens().remove(m);
-                flag = true; // foi exlcuido uma mensagem na arraylyst
+                msg = m;//pegas os valores dos atributos com base no id
+                if(local.equals("enviadas"))
+                {
+                   msg.setFlg_excluida_enviada(true);
+                }else if(local.equals("entrada"))
+                {
+                   msg.setFlg_excluida_recebido(true); 
+                }
             }
-            if(flag)//exclui uma mensagem?
-                break;
         }
+        usuario.getEntrada().setMensagem(msg);
         return usuario.getEntrada();
         
     }

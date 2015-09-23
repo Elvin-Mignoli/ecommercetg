@@ -53,15 +53,38 @@
                         <br>
                         <span><b>Consultor/A:&nbsp;</b>${requestScope.pedido.prestadorFinalista.nome} &nbsp;${requestScope.pedido.prestadorFinalista.sobrenome}</span>
                         <br>
-                    </div>     
+                        <br>
+                        <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success">Vídeo Conferência</a>
+                        <br> <br>
+                        <button type="button" id="btn_enviar" class="btn btn-success" onclick="showButtonMsg()">Enviar Mensagem para o cliente</button>
+                        <br><br>
+                        <!--Form pra mandar a mensagem -->
+                        <div id="div_mensagem" hidden="true">
+                            <form action="EnviarMensagem" method="POST">
+                                <input type="hidden" name="operacao" value="Atualizar"/>
+                                <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.cliente.email}"/>
+                                <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.cliente.entrada.id}"/>
+                                <!-- Assunto-->
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon " id="span_msg">Assunto: </span>
+                                        <input type="text"  id="input_msg" name="txtAssunto" class="form-control">
+                                    </div>
+                                </div>
+                                <!-- Mensagem-->
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon " id="span_msg">Mensagem: </span>
+                                        <input type="text"  id="input_msg" name="txtMensagem" class="form-control">
+                                    </div>
+                                </div>
+                                <button class="btn btn-success" type="submit">Enviar</button>
+                            </form>            
+                        </div>  
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Arquivos bootstrap da página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
-        <!-- Implementando script de load de paginas de funcoes -->
-        <!--<script src="../../js/ajaxFuntions.js"></script>-->
+                        <script src="../../js/ajaxFuntions.js" type="text/javascript"></script>
     </body>
 </html>

@@ -48,14 +48,22 @@
                         </tr>
                     </c:if>
                 </c:forEach>
+                    <c:if test="${param.acao == 'entrada'}">
                 <tr>
                     <td>
-                        <button type="button" class="btn btn-success"  value="Excluir" id="bt_responder" onclick="responderMsg(${param.id})">Responder</button>
+                        <button type="button" class="btn btn-success"  value="Responder" id="bt_responder" onclick="responderMsg(${param.id})">Responder</button>
                     </td>
                 </tr>
+                    </c:if>
                 <tr>
                     <td>
                         <Form method="POST" action="ExcluirMensagem">
+                            <c:if test="${param.acao == 'entrada'}">
+                                <input type="hidden" name="local" value="entrada"/>
+                            </c:if>
+                            <c:if test="${param.acao == 'enviadas'}">
+                                <input type="hidden" name="local" value="enviadas"/>
+                            </c:if>
                             <input type="hidden" name="operacao" value="Excluir"/>
                             <input type="hidden" name="txtId" value="${param.id}"/>
                             <input type="hidden" name="txtId_caixa_entrada" value="${sessionScope.user.entrada.id}"/>
@@ -66,16 +74,7 @@
             </table>
         </div>
                             
-        <!-- Scripts da Pagina -->
-        <!-- Importando jquery-->
-         <!--<script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>-->
-         <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-         <!-- Scripts personalizados -->
-        <!--<script src="../../js/ajaxFuntions.js"></script>-->
+       
         
     </body>
 </html>

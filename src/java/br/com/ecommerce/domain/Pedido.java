@@ -33,6 +33,17 @@ public class Pedido extends EntidadeDominio
     public static final String PRESTADOR = "PRESTADOR";
     public static final String MURAL = "MURAL";
     private String consulta;
+    private String canal;
+
+    public String getCanal() {
+        return canal;
+    }
+
+    public void setCanal(String canal) {
+        this.canal = canal;
+    }
+    
+    
     public String getConsulta()
     {
         return consulta;

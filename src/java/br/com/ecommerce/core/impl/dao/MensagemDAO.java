@@ -51,16 +51,17 @@ public class MensagemDAO extends AbstractDAO
             StringBuilder sql = new StringBuilder();
             
             sql.append("INSERT INTO MENSAGENS ");
-            sql.append("(id_caixa_entrada,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente) VALUES(?,?,NOW(),?,?,?,?)");
+            sql.append("(id_caixa_destinatario,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente,flg_resposta) VALUES(?,?,NOW(),?,?,?,?,?)");
             
             pst = conexao.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
             
-            pst.setInt(1,entrada.getMensagem().getId_caixa_remetente());
+            pst.setInt(1,entrada.getMensagem().getId_caixa_destinatario());
             pst.setString(2, entrada.getMensagem().getDescricao());
             pst.setString(3, entrada.getMensagem().getAssunto());
             pst.setString(4, entrada.getMensagem().getRemetente());
             pst.setString(5, entrada.getMensagem().getDestinatario());
             pst.setInt(6, entrada.getId());
+            pst.setBoolean(7, entrada.getMensagem().isFlg_resposta());
             pst.executeUpdate();
             
             ResultSet rs = pst.getGeneratedKeys();
@@ -108,14 +109,29 @@ public class MensagemDAO extends AbstractDAO
             
             StringBuilder sql = new StringBuilder();
             
-            sql.append("DELETE FROM MENSAGENS ");
-            sql.append("WHERE id_caixa_entrada = ? and id = ?");
-            
-            pst = conexao.prepareStatement(sql.toString());
-            
-            pst.setInt(1, entrada.getId());
-            pst.setInt(2, entrada.getMensagem().getId());
-            
+            if(entrada.getMensagem().isFlg_excluida_enviada())
+            {
+                sql.append("UPDATE MENSAGENS SET flg_excluida_enviada = ?, flg_excluida_recebido = ? ");
+                sql.append("WHERE  id = ?");
+                
+                pst = conexao.prepareStatement(sql.toString());
+                
+                pst.setBoolean(1, entrada.getMensagem().isFlg_excluida_enviada());
+                pst.setBoolean(2, entrada.getMensagem().isFlg_excluida_recebido());
+                pst.setInt(3, entrada.getMensagem().getId());
+            }else
+            {
+                sql.append("UPDATE MENSAGENS SET flg_excluida_enviada = ?, flg_excluida_recebido = ? ");
+                sql.append("WHERE id_caixa_destinatario = ? and id = ?");
+                
+                pst = conexao.prepareStatement(sql.toString());
+                
+                pst.setBoolean(1, entrada.getMensagem().isFlg_excluida_enviada());
+                pst.setBoolean(2, entrada.getMensagem().isFlg_excluida_recebido());
+                pst.setInt(3, entrada.getId());
+                pst.setInt(4, entrada.getMensagem().getId());
+            }
+           
             pst.executeUpdate();
             
             conexao.commit();
@@ -159,7 +175,8 @@ public class MensagemDAO extends AbstractDAO
             
             StringBuilder sql = new StringBuilder();
             
-            sql.append("SELECT M.* FROM MENSAGENS as M, CAIXA_ENTRADA as C  WHERE M.ID_CAIXA_ENTRADA = C.ID and M.ID_CAIXA_ENTRADA = ? ORDER BY  M.DATA_MSG ");
+            sql.append("SELECT M.* FROM MENSAGENS as M, CAIXA_ENTRADA as C  "
+                    + "WHERE M.ID_CAIXA_DESTINATARIO= C.ID and M.id_caixa_destinatario = ? AND flg_excluida_recebido = false ORDER BY  M.DATA_MSG ");
         
             
             pst = conexao.prepareStatement(sql.toString());
@@ -179,7 +196,9 @@ public class MensagemDAO extends AbstractDAO
                 msg.setRemetente(rs.getString("remetente"));
                 msg.setDestinatario(rs.getString("destinatario"));
                 msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
-                
+                msg.setFlg_resposta(rs.getBoolean("flg_resposta"));
+                msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
+                msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
                 mensagens.add(msg);
             }           
             return mensagens;
@@ -195,29 +214,95 @@ public class MensagemDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-       CaixaEntrada entrada = (CaixaEntrada) entidade;
-       openConnection();
-       
-       String sql = "SELECT * FROM MENSAGENS WHERE ID=?";
-       
-       pst = conexao.prepareStatement(sql);
-       pst.setInt(1, entrada.getMensagem().getId());
-       ResultSet rs = pst.executeQuery();
-       if(rs.next())
-       {
-           Mensagem msg  = new Mensagem();
-           msg.setId(rs.getInt("id"));
-           msg.setAssunto(rs.getString("assunto"));
-           msg.setData_msg(rs.getDate("data_msg"));
-           msg.setDescricao(rs.getString("mensagem"));
-           msg.setDestinatario(rs.getString("destinatario"));
-           msg.setRemetente(rs.getString("remetente"));
-           msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
-           entrada.setMensagem(msg);
-       }
-       conexao.close();
-       return entrada;
-       
-    }
-    
+       try{
+        CaixaEntrada entrada = (CaixaEntrada) entidade;
+        openConnection();
+
+        String sql = "SELECT * FROM MENSAGENS WHERE ID=?";
+
+        pst = conexao.prepareStatement(sql);
+        pst.setInt(1, entrada.getMensagem().getId());
+        ResultSet rs = pst.executeQuery();
+        if(rs.next())
+        {
+            Mensagem msg  = new Mensagem();
+            msg.setId(rs.getInt("id"));
+            msg.setAssunto(rs.getString("assunto"));
+            msg.setData_msg(rs.getDate("data_msg"));
+            msg.setDescricao(rs.getString("mensagem"));
+            msg.setDestinatario(rs.getString("destinatario"));
+            msg.setRemetente(rs.getString("remetente"));
+            msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
+            msg.setFlg_resposta(rs.getBoolean("flg_resposta"));
+            msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
+            msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
+            entrada.setMensagem(msg);
+        }
+         return entrada;
+       }finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    } 
+    //Métodoas para buscar as mensagens envioadas por um usupario
+     public List<EntidadeDominio> consultarMensagensEnvidas(EntidadeDominio entidade) throws SQLException{
+         CaixaEntrada entrada = (CaixaEntrada) entidade;
+        
+        List<EntidadeDominio> mensagens = new ArrayList<>();
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+                openConnection();
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("SELECT M.* FROM MENSAGENS as M, CAIXA_ENTRADA as C  "
+                    + "WHERE M.ID_CAIXA_DESTINATARIO= C.ID and M.id_caixa_remetente = ?  and flg_excluida_enviada = false ORDER BY  M.DATA_MSG ");
+        
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setInt(1, entrada.getId());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next())
+            {
+                Mensagem msg = new Mensagem();
+                
+                msg.setDescricao(rs.getString("Mensagem"));
+                msg.setId(rs.getInt("id"));
+                msg.setData_msg(rs.getDate("data_msg"));
+                msg.setAssunto(rs.getString("assunto"));
+                msg.setRemetente(rs.getString("remetente"));
+                msg.setDestinatario(rs.getString("destinatario"));
+                msg.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
+                msg.setFlg_resposta(rs.getBoolean("flg_resposta"));
+                msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
+                msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
+                mensagens.add(msg);
+            }           
+            return mensagens;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException("Erro ao consultar as mensagens!");
+        }finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+     }
 }

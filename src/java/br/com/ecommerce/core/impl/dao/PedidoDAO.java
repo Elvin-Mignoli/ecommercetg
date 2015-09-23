@@ -39,8 +39,8 @@ public class PedidoDAO extends AbstractDAO
             StringBuilder sql = new StringBuilder();
             //preparando SQL para salvar o pe!
             sql.append("INSERT INTO PEDIDOS ");
-            sql.append("(id_cliente,descricao,habilidades,habilidade_cliente,data_pedido,status,data_inicio,data_fim,horapedido) ");
-            sql.append("VALUES (?,?,?,?,?,?,?,?,?)");
+            sql.append("(id_cliente,descricao,habilidades,habilidade_cliente,data_pedido,status,data_inicio,data_fim,horapedido,video_canal) ");
+            sql.append("VALUES (?,?,?,?,?,?,?,?,?,NEXTVAL('seq_video_canal'))");
 
             pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 
@@ -171,52 +171,66 @@ public class PedidoDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-       Pedido pe = (Pedido) entidade;
-        openConnection();
-       
-       String sql = "SELECT * FROM PEDIDOS WHERE ID = ?";
-       
-       pst = conexao.prepareStatement(sql);
-       pst.setInt(1,pe.getId());
-       ResultSet rs = pst.executeQuery();
-       if(rs.next())
-       {
-            pe = new Pedido();
-            pe.setId(rs.getInt("id"));
-            //buscar dados do cliente
-            pe.setCliente(new Cliente());
-            pe.getCliente().setId(rs.getInt("id_cliente"));
-            ClienteDAO clientedao = new ClienteDAO();
-            pe.setCliente((Cliente)clientedao.consultarUm(pe.getCliente()));
-            //buscar dado do prestador
-            pe.setPrestadorFinalista(new PrestadorServico());
-            pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
-            if(pe.getPrestadorFinalista().getId() != 0)
+        try{
+            Pedido pe = (Pedido) entidade;
+             openConnection();
+
+            String sql = "SELECT * FROM PEDIDOS WHERE ID = ?";
+
+            pst = conexao.prepareStatement(sql);
+            pst.setInt(1,pe.getId());
+            ResultSet rs = pst.executeQuery();
+            if(rs.next())
             {
-                PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
-                pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
-                
+                 pe = new Pedido();
+                 pe.setId(rs.getInt("id"));
+                 //buscar dados do cliente
+                 pe.setCliente(new Cliente());
+                 pe.getCliente().setId(rs.getInt("id_cliente"));
+                 ClienteDAO clientedao = new ClienteDAO();
+                 pe.setCliente((Cliente)clientedao.consultarUm(pe.getCliente()));
+                 AutenticarDAO logindao = new AutenticarDAO(conexao);
+                 pe.setCliente((Cliente)logindao.consultarLogin(pe.getCliente()));
+                 //buscar dado do prestador
+                 pe.setPrestadorFinalista(new PrestadorServico());
+                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
+                 if(pe.getPrestadorFinalista().getId() != 0)
+                 {
+                     PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                     pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+
+                 }
+                 pe.setDescricao(rs.getString("descricao"));
+                 String habilidades[] = rs.getString("habilidades").split(",");
+                 pe.addHabilidadeRequerida(habilidades);
+                 String habilidadeCliente[] = rs.getString("habilidade_cliente").split(",");
+                 pe.addHabilidadeCliente(habilidadeCliente);
+                 pe.setDataInicio(rs.getDate("data_inicio"));
+                 pe.setDataFim(rs.getDate("data_fim"));
+                 pe.setData(Calendar.getInstance());
+                 pe.getData().setTime(rs.getDate("data_pedido"));
+                 pe.setStatus(Status.valueOf(rs.getString("status")));
+                 pe.setHoraConsultoria(Calendar.getInstance());
+                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                 pe.setCanal(rs.getString("video_canal"));
+                 //procurar interessados
+                 InteressadoDAO dao = new InteressadoDAO();
+                 pe.setPrestadores(dao.consultar(pe));
+                 pe.setQtdeInteressados(pe.getPrestadores().size());
+
             }
-            pe.setDescricao(rs.getString("descricao"));
-            String habilidades[] = rs.getString("habilidades").split(",");
-            pe.addHabilidadeRequerida(habilidades);
-            String habilidadeCliente[] = rs.getString("habilidade_cliente").split(",");
-            pe.addHabilidadeCliente(habilidadeCliente);
-            pe.setDataInicio(rs.getDate("data_inicio"));
-            pe.setDataFim(rs.getDate("data_fim"));
-            pe.setData(Calendar.getInstance());
-            pe.getData().setTime(rs.getDate("data_pedido"));
-            pe.setStatus(Status.valueOf(rs.getString("status")));
-            pe.setHoraConsultoria(Calendar.getInstance());
-            pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
-            //procurar interessados
-            InteressadoDAO dao = new InteressadoDAO();
-            pe.setPrestadores(dao.consultar(pe));
-            pe.setQtdeInteressados(pe.getPrestadores().size());
-            
-       }
-       conexao.close();
-       return pe;
+             return pe;
+       }finally
+        {
+            try
+            {
+                conexao.close();
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+      
     }
 
     @SuppressWarnings("ConvertToStringSwitch")
@@ -267,6 +281,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setStatus(Status.valueOf(rs.getString("status")));
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO();
                 pe.setPrestadores(dao.consultar(pe));
@@ -315,6 +330,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setStatus(Status.valueOf(rs.getString("status")));
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO();
                 pe.setPrestadores(dao.consultar(pe));
@@ -364,6 +380,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setStatus(Status.valueOf(rs.getString("status")));
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO();
                 pe.setPrestadores(dao.consultar(pe));

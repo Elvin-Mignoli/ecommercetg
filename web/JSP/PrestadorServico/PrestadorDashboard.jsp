@@ -11,13 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
         <title>Bem Vindo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-       
-        <!-- Custom styles for this template -->
-        <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
+   
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <!-- CSS das fontes -->
@@ -25,18 +22,38 @@
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" >
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
+        <!--Navbar -->
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>                        
+              </button>
+              <a class="navbar-brand" href="#">Know-How</a>
             </div>
-        </nav>
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="PrestadorDashboard.jsp">Home</a></li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Page 1-1</a></li>
+                    <li><a href="#">Page 1-2</a></li>
+                    <li><a href="#">Page 1-3</a></li>
+                  </ul>
+                </li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                 <li><a href="logoff"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav><!--fim Navbar -->
+
 
         <div class="container">
             <div class="row profile">
@@ -76,7 +93,7 @@
                                         </li>
                                        
                                         <li class="active">
-                                             <a  data-toggle="collapse" href="#collapseMenu" aria-expanded="false"  >
+                                             <a  href="#collapseMenu" data-toggle="collapse"  aria-expanded="false"  >
                                                 <i class="glyphicon glyphicon-cog"></i>
                                                 Config.Conta </a>
                                         </li>
@@ -100,11 +117,29 @@
                                                
                                                 Editar Dados </a>
                                         </li>
-                                        <li class="active">
-                                            <a href= "/Ecommerce/JSP/PrestadorServico/CaixaEntrada" id="caixa_entrada" data-titulo="Caixa de Entrada" >
+                                        <li class="active" id="listMensagens">
+                                            <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
-                                                Mensagens </a>
+                                                Mensagens
+                                            </a>
                                         </li>
+                                        <div class="collapse active" id="collapseMenuMensagens">
+                                            <ul id="option_mensagens">
+                                                <a href= "CaixaEntrada" id="caixa_entrada" data-titulo="Caixa de Entrada" >
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                                Caixa de entrada 
+                                                </a>
+                                                <br/>
+                                                <a href= "MensagemEnviada" id="mensagens_enviadas" data-titulo="Mensagens enviadas" >
+                                                <i class="glyphicon glyphicon-cloud"></i>
+                                                Mensagens enviadas
+                                                </a>
+                                                <br/>
+                                              
+                                            </ul>
+                                        </div>
+                                        
+                                        
                                         <li class="active" id="listConsult">
                                             <a href="#collapseMenuConsult" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-chevron-down"></i>
@@ -131,6 +166,7 @@
                                                 <i class="glyphicon glyphicon-flag"></i>
                                                 Ajuda </a>
                                         </li>
+                                        
                                         <li>
                                             <a href="logoff">
                                                 <i class="glyphicon glyphicon-off"></i>
@@ -213,24 +249,28 @@
             <input type="hidden" value="Consultar" name="operacao"/>
             <input type="submit"  hidden="false"id="sub"/>
         </form>
-        <!-- Scripts da Pagina -->
-       <!-- Arquivos JS da pagina -->
-        <script src="../../js/libs/jquery/jquery-1.11.3.min.js" type="text/javascript"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
-        <!-- Arquivos bootstrap da página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/dropdown.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
-        <!-- Arquivos JS para carregar tag inputs do bootstrap -->
-        <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
-        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
-        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
-        <!-- Implementando script de load de paginas de funcoes -->
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+       <!-- Scripts da Pagina -->
+    
+     <!-- Arquivos bootstrap da página -->
+      <script src="../../bootstrap/js/dropdown.js"></script>
+      <script src="../../bootstrap/js/collapse.js"></script>
+      <script src="../../bootstrap/js/tab.js"></script>
+      <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
+      <!-- Jquery.js-->
+      <script src="../../js/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
+      <!-- Mask's -->
+      <script src="../../js/libs/jquery.maskedinput.js"></script>
+      <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
+      <!--Bootstrap -->
+      <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+       <!-- Arquivos JS para carregar tag inputs do bootstrap -->
+      <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
+      <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
+      <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+      <!-- Implementando script de load de paginas de funcoes -->
+      <script src="../../js/ajaxFuntions.js"></script>
+      <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+
         <script>
         $(document).ready(    
         function() {
@@ -263,6 +303,7 @@
                $("#sub").trigger("click");
            });
         });  
+        
         </script>
     </body>
 </html>

@@ -70,16 +70,7 @@
             </div>  
         </form>
                      
-        <!-- Scripts da Pagina -->
-        <!-- Importando jquery-->
-          <!--<script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>-->
-         <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-         <!-- Scripts personalizados -->
-        <!--<script src="../../js/ajaxFuntions.js"></script>-->
+       
         
     </body>
 </html>

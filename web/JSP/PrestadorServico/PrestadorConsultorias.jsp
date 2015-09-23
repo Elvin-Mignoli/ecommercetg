@@ -17,17 +17,20 @@
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
         <!-- CSS das fontes -->
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
         <title>Minhas consultorias</title>
     </head>
     <body>
-         <div class="table-responsive" id="div_candidaturas">
-            <table class="table-bordered table-striped col-lg-12 table-responsive">
+         <div>
+            <table data-toggle="table">
+                <thead>
                 <tr>
                     <th id="desc">Descrição</th> <th id="cliente">Cliente</th> <th id="status">Status</th><th>Acão</th>
                 </tr>
+                </thead>
                 <c:if test="${requestScope.ListaPedido.pedidos ne null}"><!--A lista de pedidos esta vazia?-->
                     <!--não está vazia -->
                     <!--ForEach para percorrer todos pedidos -->
@@ -38,7 +41,7 @@
                             <td style="text-align: center">${list.cliente.nome}&nbsp;${list.cliente.sobrenome}</td>
                             <td style="text-align: center">${list.status}</td>
                             <td style="text-align: center">
-                                <a href="ConsultarPedido?id_pedido=${list.id}" value="Ver" name="btn_ver"  class="btn btn-info ver"  >Ver</a>
+                                <a href="ConsultarPedido?id_pedido=${list.id}" value="Ver" name="btn_ver"  class="btn btn-info ver" data-titulo="Pedido" >Ver</a>
                             </td>
                         </tr>
             
@@ -50,12 +53,6 @@
             </c:if>
         </div>
        
-       <!-- Arquivos bootstrap da página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
-        <!-- Implementando script de load de paginas de funcoes -->
-        <script src="../../js/ajaxFuntions.js"></script>
-        <!--<script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>-->
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
     </body>
 </html>
