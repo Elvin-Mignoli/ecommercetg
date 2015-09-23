@@ -14,11 +14,13 @@ import br.com.ecommerce.core.impl.IStrategy.ValidaHabilidadePedido;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.InteressadoDAO;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.Interessado;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.SQLException;
@@ -52,6 +54,7 @@ public class Fachada implements IFachada
         daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
         daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
         daos.put(Pedido.class.getName(), new PedidoDAO()); 
+        daos.put(Interessado.class.getName(), new InteressadoDAO());
         /* 
          Lista de Regras de negocio! 
          */

@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
@@ -95,18 +96,24 @@ public class InteressadoDAO extends AbstractDAO
             {
                 openConnection();
             }
-            Pedido pedido = (Pedido) entidade;
+            Pedido pedido = (Pedido) entidade;  //nao espera, por onde voce esta chamando esse metodo??
             ArrayList<EntidadeDominio> lista = new ArrayList<>();
             String sql = "SELECT * FROM INTERESSADOS WHERE ID_PEDIDOS =?";
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, pedido.getId());
             ResultSet resultado = pst.executeQuery();
             
+            IDAO dao = new PrestadorServicoDAO(conexao);
+            
             while (resultado.next())
             {
                 PrestadorServico prestador = new PrestadorServico();
+                
                 prestador.setId(resultado.getInt("id_prestador"));
-                if (resultado.getString("status").equals(Status.EM_ANDAMENTO))
+                
+                prestador = (PrestadorServico) dao.consultarUm(prestador);
+                
+                /*if (resultado.getString("status").equals(Status.EM_ANDAMENTO))
                 {
                     prestador.setCandidatura(Status.EM_ANDAMENTO);
                 } else if (resultado.getString("status").equals("NAO_SELECIONADO"))
@@ -115,8 +122,11 @@ public class InteressadoDAO extends AbstractDAO
                 } else
                 {
                     prestador.setCandidatura(Status.SELECIONADO);
-                }
-                pedido.setId(resultado.getInt("id_pedidos"));
+                }*/
+                prestador.setCandidatura(Status.valueOf(resultado.getString("status")));
+                
+                //pedido.setId(resultado.getInt("id_pedidos")); nao faz sentido essa linha!
+                
                 lista.add(prestador);
             }
             return lista;
