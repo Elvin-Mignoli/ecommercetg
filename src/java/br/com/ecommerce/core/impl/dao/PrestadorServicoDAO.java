@@ -312,7 +312,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             else
             {
                 //pegar os dados de  endereço
-                EnderecoDAO endDao = new EnderecoDAO();
+                EnderecoDAO endDao = new EnderecoDAO(conexao);
                 Endereco end = new Endereco();
                 end.setId(resultado.getInt("id_endereco"));
                 prestador.setEndereco((Endereco) endDao.consultarUm(end));
@@ -330,7 +330,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                 prestador.setSexo(resultado.getString("sexo"));
                 prestador.setSobrenome(resultado.getString("sobrenome"));
                 //recuperar as competencias
-                CompetenciaDAO compDAO = new CompetenciaDAO();
+                CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
                 compDAO.consultarUm(prestador);
                 
                 //recuperar a caixa de caixa

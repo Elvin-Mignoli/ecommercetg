@@ -32,7 +32,7 @@
                         <br>
                         <span><b>Cliente:&nbsp;</b>${requestScope.pedido.cliente.nome}&nbsp;${requestScope.pedido.cliente.sobrenome}</span>
                         <br>
-                        <!-- Span descrição do pedido-->
+                        <!-- Span descriÃ§Ã£o do pedido-->
                         <span><b>Descrição:</b> &nbsp;${requestScope.pedido.descricao}</span><br>
                         <div class="text-center">
                             <span class="text-center"><b>Datas da consultoria:</b></span><br><br>
@@ -54,33 +54,36 @@
                         <span><b>Consultor/A:&nbsp;</b>${requestScope.pedido.prestadorFinalista.nome} &nbsp;${requestScope.pedido.prestadorFinalista.sobrenome}</span>
                         <br>
                         <br>
-                        <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success">Vídeo Conferência</a>
+                        <c:if test="${param.local != 'candidaturas'}">
+                        <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success">Videoconferencia</a>
                         <br> <br>
                         <button type="button" id="btn_enviar" class="btn btn-success" onclick="showButtonMsg()">Enviar Mensagem para o cliente</button>
                         <br><br>
-                        <!--Form pra mandar a mensagem -->
-                        <div id="div_mensagem" hidden="true">
-                            <form action="EnviarMensagem" method="POST">
-                                <input type="hidden" name="operacao" value="Atualizar"/>
-                                <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.cliente.email}"/>
-                                <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.cliente.entrada.id}"/>
-                                <!-- Assunto-->
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon " id="span_msg">Assunto: </span>
-                                        <input type="text"  id="input_msg" name="txtAssunto" class="form-control">
+                        
+                            <!--Form pra mandar a mensagem -->
+                            <div id="div_mensagem" hidden="true">
+                                <form action="EnviarMensagem" method="POST">
+                                    <input type="hidden" name="operacao" value="Atualizar"/>
+                                    <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.cliente.email}"/>
+                                    <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.cliente.entrada.id}"/>
+                                    <!-- Assunto-->
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon " id="span_msg">Assunto: </span>
+                                            <input type="text"  id="input_msg" name="txtAssunto" class="form-control">
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Mensagem-->
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <span class="input-group-addon " id="span_msg">Mensagem: </span>
-                                        <input type="text"  id="input_msg" name="txtMensagem" class="form-control">
+                                    <!-- Mensagem-->
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon " id="span_msg">Mensagem: </span>
+                                            <input type="text"  id="input_msg" name="txtMensagem" class="form-control">
+                                        </div>
                                     </div>
-                                </div>
-                                <button class="btn btn-success" type="submit">Enviar</button>
-                            </form>            
-                        </div>  
+                                    <button class="btn btn-success" type="submit">Enviar</button>
+                                </form>            
+                            </div>  
+                        </c:if>            
                     </div>
                 </div>
             </div>

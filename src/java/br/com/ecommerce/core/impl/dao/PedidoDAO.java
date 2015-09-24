@@ -321,7 +321,7 @@ public class PedidoDAO extends AbstractDAO
                 //buscar dados do cliente
                 pe.setCliente(new Cliente());
                 pe.getCliente().setId(rs.getInt("id_cliente"));
-                ClienteDAO clientedao = new ClienteDAO();
+                ClienteDAO clientedao = new ClienteDAO(conexao);
                 pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
                 AutenticarDAO logindao = new AutenticarDAO(conexao);
                 pe.setCliente((Cliente) logindao.consultarLogin(pe.getCliente()));
@@ -348,7 +348,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
-                InteressadoDAO dao = new InteressadoDAO();
+                InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
                 pe.setQtdeInteressados(pe.getPrestadores().size());
 
@@ -557,7 +557,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
-                InteressadoDAO dao = new InteressadoDAO();
+                InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
                 pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);

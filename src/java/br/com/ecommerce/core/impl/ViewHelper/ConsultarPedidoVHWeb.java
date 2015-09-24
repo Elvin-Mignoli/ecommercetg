@@ -40,7 +40,10 @@ public class ConsultarPedidoVHWeb implements IViewHelper{
       
         if(resultado.getMensagens()!=null){
             request.setAttribute("pedido", pedido);
-            request.getRequestDispatcher("PrestadorConsultarPedido.jsp").forward(request, response);
+            if(request.getParameter("local").equals("candidaturas"))
+              request.getRequestDispatcher("PrestadorConsultarPedido.jsp?local=candidaturas").forward(request, response);
+            else
+               request.getRequestDispatcher("PrestadorConsultarPedido.jsp").forward(request, response); 
            
         }else{
             request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens

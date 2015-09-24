@@ -111,7 +111,6 @@
                 </table>
             </div>
         </div>
-        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script        
     </body>
 </html>
