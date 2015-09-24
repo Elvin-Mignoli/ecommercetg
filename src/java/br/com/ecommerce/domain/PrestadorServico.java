@@ -18,16 +18,6 @@ public class PrestadorServico extends Usuario
     private ArrayList<Competencia> habilidades;
     private String cnpj;
     private Status candidatura;
-
-    public Status getCandidatura()
-    {
-        return candidatura;
-    }
-
-    public void setCandidatura(Status candidatura)
-    {
-        this.candidatura = candidatura;
-    }
     
     public PrestadorServico(String nome, String sobrenome, String data, String cpf, Endereco end, Contato cont, String sexo, String tipoConta,
             String email, String senha, int status, ArrayList habilidades)
@@ -71,6 +61,14 @@ public class PrestadorServico extends Usuario
         this.cnpj = cnpj;
     }
 
+    public Status getCandidatura() {
+        return candidatura;
+    }
+
+    public void setCandidatura(Status candidatura) {
+        this.candidatura = candidatura;
+    }
+    
     /**
      * @return the habilidades
      */
@@ -87,12 +85,7 @@ public class PrestadorServico extends Usuario
         this.habilidades = habilidades;
     }
     
-    /**
-     * Compara o ID entre dois objetos
-     * @param o
-     * @return 
-     */
-    @Override
+   @Override
     public boolean equals(Object o)
     {
         PrestadorServico entidade = null;
@@ -111,6 +104,6 @@ public class PrestadorServico extends Usuario
             throw new NullPointerException("EntidadeDominio não pode ser NULL");
         } 
         else 
-            return entidade.getId().equals(this.getId());
+            return entidade.getId().equals(this.getId()); //return super.equals(o); //To change body of generated methods, choose Tools | Templates.
     }
 }

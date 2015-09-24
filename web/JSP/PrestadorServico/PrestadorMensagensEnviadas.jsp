@@ -1,5 +1,5 @@
 <%-- 
-    Document   : PestadorCaixaEntrada
+    Document   : PestadorMensagensEnvidas
     Created on : 01/09/2015, 10:18:13
     Author     : Elvin
 --%>
@@ -19,22 +19,22 @@
         <!-- CSS das fontes -->
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
-       
+        <!-- CSS de botton-->
+        
     </head>
 
     <body>
-        <div >
+        <div>
             <table data-toggle="table">
                 <thead>
                 <tr>
-                    <th id="rmt">Remetente</th> <th id="asst">Assunto</th> <th id="data">Data</th><th id="acao">Ação</th>
+                    <th id="rmt">Destinatario</th> <th id="asst">Assunto</th> <th id="data">Data</th><th id="acao">Ação</th>
                 </tr>
                 </thead>
                 <c:if test="${!requestScope.user.entrada.mensagens.isEmpty()}">
                         <c:forEach var="list" items="${requestScope.user.entrada.mensagens}">
-                            <c:if test="${list.flg_excluida_recebido == false}">    
                                 <tr>
-                                    <td style="text-align: center">${list.remetente}</td>
+                                    <td style="text-align: center">${list.destinatario}</td>
                                     <c:if test="${list.flg_resposta == true}">
                                          <td style="text-align: center">Re:${list.assunto}</td>
                                     </c:if>
@@ -44,12 +44,11 @@
                                     <td style="text-align: center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data_msg}"></f:formatDate></td>
                                     <td style="text-align: center">
                                         <button type="button" value="Abrir" id="btn_abrir" class="btn btn-info" 
-                                                onclick="abrirMsg(${list.id},'entrada')">Abrir</button>
+                                                onclick="abrirMsg(${list.id},'enviadas')">Abrir</button>
                                         <button type="button" value="Excluir" id="btn_excluir"  class="btn btn-info" 
-                                                onclick="excluirMensagemFront('Excluir',${requestScope.user.entrada.id},${list.id})">Excluir</button>
+                                                onclick="excluirMsgEnviadasFront('Excluir',${requestScope.user.entrada.id},${list.id})">Excluir</button>
                                     </td>
                                 </tr>
-                            </c:if>
                         </c:forEach>
                    </c:if>
             </table>
@@ -67,7 +66,8 @@
                    Ocorreu algum erro na exclusão da mensagem tente mais tarde!
                 </button>
         </div>
-         <!--Bootstrap table -->            
+                      
+        
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
     </body>
 </html>

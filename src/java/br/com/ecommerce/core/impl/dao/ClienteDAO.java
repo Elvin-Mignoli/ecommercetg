@@ -327,6 +327,12 @@ public class ClienteDAO extends AbstractDAO
                 
                 dao.consultarUm(cliente.getCartao());
                 
+                //recuperar a caixa de caixa
+                CaixaEntradaDAO entradaDAO = new CaixaEntradaDAO(conexao);
+                CaixaEntrada caixa = new CaixaEntrada(cliente, null);
+                caixa = (CaixaEntrada)entradaDAO.consultarUm(caixa);
+                cliente.setEntrada(caixa);
+                
                 return cliente;
             }
             return null;

@@ -8,29 +8,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
+       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Custom styles for this template -->
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <!-- CSS das fontes -->
+        <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
 
     </head>
     <body>
         <form method="POST" action="AlterarEmail" name="form_alterarEmail">
             <input type="text" name="operacao" value="AlterarEmail" hidden="true"/>
-            <div class="container">
+            <div class="container-fluid">
                 <!--E-mail atual-->
                 <div class="form-group">
-                    <div class="input-group col-lg-5">
+                    <div class="input-group col-lg-8">
                         <span class="input-group-addon" >
                             LOGIN/E-MAIL ATUAL
                         </span>
@@ -42,7 +36,7 @@
                 <div id="statusEmail"></div>
                 <!--Input digite um novo email -->
                 <div class="form-group " id="div_email">
-                    <div class="input-group col-lg-5">
+                    <div class="input-group col-lg-8">
                         <span class="input-group-addon">
                             NOVO E-MAIL PARA LOGIN
                         </span>
@@ -56,7 +50,7 @@
                 <!-- Status da confirmação do E-mail-->
                 <div id="status_confirm"></div>
                 <div class="form-group" id="div_confirm">
-                    <div class="input-group col-lg-5">
+                    <div class="input-group col-lg-8">
                         <span class="input-group-addon">
                             DIGITE NOVAMENTE O E-MAIL
                         </span>
@@ -75,6 +69,8 @@
                 </div>
             </div>  
         </form>
-
+                     
+       
+        
     </body>
 </html>

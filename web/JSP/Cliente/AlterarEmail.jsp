@@ -12,16 +12,8 @@
         <title>Configurações da Conta</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!-- implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
     </head>
     <body>
         <form action="AtualizaEmail" method="post">
@@ -62,5 +54,13 @@
                 <input type="submit" name="txtNovoEmail" class="btn btn-success" value="Alterar" id="changeEmail"/>  
             </div>
         </form>
+        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
+        <script src="../../js/libs/jquery-ui.min.js"></script>
+        <script src="../../js/libs/jquery.maskedinput.js"></script>
+        <!-- implementando bootstrap na página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/collapse.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script>
+        <script src="../../js/ajaxFuntions.js"></script>
     </body>
 </html>

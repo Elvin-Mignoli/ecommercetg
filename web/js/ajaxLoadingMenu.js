@@ -164,15 +164,20 @@ $(document).ready(function ()
         return false;
     });
     
-    $('#submit').on("click", function ()
-    {
-        var status = $('#span_confirm').val();
-
-        if (status === "")
-        {
-            $("#form_alterarEmail").submit();   //submetendo a página
-            alert("submetido");
-        }
+    
+   //ajax mostrar as candidaturas de consultorias do prestador de serviço
+    $("#candidaturas").on("click", function (e) {
+      //  alert("oi");
+        $("#panel-heading").html("Candidaturas");
+        e.preventDefault(); //eliminamos o evento
+        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
     });
     
     //ajax mostrar o perfil do  prestador de serviço
@@ -234,5 +239,52 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
+    
+    //Ajax para mostrar os dados de um determinado pedido
+      $(document).on("click",'.ver', function (e) {
+        //alert("oi");
+        $("#panel-heading").html("Pedido");
+        e.preventDefault(); //eliminamos o evento
+        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+    
+    
+    
+    //ajax mostrar as  consultorias do prestador de serviço
+    $("#minhas_consultorias").on("click", function (e) {
+      //  alert("oi");
+        $("#panel-heading").html("Minhas Consultorias");
+        e.preventDefault(); //eliminamos o evento
+        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+    
+    //ajax mostrar as mensagens enviadas do  prestador de serviço
+     $("#mensagens_enviadas").on("click", function (e) {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Mensagens Enviadas");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+   
 });
 

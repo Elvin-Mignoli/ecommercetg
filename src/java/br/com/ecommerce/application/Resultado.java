@@ -66,7 +66,7 @@ public class Resultado extends EntidadeAplicacao
 
     public void addEntidades(EntidadeDominio entidades)
     {
-        this.entidades.add(entidades);
+        this.getEntidades().add(entidades);
     }
 
     public EntidadeDominio getEntidade()

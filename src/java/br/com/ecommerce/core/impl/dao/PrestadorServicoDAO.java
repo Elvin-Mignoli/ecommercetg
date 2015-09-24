@@ -89,11 +89,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             
             dao.salvar(new CaixaEntrada(null, prestador));
 
-            
-            //salvando dados da caixa de entrada
-            dao = new CaixaEntradaDAO(conexao);
-            
-            dao.salvar(new CaixaEntrada(null, prestador));
+           
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 

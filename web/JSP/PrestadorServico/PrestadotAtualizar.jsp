@@ -14,72 +14,24 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <!-- Custom styles for this template -->
+         <!-- Custom styles for this template -->
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <!--Ajax Function e Loading menus -->
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
-        <!--Jquery Skill Bar -->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.4/typeahead.bundle.min.js"></script>
-        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
-        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
-        <link href="../../js/libs/jQuery-Tags/css/typeahead.tagging.css" rel="stylesheet" type="text/css"/>
-         <a href="../../js/libs/jQuery-Tags/css/typeahead.tagging.less"></a>
+        <link rel="stylesheet" href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css">
+        <!-- CSS das fontes -->
+        <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
          
-         
-        <script>
-            $(document).ready(function () {
-                $("#input_cpf").mask("999.999.999-99");
-                $("#input_cnpj").mask("99.999.999/9999-99");
-                $("#data").mask("99/99/9999");
-                $("#telefone").mask("(99)9999-9999");
-                $("#celular").mask("(99)99999-9999");
-                $("#cep").mask("99999-999");
-                $("#input_cpf").mask("999.999.999-99");
-
-                if ($("#estado").val().length > 1)
-                {
-                    $("#numero").focus();
-                }
-                $("#numero").blur(function () {
-                    $("#input_nome").focus();
-                });
-
-
-            });
-        </script>   
+      
     </head>
     <body>
-        <!--Jquery do campo Sexo -->
-        <script>
-           var valSexo = $('#valueSexo').val();
-
-           if (valSexo === "M")
-           {
-               document.getElementById("op2").setAttribute("selected", "true");
-           }
-           else if (valSexo === "F")
-           {
-               document.getElementById("op3").setAttribute("selected", "true");
-           }
-
-       </script>
+       
        <form method="POST" action="AtualizarPrestador">
            <input type="text" name="operacao" value="Atualizar" hidden="true"/>
-           <div class="container">
+           <div class="container-fluid">
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Nome
                        </span>
@@ -88,7 +40,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Sobrenome
                        </span>
@@ -97,7 +49,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Sexo
                        </span>
@@ -112,7 +64,7 @@
                 <c:choose>
                     <c:when test="${sessionScope.user.cpf != null}">         
                         <div class="form-group">
-                            <div class="input-group col-lg-5">
+                            <div class="input-group col-lg-7">
                                 <span class="input-group-addon">
                                     CPF
                                 </span>
@@ -122,7 +74,7 @@
                     </c:when>
                     <c:when test="${sessionScope.user.cnpj != null}">        
                         <div class="form-group">
-                            <div class="input-group col-lg-5">
+                            <div class="input-group col-lg-7">
                                 <span class="input-group-addon">
                                     CNPJ
                                 </span>
@@ -132,7 +84,7 @@
                     </c:when>
                 </c:choose>        
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Data
                        </span>
@@ -141,7 +93,7 @@
                </div>
 
                    <div class="form-group">
-                       <div class="input-group col-lg-5">
+                       <div class="input-group col-lg-7">
                            <span class="input-group-addon">
                                Telefone
                            </span>
@@ -150,7 +102,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Celular
                        </span>
@@ -163,7 +115,7 @@
                </div>
 
                <div class="form-group" id="div_cep">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon" id="span_cep">
                            CEP
                        </span>
@@ -172,7 +124,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Logradouro
                        </span>
@@ -181,7 +133,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Número
                        </span>
@@ -190,7 +142,7 @@
                </div> 
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Bairro
                        </span>
@@ -199,7 +151,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Cidade
                        </span>
@@ -208,7 +160,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Estado
                        </span>
@@ -217,7 +169,7 @@
                </div>
 
                <div class="form-group">
-                   <div class="input-group col-lg-5">
+                   <div class="input-group col-lg-7">
                        <span class="input-group-addon">
                            Complemento
                        </span>
@@ -228,22 +180,11 @@
                    <h2>Competência</h2>
                </div>    
                <div class="form-group">
-                   <div class="input-group col-lg-5">
-                      <input id="skill_bar" class="tags-input" value="<c:forEach var="list" items="${sessionScope.user.habilidades}"><c:if test='${sessionScope.user.habilidades != null}'>${list.descricao}</c:if></c:forEach>" name="txtSkill"/>
+                   <div class="input-group col-lg-7">
+                      <input id="skill_bar" data-role="tagsinput" value="${sessionScope.user.habilidades.toString().replace("]","").replace("[","")}" name="txtSkill"/>
                    </div>
                </div>
-             <script>
-                 
-                 var tagsource = [
-                'jquery-libs', 'jquery-multilingual-news',
-                'jquert-typeahead-tagging', 'jquery-multilingual-tags',
-                'jquery-forms-ajaxified', 'jquery-project-template',
-                'jquery-development-fabfile', 'jquery-user-media',
-                'jquery-feedback-form', 'jquery-review', 'jquery-hero-slider',
-                'jquery-document-library', 'jquery-paypal-express-checkout'
-                ];
-                $('#skill_bar').tagging(tagsource);
-             </script>    
+               
            </div>
            <br>
            <div class="container">
@@ -251,8 +192,59 @@
                    <input type="submit" value="Atualizar" class="btn btn-success"/>
                </div>
            </div>
-       </form>     
-                 
+       </form>   
+      <!-- Scripts da Pagina -->
+        <!-- Importando jquery-->
+         <!--<script src="../../js/libs/jquery-1.11.1.min.js"></script>
+        <script src="../../js/libs/jquery-ui.min.js"></script>-->
+        <script src="../../js/libs/jquery.maskedinput.js"></script>
+         <!--implementando bootstrap na página -->
+        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../../bootstrap/js/collapse.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script>
+        <!-- JavaScript Bootstrap tag-input -->
+        <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.min.js"></script>
+        <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js"></script>
+         <!-- Scripts personalizados -->
+        <script src="../../js/ajaxFuntions.js"></script>
+        
+        <script>
+          $(document).ready(function () {
+              $("#input_cpf").mask("999.999.999-99");
+              $("#input_cnpj").mask("99.999.999/9999-99");
+              $("#data").mask("99/99/9999");
+              $("#telefone").mask("(99)9999-9999");
+              $("#celular").mask("(99)99999-9999");
+              $("#cep").mask("99999-999");
+              $("#input_cpf").mask("999.999.999-99");
+
+              if ($("#estado").val().length > 1)
+              {
+                  $("#numero").focus();
+              }
+              $("#numero").blur(function () {
+                  $("#input_nome").focus();
+              });
+
+
+          });
+        </script>   
+        
+         <!--Jquery do campo Sexo -->
+        <script>
+           var valSexo = $('#valueSexo').val();
+
+           if (valSexo === "M")
+           {
+               document.getElementById("op2").setAttribute("selected", "true");
+           }
+           else if (valSexo === "F")
+           {
+               document.getElementById("op3").setAttribute("selected", "true");
+           }
+
+       </script>
+    </body>            
 </html>
 
 
