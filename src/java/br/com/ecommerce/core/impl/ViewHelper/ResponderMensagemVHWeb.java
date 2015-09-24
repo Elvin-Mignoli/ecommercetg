@@ -11,6 +11,7 @@ import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Mensagem;
 import br.com.ecommerce.domain.PrestadorServico;
+import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,15 +26,16 @@ public class ResponderMensagemVHWeb implements IViewHelper{
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
         
-        PrestadorServico prestador = (PrestadorServico)request.getSession().getAttribute("user");
+        Usuario usuario = (Usuario)request.getSession().getAttribute("user");
         Mensagem msg = new Mensagem();
         msg.setAssunto(request.getParameter("txtAssunto"));
         msg.setDescricao(request.getParameter("txtResposta"));
-        msg.setRemetente(prestador.getEmail());
-        msg.setDestinatario(request.getParameter("txtDestinatario"));
-        msg.setId_caixa_remetente(Integer.parseInt(request.getParameter("txtRemetente_id")));
-        prestador.getEntrada().setMensagem(msg);
-        return prestador.getEntrada();
+        msg.setRemetente(usuario.getEmail());//email do remetente
+        msg.setDestinatario(request.getParameter("txtDestinatario"));//email do destinatario
+        msg.setId_caixa_destinatario(Integer.parseInt(request.getParameter("txtRemetente_id")));//id da caixa de entrada para que a mensagem vai ser mandada
+        msg.setFlg_resposta(true);
+        usuario.getEntrada().setMensagem(msg);
+        return usuario.getEntrada();
     }
 
     @Override
@@ -43,11 +45,20 @@ public class ResponderMensagemVHWeb implements IViewHelper{
         {
            request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens 
       
-        }else{
-           
-            request.setAttribute("MsgAtualiza", "Mensagem enviada com sucesso!");           
+        }else
+        {
+            //decidino se é Cliente ou Prestador
+            if (request.getRequestURI().contains("Cliente"))
+            {
+                request.setAttribute("MsgAtualiza", "Mensagem enviada com sucesso!");
+                request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
+            }else
+            {
+                request.setAttribute("MsgAtualiza", "Mensagem enviada com sucesso!");
+                request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
+            }            
         }
-        request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
+        
     }
     
 }

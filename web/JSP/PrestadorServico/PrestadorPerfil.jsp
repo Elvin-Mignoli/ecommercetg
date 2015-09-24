@@ -11,51 +11,36 @@
 <html>
     <head>
         <link href="../../css/changeColor.css" rel="stylesheet" type="text/css"/>
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/libs/jquery-1.11.1.min.js"></script>
-        <script src="../../js/libs/jquery-ui.min.js"></script>
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!--implementando bootstrap na página -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <!-- Custom styles for this template -->
-       
+         <!-- Custom styles for this template -->
         <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script> 
+        <!-- CSS das fontes -->
+        <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/> 
+        <!--style para mudar as cores dos inputs e span-->
+        <style>
+            #input_nome,#input_sexo,#input_data,
+            #input_cpf,#input_telefone,#input_celular,
+            #input_cep,#input_rua,#input_numero,#input_bairro,
+            #input_cidade,#input_estado,#input_complemento,#input_cnpj{
+                background-color: white;
+            }
+            #span_nome,#span_sexo,#span_cpf,#span_cnpj,
+            #span_data,#span_telefone,#span_celular{
+                background-color: #dff0d8;
+                border: 1px solid #3c763d;
+            }
+            #span_cep,#span_rua,#span_numero,
+            #span_bairro,#span_cidade,#span_estado,
+            #span_complemento{
+                background-color: #d9edf7;
+                border:1px solid #31708f;
+            }
+        </style>
     </head>
-    <script>
-        $(document).ready(function(){
-                $("#input_cpf").mask("999.999.999-99");
-                $("#input_cnpj").mask("99.999.999/9999-99");
-                $("#input_telefone").mask("(99)9999-9999");
-                $("#input_celular").mask("(99)99999-9999");
-                $("#input_cep").mask("99999-999");
-            });
-    </script> 
-    <!--style para mudar as cores dos inputs e span-->
-    <style>
-        #input_nome,#input_sexo,#input_data,
-        #input_cpf,#input_telefone,#input_celular,
-        #input_cep,#input_rua,#input_numero,#input_bairro,
-        #input_cidade,#input_estado,#input_complemento,#input_cnpj{
-            background-color: white;
-        }
-        #span_nome,#span_sexo,#span_cpf,#span_cnpj,
-        #span_data,#span_telefone,#span_celular{
-            background-color: #dff0d8;
-            border: 1px solid #3c763d;
-        }
-        #span_cep,#span_rua,#span_numero,
-        #span_bairro,#span_cidade,#span_estado,
-        #span_complemento{
-            background-color: #d9edf7;
-            border:1px solid #31708f;
-        }
-    </style>
+    
+    
     <body>
        <!--Verificar se há algum dado pendente-->
        <c:if test="${sessionScope.user.dataNascimento == null || 
@@ -249,7 +234,17 @@
                 </div>
             </div><!--panel body-->
        </div><!--panel-->
-       
-       
+         <!-- Scripts da Pagina -->
+       <!-- Mask -->
+       <script>
+        $(document).ready(function(){
+                $("#input_cpf").mask("999.999.999-99");
+                $("#input_cnpj").mask("99.999.999/9999-99");
+                $("#input_telefone").mask("(99)9999-9999");
+                $("#input_celular").mask("(99)99999-9999");
+                $("#input_cep").mask("99999-999");
+            });
+        </script> 
+
     </body>
 </html>

@@ -11,7 +11,6 @@ import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
-import br.com.ecommerce.domain.Usuario;
 import java.sql.SQLException;
 
 /**

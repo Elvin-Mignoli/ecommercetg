@@ -172,11 +172,11 @@
                 {
                     $("#input_nome").focus();               
                 });
-            })
+            });
         </script>
-        
         <!-- Scripts personalizados -->
         <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        
+        
     </body>
     </html>

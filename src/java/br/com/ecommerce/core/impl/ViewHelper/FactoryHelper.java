@@ -34,6 +34,13 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/Cliente/AtualizaCartao", new AtualizarCartaoVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/Imagem", new AlterarImageClienteVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/SalvarPedido", new SalvarPedidoVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/MeusPedidos", new ListaPedidosVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/FiltroAtualizarPedido", new FiltroAtualizarPedidoVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/AtualizarPedido", new AtualizarPedidoClienteVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/DesativarPedido", new ExcluirPedidoVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/ConsultaInscritos", new ConsultaInteressadosVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/ConsultaPedido", new ConsultaPedidoCliente());         
+        helpers.put("/Ecommerce/JSP/Cliente/SelecionarPrestador", new FecharPedidoVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/SalvarPrestador", new SalvarPrestadorVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CPF", new ConsultaCPFVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/Email", new ConsultaEmailVHWeb());
@@ -42,9 +49,18 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarEmail", new AlterarEmailVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/AlterarSenha", new AlterarSenhaVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CNPJ", new ConsultaCNPJVHWeb());
-        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagem", new ExcluirMsgPVHWeb());
-        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagemFront", new ExcluirMsgFrontPVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagem", new ExcluirMsgVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ExcluirMensagemFront", new ExcluirMsgFrontVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/ResponderMensagem", new ResponderMensagemVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/CaixaEntrada", new CaixaEntradaVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Mural", new MuralPedidoVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Candidatar", new CandidatarVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Candidaturas", new CandidaturasVHWeb());
+        helpers.put("/Ecommerce/JSP/PrestadorServico/ConsultarPedido", new ConsultarPedidoVHWeb());  
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Consultorias", new PrestadorConsultoriasVHWeb());  
+        helpers.put("/Ecommerce/JSP/PrestadorServico/EnviarMensagem", new EnviarMensagemPrestadorVHWeb());  
+        helpers.put("/Ecommerce/JSP/PrestadorServico/MensagemEnviada", new MensagensEnviadasVHWeb()); 
+       
     }
     
     /**

@@ -282,44 +282,70 @@ public class AutenticarDAO extends AbstractDAO
     //método para apenas fazer um update na coluna email
     public void alterarEmail(EntidadeDominio entidade) throws SQLException
     {
-        Usuario usuario = (Usuario) entidade;
-        openConnection();
+        try{
+            Usuario usuario = (Usuario) entidade;
+            openConnection();
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("UPDATE LOGIN ");
-        sql.append("SET EMAIL = ?");
-        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
-                sql.append("WHERE ID_CLIENTE = ?) ");
-            else
-                sql.append("WHERE ID_PRESTADOR = ? ");
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET EMAIL = ?");
+            if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                    sql.append("WHERE ID_CLIENTE = ?) ");
+                else
+                    sql.append("WHERE ID_PRESTADOR = ? ");
 
-        pst = conexao.prepareStatement(sql.toString());
+            pst = conexao.prepareStatement(sql.toString());
 
-        pst.setString(1, usuario.getEmail());
-        pst.setInt(2, usuario.getId());
-        pst.executeUpdate();
-        conexao.close();
+            pst.setString(1, usuario.getEmail());
+            pst.setInt(2, usuario.getId());
+            pst.executeUpdate();
+        }finally
+        {
+            try
+            {
+                conexao.close();
+                pst.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+           
     }
     //método para apenas fazer um update na coluna senha
     public void alterarSenha(EntidadeDominio entidade) throws SQLException
     {
-        Usuario usuario = (Usuario) entidade;
-        openConnection();
+        try{
+            Usuario usuario = (Usuario) entidade;
+            openConnection();
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("UPDATE LOGIN ");
-        sql.append("SET SENHA = ?");
-        if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
-                sql.append("WHERE ID_CLIENTE = ?) ");
-            else
-                sql.append("WHERE ID_PRESTADOR = ? ");
+            StringBuilder sql = new StringBuilder();
+            sql.append("UPDATE LOGIN ");
+            sql.append("SET SENHA = ?");
+            if(usuario.getTipoConta().equalsIgnoreCase("Cliente"))
+                    sql.append("WHERE ID_CLIENTE = ?) ");
+                else
+                    sql.append("WHERE ID_PRESTADOR = ? ");
 
-        pst = conexao.prepareStatement(sql.toString());
+            pst = conexao.prepareStatement(sql.toString());
 
-        pst.setString(1, usuario.getSenha());
-        pst.setInt(2, usuario.getId());
-        pst.executeUpdate();
-        conexao.close();
+            pst.setString(1, usuario.getSenha());
+            pst.setInt(2, usuario.getId());
+            pst.executeUpdate();
+        }finally
+        {
+            try
+            {
+                conexao.close();
+                pst.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+           
     }
     public EntidadeDominio existeEmail(EntidadeDominio entidade) throws SQLException
     {
@@ -508,5 +534,64 @@ public class AutenticarDAO extends AbstractDAO
                 ex.printStackTrace();
             }
         }
+    }
+    
+    
+    //Método para buscar o login baseado no id do usuário
+    public EntidadeDominio consultarLogin(EntidadeDominio entidade) throws SQLException{
+        StringBuilder sql = new StringBuilder();
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+            
+            sql.append("SELECT *  ");
+            sql.append("FROM LOGIN");
+               if(entidade instanceof Cliente)
+                sql.append(" WHERE ID_CLIENTE = ? ");
+               else if(entidade instanceof PrestadorServico)
+                sql.append(" WHERE ID_PRESTADOR = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setInt(1, entidade.getId());
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next())  //entra no While enquanto tiver registro para leitura
+            {
+                if (rs.getInt("id_prestador") != 0)    //Decidindo qual campo pegar o ID! Prestador ou Cliente!
+                {
+                    PrestadorServico prestador = (PrestadorServico)entidade;
+                    prestador.setId(rs.getInt("id_prestador"));
+                    prestador.setEmail(rs.getString("email"));
+                    prestador.setStatus(rs.getInt("status"));
+                    prestador.setTipoConta(rs.getString("tipo_conta"));
+                   
+
+                    return prestador;
+                } else if (rs.getInt("id_cliente") != 0)
+                {
+                    Cliente cliente = (Cliente) entidade;
+                    cliente.setId(rs.getInt("id_cliente"));
+                    cliente.setEmail(rs.getString("email"));
+                    cliente.setStatus(rs.getInt("status"));
+                    cliente.setTipoConta(rs.getString("tipo_conta"));
+                    cliente.setUsuarioID(rs.getInt("id"));
+                    cliente.setImagem(rs.getString("imagem"));
+                   
+                    return cliente;
+                }
+            }
+            return entidade;
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException(ex);
+        } 
+        
     }
 }

@@ -89,11 +89,7 @@ public class PrestadorServicoDAO extends AbstractDAO
             
             dao.salvar(new CaixaEntrada(null, prestador));
 
-            
-            //salvando dados da caixa de entrada
-            dao = new CaixaEntradaDAO(conexao);
-            
-            dao.salvar(new CaixaEntrada(null, prestador));
+           
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 
@@ -300,22 +296,23 @@ public class PrestadorServicoDAO extends AbstractDAO
         openConnection();//Abrir conexão com banco
         PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
-        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE PRESTADOR_SERVICOS.ID = ? AND PRESTADOR_SERVICOS.ID_ENDERECO = ENDERECOS.ID ";
+        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS WHERE PRESTADOR_SERVICOS.ID = ?";
         try
         {
-            conexao.setAutoCommit(false);
+            //conexao.setAutoCommit(false);
             preparador = conexao.prepareStatement(sql);
             preparador.setInt(1, prestador.getId());
             ResultSet resultado = preparador.executeQuery();
             resultado.next();
-            conexao.commit();
+            //conexao.commit(); nao precisa de commit para fazer uma consulta
             if (resultado.getRow() == 0)
             {
                 return null;
-            } else
+            }
+            else
             {
                 //pegar os dados de  endereço
-                EnderecoDAO endDao = new EnderecoDAO();
+                EnderecoDAO endDao = new EnderecoDAO(conexao);
                 Endereco end = new Endereco();
                 end.setId(resultado.getInt("id_endereco"));
                 prestador.setEndereco((Endereco) endDao.consultarUm(end));
@@ -333,7 +330,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                 prestador.setSexo(resultado.getString("sexo"));
                 prestador.setSobrenome(resultado.getString("sobrenome"));
                 //recuperar as competencias
-                CompetenciaDAO compDAO = new CompetenciaDAO();
+                CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
                 compDAO.consultarUm(prestador);
                 
                 //recuperar a caixa de caixa
