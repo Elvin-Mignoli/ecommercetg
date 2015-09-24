@@ -10,7 +10,6 @@
         <url-pattern>/JSP/Cliente/DesativarPedido</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizaCartao</url-pattern>
         <url-pattern>/JSP/PrestadorServico/AtualizarPrestador</url-pattern>
-        <url-pattern>/JSP/Cliente/ConsultaInscritos</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ExcluirMensagemFront</url-pattern>
         <url-pattern>/JSP/Cliente/AtualizarCliente</url-pattern>

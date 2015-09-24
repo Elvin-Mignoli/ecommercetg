@@ -16,35 +16,39 @@
         <!-- Implementacao de CSS para Bootstrap tag input  -->
         <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css">
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container">
-            <div class="table-responsive">
-                <table class="table">
+            <div class="">
+                <table data-toggle="table">
                     <!-- Colunas da tabela -->
-                    <tr>
-                        <th>
-                            Descrição
-                        </th>
-                        <th>
-                            Data
-                        </th>
-                        <th>
-                            Status
-                        </th>
-                        <th class="text-center">
-                            Detalhes
-                        </th>
-                        <th class="text-center">
-                            Atualizar
-                        </th>
-                        <th class="text-center">
-                            Desativar
-                        </th>
-                        <th class="text-center">
-                            Interessados
-                        </th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>
+                                Descrição
+                            </th>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th class="text-center">
+                                Detalhes
+                            </th>
+                            <th class="text-center">
+                                Atualizar
+                            </th>
+                            <th class="text-center">
+                                Cancelar
+                            </th>
+                            <th class="text-center">
+                                Interessados
+                            </th>
+                        </tr>
+                    </thead>
                     <!-- Linhas da Tabela -->
                     <c:forEach var="pedido" items="${requestScope.pedidos}">
                         <tr>
@@ -54,10 +58,9 @@
                             <td>
                                 <form method="post" action="ConsultarPedido">
                                     <input type="text" name="operacao" value="Consultar" hidden="true"/>
-                                    <input type="text" name="txtId" value="${pedido.id}" hidden="true"/>
-                                    <button class="btn btn-primary">
+                                    <a href="/Ecommerce/JSP/Cliente/ConsultaPedido?txtId=${pedido.id}" class="btn btn-primary consultaPedido" id="btnConsultaPedido">
                                         Detalhes <span class="glyphicon glyphicon-info-sign"></span>
-                                    </button>
+                                    </a>
                                 </form>
                             </td>
                             <td>
@@ -82,21 +85,33 @@
                                     <input type="text"  name="operacao" value="Excluir" hidden="true"/>
                                     <input type="text"  name="txtId" value="${pedido.id}" hidden="true"/>
                                     <button type="submit" class="btn btn-danger">
-                                        Desativar
+                                        Cancelar
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </form>
                             </td>
                             <td>
-                                <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}&operacao=Consultar" class="btn btn-default">
-                                    Inscritos
-                                    <span class="glyphicon glyphicon-star"></span>
-                                </a>
+                                <c:choose>
+                                    <c:when test="${pedido.status.toString() eq 'EM_PROCESSO' or pedido.status.toString() eq 'CANCELADO'}">
+                                        <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}" class="btn btn-default disabled" id="buttonInscritos" data-titulo="Inscritos">
+                                            Inscritos
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        </a>
+                                    </c:when>   
+                                    <c:otherwise>
+                                        <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}" class="btn btn-default" id="buttonInscritos" data-titulo="Inscritos">
+                                            Inscritos
+                                            <span class="glyphicon glyphicon-star"></span>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                     </c:forEach>
                 </table>
             </div>
         </div>
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <!-- <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script> -->
     </body>
 </html>

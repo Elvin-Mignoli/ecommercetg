@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
@@ -232,7 +233,7 @@ public class PedidoDAO extends AbstractDAO
             
             pst = conexao.prepareStatement(sql.toString());
             
-            pst.setString(1, Status.FECHADO.name());
+            pst.setString(1, Status.CANCELADO.name());
             pst.setInt(2, pedido.getId());
             
             pst.executeUpdate();
@@ -491,5 +492,66 @@ public class PedidoDAO extends AbstractDAO
         }
 
         return entidades;
+    }
+    
+    public void AtualizarStatusPedido(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            Pedido pedido = (Pedido) entidade;
+            
+            openConnection();   //abrindo conexao
+            conexao.setAutoCommit(false);   //setando autocommit para false
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE PEDIDOS ");
+            sql.append("SET ID_PRESTADOR = ?, ");
+            sql.append("STATUS = ? ");
+            sql.append("WHERE ID = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setInt(1, pedido.getPrestadorFinalista().getId());
+            pst.setString(2, Status.EM_PROCESSO.name());
+            pst.setInt(3, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            //atualizando o status dos prestadores
+            
+            pedido.setStatus(Status.NAO_SELECIONADO);
+            
+            IDAO interDAO = new InteressadoDAO(conexao);
+            
+            interDAO.atualizar(pedido);   //atualizando status dos campos!
+            
+            conexao.commit();
+            
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException("Erro ao tentar atualizar o Pedido!");
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 }

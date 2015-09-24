@@ -38,7 +38,9 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/Cliente/FiltroAtualizarPedido", new FiltroAtualizarPedidoVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/AtualizarPedido", new AtualizarPedidoClienteVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/DesativarPedido", new ExcluirPedidoVHWeb());
-        helpers.put("/Ecommerce/JSP/Cliente/ConsultaInscritos", new ConsultaInscritosVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/ConsultaInscritos", new ConsultaInteressadosVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/ConsultaPedido", new ConsultaPedidoCliente());         
+        helpers.put("/Ecommerce/JSP/Cliente/SelecionarPrestador", new FecharPedidoVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/SalvarPrestador", new SalvarPrestadorVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/CPF", new ConsultaCPFVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/Email", new ConsultaEmailVHWeb());

@@ -31,7 +31,8 @@ import javax.servlet.http.HttpServletResponse;
     "/JSP/Cliente/AtualizaSenha","/JSP/Cliente/Imagem",
     "/JSP/Cliente/CPF", "/JSP/PrestadorServico/CPF","/JSP/Cliente/Email","/JSP/PrestadorServico/Email","/JSP/Cliente/CEP", "/JSP/PrestadorServico/CEP",
     "/JSP/PrestadorServico/AlterarEmail", "/JSP/PrestadorServico/AlterarSenha","/JSP/PrestadorServico/CNPJ",
-    "/JSP/Cliente/FiltroAtualizarPedido"
+    "/JSP/Cliente/FiltroAtualizarPedido","/JSP/Cliente/ConsultaInscritos","/JSP/Cliente/SelecionarPrestador",
+    "/JSP/Cliente/ConsultaPedido"
         
 })
 public class FilterBusiness implements Filter
@@ -157,6 +158,7 @@ public class FilterBusiness implements Filter
     public void init(FilterConfig filterConfig)
     {
         this.filterConfig = filterConfig;
+        
         if (filterConfig != null)
         {
             if (debug)

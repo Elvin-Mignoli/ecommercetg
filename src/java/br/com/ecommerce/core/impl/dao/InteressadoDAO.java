@@ -49,8 +49,7 @@ public class InteressadoDAO extends AbstractDAO
             pst.setString(3, usuario.getPedido().getStatus().EM_ANDAMENTO.toString());
             pst.executeUpdate();
             conexao.commit();
-        } 
-        catch (SQLException e)
+        } catch (SQLException e)
         {
 
             try
@@ -78,7 +77,42 @@ public class InteressadoDAO extends AbstractDAO
     @Override
     public void atualizar(EntidadeDominio entidade) throws SQLException
     {
+        Pedido pedido = (Pedido) entidade;
 
+        if (conexao == null || conexao.isClosed())
+        {
+            openConnection();
+            conexao.setAutoCommit(false);
+        }
+
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("UPDATE INTERESSADOS ");
+        sql.append("SET STATUS = ? ");
+        sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR != ?");
+
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, pedido.getStatus().name());
+        pst.setInt(2, pedido.getId());
+        pst.setInt(3,pedido.getPrestadorFinalista().getId());
+
+        pst.executeUpdate();
+        
+        //Por favor, não repare nessa parte do código! Ainda somos iniciantes! Bjoos Abraços!
+        sql = new StringBuilder();
+        
+        sql.append("UPDATE INTERESSADOS ");
+        sql.append("SET STATUS = ? ");
+        sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR = ?");
+        
+        pst = conexao.prepareStatement(sql.toString());
+
+        pst.setString(1, Status.SELECIONADO.name());
+        pst.setInt(2, pedido.getId());
+        pst.setInt(3,pedido.getPrestadorFinalista().getId());
+        
+        pst.executeUpdate();
     }
 
     @Override
@@ -102,31 +136,30 @@ public class InteressadoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, pedido.getId());
             ResultSet resultado = pst.executeQuery();
-            
+
             IDAO dao = new PrestadorServicoDAO(conexao);
-            
+
             while (resultado.next())
             {
                 PrestadorServico prestador = new PrestadorServico();
-                
+
                 prestador.setId(resultado.getInt("id_prestador"));
-                
+
                 prestador = (PrestadorServico) dao.consultarUm(prestador);
-                
+
                 /*if (resultado.getString("status").equals(Status.EM_ANDAMENTO))
-                {
-                    prestador.setCandidatura(Status.EM_ANDAMENTO);
-                } else if (resultado.getString("status").equals("NAO_SELECIONADO"))
-                {
-                    prestador.setCandidatura(Status.NAO_SELECIONADO);
-                } else
-                {
-                    prestador.setCandidatura(Status.SELECIONADO);
-                }*/
+                 {
+                 prestador.setCandidatura(Status.EM_ANDAMENTO);
+                 } else if (resultado.getString("status").equals("NAO_SELECIONADO"))
+                 {
+                 prestador.setCandidatura(Status.NAO_SELECIONADO);
+                 } else
+                 {
+                 prestador.setCandidatura(Status.SELECIONADO);
+                 }*/
                 prestador.setCandidatura(Status.valueOf(resultado.getString("status")));
-                
+
                 //pedido.setId(resultado.getInt("id_pedidos")); nao faz sentido essa linha!
-                
                 lista.add(prestador);
             }
             return lista;

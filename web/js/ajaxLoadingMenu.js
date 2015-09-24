@@ -204,5 +204,35 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
+    
+    //ajax mostrar os daodos dos prestadores inscritos
+    $("#buttonInscritos").on("click", function (e) 
+    {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    
+    //ajax mostrar os dados do pedido!
+    $(document).on("click",'.consultaPedido', function (e) 
+    {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
 });
 
