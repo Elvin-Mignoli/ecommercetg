@@ -6,6 +6,7 @@
 package br.com.ecommerce.domain;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 public class Usuario extends EntidadeDominio
 {
-    private String tipoConta; // se o usuÃ¡rio Ã© do tipo cliente ou prestador de serviÃ§o
+    private String tipoConta; // se o usuário do tipo cliente ou prestador de serviÃ§o
     private int status;  // 0 - inativo   e  1 - ativo
     private String email;
     private String senha;
@@ -31,7 +32,8 @@ public class Usuario extends EntidadeDominio
     private String imagem;
     private CaixaEntrada entrada;
     private Pedido pedido;
-    
+    private ArrayList<EntidadeDominio> pedidos;
+
     public Usuario(String tipoConta, int status, String senha, String nome, String sobrenome, String dataNascimento, Contato contato, Endereco endereco, String sexo, String cpf, String email) {
         this.tipoConta = tipoConta;
         this.status = status;
@@ -47,15 +49,23 @@ public class Usuario extends EntidadeDominio
         this.email=email;
     }
 
-    public Pedido getPedido()
-    {
+    public ArrayList<EntidadeDominio> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(ArrayList<EntidadeDominio> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    
+    public Pedido getPedido() {
         return pedido;
     }
 
-    public void setPedido(Pedido pedido)
-    {
+    public void setPedido(Pedido pedido) {
         this.pedido = pedido;
     }
+
     
     public CaixaEntrada getEntrada() {
         return entrada;

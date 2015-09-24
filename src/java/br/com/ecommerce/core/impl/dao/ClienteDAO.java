@@ -212,7 +212,11 @@ public class ClienteDAO extends AbstractDAO
     {
         try
         {
-            openConnection();//Abrir conexão com banco
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+            }
+            //Abrir conexão com banco
             List<EntidadeDominio> lista = new ArrayList<>();
 
             Cliente cliente = (Cliente) entidade;
@@ -274,7 +278,8 @@ public class ClienteDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(!transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
                 throw new SQLException();
@@ -326,6 +331,12 @@ public class ClienteDAO extends AbstractDAO
                 CartaoCreditoDAO dao = new CartaoCreditoDAO(conexao);
                 
                 dao.consultarUm(cliente.getCartao());
+                
+                //recuperar a caixa de caixa
+                CaixaEntradaDAO entradaDAO = new CaixaEntradaDAO(conexao);
+                CaixaEntrada caixa = new CaixaEntrada(cliente, null);
+                caixa = (CaixaEntrada)entradaDAO.consultarUm(caixa);
+                cliente.setEntrada(caixa);
                 
                 return cliente;
             }

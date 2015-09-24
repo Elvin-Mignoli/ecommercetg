@@ -13,13 +13,49 @@ import java.util.Date;
  */
 public class Mensagem extends EntidadeDominio
 {
-    private String descricao;
-    private String destinatario;
-    private String remetente;
-    private int id_caixa_remetente;
-    private Date data_msg;
-    private String assunto;
+    private String descricao; //descrição da mensagem
+    private String destinatario;//email
+    private String remetente;//email
+    private int id_caixa_remetente;//id  da caixa de entrada do remetente
+    private Date data_msg;//data que foi enviada a mensagem
+    private String assunto;// assunto da mensagem
+    private int id_caixa_destinatario;//id da caixa de entrada do destinatario
+    private boolean flg_resposta; //a mensagem é uma resposta de uma outra mensagem?
+    private boolean flg_excluida_enviada;// flag para identificar se a mensagem enviada foi excluida
+    private boolean flg_excluida_recebido;//flag para identificar se a mensagem recebida foi excluida
 
+    public boolean isFlg_excluida_enviada() {
+        return flg_excluida_enviada;
+    }
+
+    public void setFlg_excluida_enviada(boolean flg_excluida_enviada) {
+        this.flg_excluida_enviada = flg_excluida_enviada;
+    }
+
+    public boolean isFlg_excluida_recebido() {
+        return flg_excluida_recebido;
+    }
+
+    public void setFlg_excluida_recebido(boolean flg_excluida_recebido) {
+        this.flg_excluida_recebido = flg_excluida_recebido;
+    }
+    
+    public boolean isFlg_resposta() {
+        return flg_resposta;
+    }
+
+    public void setFlg_resposta(boolean flg_resposta) {
+        this.flg_resposta = flg_resposta;
+    }
+
+    public int getId_caixa_destinatario() {
+        return id_caixa_destinatario;
+    }
+
+    public void setId_caixa_destinatario(int id_caixa_destinatario) {
+        this.id_caixa_destinatario = id_caixa_destinatario;
+    }
+    
     public int getId_caixa_remetente() {
         return id_caixa_remetente;
     }

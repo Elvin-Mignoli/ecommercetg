@@ -15,27 +15,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Atualizar Cliente</title> -->
-<script>
-    $(document).ready(function () {
-        $("#data").mask("99/99/9999");
-        $("#telefone").mask("(99)9999-9999");
-        $("#celular").mask("(99)99999-9999");
-        $("#cep").mask("99999-999");
-        $("#input_cpf").mask("999.999.999-99");
-
-        if ($("#estado").val().length > 1)
-        {
-            $("#numero").focus();
-        }
-        $("#numero").blur(function () 
-        {
-            $("#input_nome").focus();
-        });
-
-
-    });
-</script>
-<script src="../../js/ajaxFuntions.js"></script>
 <!-- <script src="../../js/libs/jquery-1.11.1.min.js"></script>
  <script src="../../js/libs/jquery-ui.min.js"></script>
  <script src="../../js/libs/jquery.maskedinput.js"></script>
@@ -76,16 +55,16 @@
                 </span>
                 <input type="text" hidden="true" value="${sessionScope.user.sexo}" id="valueSexo" />
                 <script>
-    var valSexo = $('#valueSexo').val();
+                    var valSexo = $('#valueSexo').val();
 
-    if (valSexo === "M")
-    {
-        document.getElementById("op2").setAttribute("selected", "true");
-    }
-    else if (valSexo === "F")
-    {
-        document.getElementById("op3").setAttribute("selected", "true");
-    }
+                    if (valSexo === "M")
+                    {
+                        document.getElementById("op2").setAttribute("selected", "true");
+                    }
+                    else if (valSexo === "F")
+                    {
+                        document.getElementById("op3").setAttribute("selected", "true");
+                    }
 
                 </script>
                 <select name="txtSexo" class="form-control">
@@ -153,16 +132,6 @@
                 <input type="text" id="rua" name="txtLogradouro" placeholder="Rua, Logradouro, Avenida" value="${sessionScope.user.endereco.logradouro}" class="form-control"/>
             </div>
         </div>
-
-        <!-- <div class="form-group">
-            <div class="input-group col-lg-3">
-                <span class="input-group-addon">
-                    Número
-                </span>
-                <input type="text" max="10000" name="textNumero" id="numero" value="${sessionScope.user.endereco.numero}" class="form-control"/>
-            </div>
-        </div> -->
-
         <div class="form-group">
             <div class="input-group col-lg-3">
                 <span class="input-group-addon">
@@ -198,15 +167,36 @@
                 <input type="text" id="complemento" placeholder="Complemento" class="form-control" name="txtComplemento" value="${sessionScope.user.endereco.complemento}"/>
             </div>
         </div>
-            
-            <div class="form-group form-inline">
+
+        <div class="form-group form-inline">
             <input type="submit" value="Atualizar" class="btn btn-success"/>
         </div>
     </div>
     <div class="container">
-        
+
     </div>
 </form>
+<script>
+    $(document).ready(function () {
+        $("#data").mask("99/99/9999");
+        $("#telefone").mask("(99)9999-9999");
+        $("#celular").mask("(99)99999-9999");
+        $("#cep").mask("99999-999");
+        $("#input_cpf").mask("999.999.999-99");
+
+        if ($("#estado").val().length > 1)
+        {
+            $("#numero").focus();
+        }
+        $("#numero").blur(function ()
+        {
+            $("#input_nome").focus();
+        });
+
+
+    });
+</script>
+<script src="../../js/ajaxFuntions.js"></script>
 <!-- </body>
 </html> -->
 

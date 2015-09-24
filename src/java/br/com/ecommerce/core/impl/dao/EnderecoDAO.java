@@ -213,15 +213,6 @@ public class EnderecoDAO extends AbstractDAO
         {
             ex.printStackTrace();
             throw new SQLException(ex);
-        } finally
-        {
-            try
-            {
-                conexao.close();
-            } catch (SQLException e)
-            {
-                throw new SQLException();
-            }
-        }
+        } 
     }
 }

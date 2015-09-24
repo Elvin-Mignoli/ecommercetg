@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author admin
+ * @author Elvin
  */
 public class Pedido extends EntidadeDominio
 {

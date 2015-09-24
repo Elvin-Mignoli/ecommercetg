@@ -399,10 +399,12 @@ function validaCNPJ()
 
 
 //function para abrir uma mensagem
-function abrirMsg(id_msg){
+function abrirMsg(id_msg, acao){
+    var btn_acao= acao;
     var url = 'OpenMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
+    url = url.concat('&acao='+btn_acao);
     //window.open(url,'','height=1024,width=800');
     $("#panel-heading").html("Mensagem");
     var path = url; //Pegamos o caminh"o
@@ -432,21 +434,13 @@ function excluirMensagemFront(op,id_entrada,id_msg)
             var operacao = op;
             var entrada = id_entrada;
             var txtId = id_msg;
-            
-              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId}, function(responseJson){
+            var local = 'entrada';
+              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId,local:local}, function(responseJson){
                 var resposta= responseJson;
                  if (resposta === "Mensagem excluida com sucesso!")
                 {
                     alert("Mensagem excluída com sucesso!");
-                    var url = "PrestadorCaixaEntrada.jsp";
-                    $("#panel-heading").html("Caixa de Entrada");
-                    var path = url; //Pegamos o caminh"o
-                    var titulo = "Mensagem"; //pegamos o titulo da página
-                    document.title = titulo; // Alterar o titulo da página
-                    window.history.pushState("", titulo, path);
-                    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-                    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-                    window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp'); 
+                    $("#caixa_entrada").trigger("click");
                 }else{
                     $("#div_fail").toggle(true);
                 }
@@ -472,3 +466,34 @@ function responderMsg(id_msg){
     window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
     return false;
 }
+
+//function para ativar o botão de enviar mensagem
+function showButtonMsg(){
+    $("#div_mensagem").toggle(true);
+    $("#btn_enviar").toggle(false);
+}
+
+
+//function para excluir a mensagem na front de mensagens enviadas
+function excluirMsgEnviadasFront(op,id_entrada,id_msg)
+{
+        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+         if(opcao){
+            var operacao = op;
+            var entrada = id_entrada;
+            var txtId = id_msg;
+            var local = 'enviadas';
+              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId, local:local}, function(responseJson){
+                var resposta= responseJson;
+                 if (resposta === "Mensagem excluida com sucesso!")
+                {
+                    alert("Mensagem excluída com sucesso!");
+                    $("#mensagens_enviadas").trigger("click");
+                }else{
+                    $("#div_fail").toggle(true);
+                }
+	
+            });
+        }//if
+}//function
+

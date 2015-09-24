@@ -9,6 +9,7 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.ConsultaUmPedidoClienteIStrategy;
+import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
 import java.io.IOException;
@@ -37,6 +38,10 @@ public class ConsultaPedidoCliente implements IViewHelper
         pedido.setId(new Integer(request.getParameter("txtId")));
         
         IStrategy st = new ConsultaUmPedidoClienteIStrategy();
+        
+        Cliente cliente = (Cliente) request.getSession().getAttribute("user");
+        
+        pedido.setCliente(cliente);
         
         Resultado rs = st.processar(pedido);
         

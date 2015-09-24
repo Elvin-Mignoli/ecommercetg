@@ -8,7 +8,6 @@ package br.com.ecommerce.core.impl.dao;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.Mensagem;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -115,7 +114,8 @@ public class CaixaEntradaDAO extends AbstractDAO
         
         try
         {
-            openConnection();
+             if(conexao == null || conexao.isClosed())
+                openConnection();
             
             StringBuilder sql = new StringBuilder();
             
@@ -157,17 +157,7 @@ public class CaixaEntradaDAO extends AbstractDAO
             
             return null;
         }
-        finally
-        {
-           try
-           {
-               conexao.close();
-           }
-           catch(SQLException ex)
-           {
-               ex.printStackTrace();
-           }
-        }
+       
     }
     
 }

@@ -38,10 +38,10 @@ public class PedidoDAO extends AbstractDAO
             conexao.setAutoCommit(false);   //fazendo commit manualmente          
 
             StringBuilder sql = new StringBuilder();
-            //preparando SQL para salvar o pedido!
+            //preparando SQL para salvar o pe!
             sql.append("INSERT INTO PEDIDOS ");
-            sql.append("(id_cliente,descricao,habilidades,habilidade_cliente,data_pedido,status,data_inicio,data_fim,horapedido) ");
-            sql.append("VALUES (?,?,?,?,?,?,?,?,?)");
+            sql.append("(id_cliente,descricao,habilidades,habilidade_cliente,data_pedido,status,data_inicio,data_fim,horapedido,video_canal) ");
+            sql.append("VALUES (?,?,?,?,?,?,?,?,?,NEXTVAL('seq_video_canal'))");
 
             pst = conexao.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 
@@ -54,9 +54,9 @@ public class PedidoDAO extends AbstractDAO
             //pegando habilidade do cliente
             String habilidadeCliente = pedido.getHabilidadeCliente().toString().replace("[", "").replace("]", "");
             pst.setString(4, habilidadeCliente);
-            //pegando a data do pedido
+            //pegando a data do pe
             pst.setDate(5, new java.sql.Date(pedido.getData().getTimeInMillis()));
-            //pegando status do pedido
+            //pegando status do pe
             pst.setString(6, pedido.getStatus().name());
             //pegando data de inico para a consultoria
             pst.setDate(7, new java.sql.Date(pedido.getDataInicio().getTime()));
@@ -188,7 +188,7 @@ public class PedidoDAO extends AbstractDAO
 
                 pst.execute();
             }
-            
+
             conexao.commit();   //commitando as alterações
 
         } catch (SQLException ex)
@@ -203,8 +203,7 @@ public class PedidoDAO extends AbstractDAO
             }
             ex.printStackTrace();
             throw new SQLException("Tenta refazer essa operação mais tarde!");
-        }
-        finally
+        } finally
         {
             try
             {
@@ -224,42 +223,38 @@ public class PedidoDAO extends AbstractDAO
         {
             openConnection();
             conexao.setAutoCommit(false);
-            
+
             StringBuilder sql = new StringBuilder();
-            
+
             sql.append("UPDATE PEDIDOS ");
             sql.append("SET STATUS = ? ");
             sql.append("WHERE ID = ?");
-            
+
             pst = conexao.prepareStatement(sql.toString());
-            
+
             pst.setString(1, Status.CANCELADO.name());
             pst.setInt(2, pedido.getId());
-            
+
             pst.executeUpdate();
-            
+
             conexao.commit();
-        }
-        catch(SQLException ex)
+        } catch (SQLException ex)
         {
             try
             {
                 conexao.rollback();
-            }
-            catch(SQLException ex1)
+            } catch (SQLException ex1)
             {
                 ex.printStackTrace();
             }
             ex.printStackTrace();
             throw new SQLException("Erro ao tentar fechar o pedido");
-        }
-        finally
+        } finally
         {
             try
             {
                 conexao.close();
-            }
-            catch(SQLException ex)
+            } catch (SQLException ex)
             {
                 ex.printStackTrace();
             }
@@ -309,9 +304,9 @@ public class PedidoDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        Pedido pe = (Pedido) entidade;
         try
         {
+            Pedido pe = (Pedido) entidade;
             openConnection();
 
             String sql = "SELECT * FROM PEDIDOS WHERE ID = ?";
@@ -319,7 +314,6 @@ public class PedidoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, pe.getId());
             ResultSet rs = pst.executeQuery();
-            
             if (rs.next())
             {
                 pe = new Pedido();
@@ -327,8 +321,10 @@ public class PedidoDAO extends AbstractDAO
                 //buscar dados do cliente
                 pe.setCliente(new Cliente());
                 pe.getCliente().setId(rs.getInt("id_cliente"));
-                ClienteDAO clientedao = new ClienteDAO();
+                ClienteDAO clientedao = new ClienteDAO(conexao);
                 pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
+                AutenticarDAO logindao = new AutenticarDAO(conexao);
+                pe.setCliente((Cliente) logindao.consultarLogin(pe.getCliente()));
                 //buscar dado do prestador
                 pe.setPrestadorFinalista(new PrestadorServico());
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
@@ -352,19 +348,70 @@ public class PedidoDAO extends AbstractDAO
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
-                InteressadoDAO dao = new InteressadoDAO();
+                InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
                 pe.setQtdeInteressados(pe.getPrestadores().size());
 
             }
             return pe;
-        } 
-        catch (SQLException ex)
+        } finally
         {
+            try
+            {
+                conexao.close();
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    public void AtualizarStatusPedido(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            Pedido pedido = (Pedido) entidade;
+
+            openConnection();   //abrindo conexao
+            conexao.setAutoCommit(false);   //setando autocommit para false
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE PEDIDOS ");
+            sql.append("SET ID_PRESTADOR = ?, ");
+            sql.append("STATUS = ? ");
+            sql.append("WHERE ID = ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setInt(1, pedido.getPrestadorFinalista().getId());
+            pst.setString(2, Status.EM_PROCESSO.name());
+            pst.setInt(3, pedido.getId());
+
+            pst.executeUpdate();
+
+            //atualizando o status dos prestadores
+            pedido.setStatus(Status.NAO_SELECIONADO);
+
+            IDAO interDAO = new InteressadoDAO(conexao);
+
+            interDAO.atualizar(pedido);   //atualizando status dos campos!
+
+            conexao.commit();
+
+        } catch (SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
             ex.printStackTrace();
-            throw new SQLException("Erro ao consultar um pedido");
-        } 
-        finally
+            throw new SQLException("Erro ao tentar atualizar o Pedido!");
+        } finally
         {
             try
             {
@@ -417,8 +464,7 @@ public class PedidoDAO extends AbstractDAO
 
                 entidades.add(pe);
             }
-        } 
-        else if (pedido.getConsulta().equals(Pedido.PRESTADOR))
+        } else if (pedido.getConsulta().equals(Pedido.PRESTADOR))
         {
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT * FROM PEDIDOS AS p ");
@@ -434,10 +480,20 @@ public class PedidoDAO extends AbstractDAO
             {
                 Pedido pe = new Pedido();
                 pe.setId(rs.getInt("id"));
+                //buscar dados do cliente
                 pe.setCliente(new Cliente());
-                pe.setId(rs.getInt("id_cliente"));
+                pe.getCliente().setId(rs.getInt("id_cliente"));
+                ClienteDAO clientedao = new ClienteDAO();
+                pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
+                //buscar dado do prestador
                 pe.setPrestadorFinalista(new PrestadorServico());
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
+                if (pe.getPrestadorFinalista().getId() != 0)
+                {
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                    pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+
+                }
                 pe.setDescricao(rs.getString("descricao"));
                 String habilidades[] = rs.getString("habilidades").split(",");
                 pe.addHabilidadeRequerida(habilidades);
@@ -450,7 +506,11 @@ public class PedidoDAO extends AbstractDAO
                 pe.setStatus(Status.valueOf(rs.getString("status")));
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
-
+                pe.setCanal(rs.getString("video_canal"));
+                //procurar interessados
+                InteressadoDAO dao = new InteressadoDAO();
+                pe.setPrestadores(dao.consultar(pe));
+                pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);
             }
         } else if (pedido.getConsulta().equals(Pedido.MURAL))
@@ -461,7 +521,7 @@ public class PedidoDAO extends AbstractDAO
 
             pst = conexao.prepareStatement(sql.toString());
 
-            pst.setString(1, pedido.getStatus().name());
+            pst.setString(1, pedido.getStatus().ABERTO.toString());
 
             ResultSet rs = pst.executeQuery();
 
@@ -469,89 +529,41 @@ public class PedidoDAO extends AbstractDAO
             {
                 Pedido pe = new Pedido();
                 pe.setId(rs.getInt("id"));
+                //buscar dados do cliente
                 pe.setCliente(new Cliente());
-                pe.setId(rs.getInt("id_cliente"));
+                pe.getCliente().setId(rs.getInt("id_cliente"));
+                ClienteDAO clientedao = new ClienteDAO();
+                pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
+                //buscar dado do prestador
                 pe.setPrestadorFinalista(new PrestadorServico());
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
+                if (pe.getPrestadorFinalista().getId() != 0)
+                {
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                    pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+
+                }
                 pe.setDescricao(rs.getString("descricao"));
                 String habilidades[] = rs.getString("habilidades").split(",");
-                pedido.addHabilidadeRequerida(habilidades);
+                pe.addHabilidadeRequerida(habilidades);
                 String habilidadeCliente[] = rs.getString("habilidade_cliente").split(",");
-                pedido.addHabilidadeCliente(habilidadeCliente);
-                pedido.setDataInicio(rs.getDate("data_inicio"));
-                pedido.setDataFim(rs.getDate("data_fim"));
-                pedido.setData(Calendar.getInstance());
-                pedido.getData().setTime(rs.getDate("data_pedido"));
-                pedido.setStatus(Status.valueOf(rs.getString("status")));
-                pedido.setHoraConsultoria(Calendar.getInstance());
-                pedido.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
-
+                pe.addHabilidadeCliente(habilidadeCliente);
+                pe.setDataInicio(rs.getDate("data_inicio"));
+                pe.setDataFim(rs.getDate("data_fim"));
+                pe.setData(Calendar.getInstance());
+                pe.getData().setTime(rs.getDate("data_pedido"));
+                pe.setStatus(Status.valueOf(rs.getString("status")));
+                pe.setHoraConsultoria(Calendar.getInstance());
+                pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
+                //procurar interessados
+                InteressadoDAO dao = new InteressadoDAO(conexao);
+                pe.setPrestadores(dao.consultar(pe));
+                pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);
             }
-
         }
 
         return entidades;
-    }
-    
-    public void AtualizarStatusPedido(EntidadeDominio entidade) throws SQLException
-    {
-        try
-        {
-            Pedido pedido = (Pedido) entidade;
-            
-            openConnection();   //abrindo conexao
-            conexao.setAutoCommit(false);   //setando autocommit para false
-            
-            StringBuilder sql = new StringBuilder();
-            
-            sql.append("UPDATE PEDIDOS ");
-            sql.append("SET ID_PRESTADOR = ?, ");
-            sql.append("STATUS = ? ");
-            sql.append("WHERE ID = ?");
-            
-            pst = conexao.prepareStatement(sql.toString());
-            
-            pst.setInt(1, pedido.getPrestadorFinalista().getId());
-            pst.setString(2, Status.EM_PROCESSO.name());
-            pst.setInt(3, pedido.getId());
-            
-            pst.executeUpdate();
-            
-            //atualizando o status dos prestadores
-            
-            pedido.setStatus(Status.NAO_SELECIONADO);
-            
-            IDAO interDAO = new InteressadoDAO(conexao);
-            
-            interDAO.atualizar(pedido);   //atualizando status dos campos!
-            
-            conexao.commit();
-            
-        }
-        catch(SQLException ex)
-        {
-            try
-            {
-                conexao.rollback();
-            }
-            catch(SQLException ex1)
-            {
-                ex1.printStackTrace();
-            }
-            ex.printStackTrace();
-            throw new SQLException("Erro ao tentar atualizar o Pedido!");
-        }
-        finally
-        {
-            try
-            {
-                conexao.close();
-            }
-            catch(SQLException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
     }
 }
