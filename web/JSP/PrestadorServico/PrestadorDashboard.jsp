@@ -278,7 +278,7 @@
             $('#panel-heading').html("Mural de Pedidos");
             
             //AJAX para Caixa de entrada
-            setInterval(function() {
+           setInterval(function() {
                 if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
                 {//sim
                       $("#caixa_entrada").trigger("click");
@@ -288,7 +288,7 @@
                     $("#sub").trigger("click");
                 }
                     
-            }, 60000);//fim do ajax
+            }, 60000); //fim do ajax
             
             if(${requestScope.MsgAtualiza == null})//existe mensagem de alerta?
             {//não

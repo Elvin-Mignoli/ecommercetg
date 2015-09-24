@@ -5,15 +5,11 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
-import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Mensagem;
-import br.com.ecommerce.domain.Usuario;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
-import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -51,7 +47,7 @@ public class MensagemDAO extends AbstractDAO
             StringBuilder sql = new StringBuilder();
             
             sql.append("INSERT INTO MENSAGENS ");
-            sql.append("(id_caixa_destinatario,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente,flg_resposta) VALUES(?,?,NOW(),?,?,?,?,?)");
+            sql.append("(id_caixa_destinatario,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente,flg_resposta,flg_excluida_enviada,flg_excluida_recebido) VALUES(?,?,NOW(),?,?,?,?,?,false,false)");
             
             pst = conexao.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
             

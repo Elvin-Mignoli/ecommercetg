@@ -180,6 +180,50 @@ $(document).ready(function ()
         return false;
     });
     
+    //ajax mostrar o perfil do  prestador de serviço
+    $("#consulta_pedido").on("click", function (e) 
+    {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    
+    //ajax mostrar o perfil do  prestador de serviço
+    $(document).on("click", '.filtroAtualiza', function (e) 
+    {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });    
+    
+    //ajax mostrar os dados do pedido!
+    $(document).on("click",'.consultaPedido', function (e) 
+    {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
     
     //Ajax para mostrar os dados de um determinado pedido
       $(document).on("click",'.ver', function (e) {
@@ -224,6 +268,21 @@ $(document).ready(function ()
         $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    });
+   
+   //ajax mostrar os daodos dos prestadores inscritos
+    $("#buttonInscritos").on("click", function (e) 
+    {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
    

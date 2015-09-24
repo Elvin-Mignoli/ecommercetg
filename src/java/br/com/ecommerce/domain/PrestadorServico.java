@@ -19,23 +19,24 @@ public class PrestadorServico extends Usuario
     private String cnpj;
     private Status candidatura;
     
-    public PrestadorServico(String nome,String sobrenome,String data,String cpf,Endereco end,Contato cont,String sexo,String tipoConta,
-            String email,String senha,int status,ArrayList habilidades) {
-        super(tipoConta, status, senha, nome, sobrenome,data, cont, end, sexo, cpf,email);
+    public PrestadorServico(String nome, String sobrenome, String data, String cpf, Endereco end, Contato cont, String sexo, String tipoConta,
+            String email, String senha, int status, ArrayList habilidades)
+    {
+        super(tipoConta, status, senha, nome, sobrenome, data, cont, end, sexo, cpf, email);
         this.habilidades = habilidades;
     }
 
-    
     public PrestadorServico(String cpf)
     {
         super.setCpf(cpf);
     }
+
     public PrestadorServico(ArrayList<Competencia> habilidades, String cnpj, String nome, String sobrenome)
     {
         super();
         this.habilidades = habilidades;
         this.cnpj = cnpj;
-        
+
     }
 
     public PrestadorServico(ArrayList<Competencia> habilidades, String cnpj, String nome, String sobrenome, Date dataNascimento, Contato contato, Endereco endereco, String idade, String sexo, String estadoCivil)
@@ -44,12 +45,12 @@ public class PrestadorServico extends Usuario
         this.habilidades = habilidades;
         this.cnpj = cnpj;
     }
-    
+
     public PrestadorServico()
     {
         super();
     }//default
-    
+
     public String getCnpj()
     {
         return cnpj;
@@ -83,7 +84,7 @@ public class PrestadorServico extends Usuario
     {
         this.habilidades = habilidades;
     }
-
+    
    @Override
     public boolean equals(Object o)
     {

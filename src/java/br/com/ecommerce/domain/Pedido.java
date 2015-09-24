@@ -23,11 +23,11 @@ public class Pedido extends EntidadeDominio
     private Date dataFim;
     private String descricao;
     private PrestadorServico prestadorFinalista;
-    private List<EntidadeDominio> prestadores;
+    private List<EntidadeDominio> prestadores = new ArrayList<>();
     private Cliente cliente;
     private Double valor;
     private Integer qtdeInteressados;
-    private Calendar horaConsultoria;
+    private Calendar horaConsultoria = Calendar.getInstance();
     private List<EntidadeDominio> pedidos;
     public static final String CLIENTE = "CLIENTE";
     public static final String PRESTADOR = "PRESTADOR";
@@ -35,14 +35,15 @@ public class Pedido extends EntidadeDominio
     private String consulta;
     private String canal;
 
-    public String getCanal() {
+    public String getCanal()
+    {
         return canal;
     }
 
-    public void setCanal(String canal) {
+    public void setCanal(String canal)
+    {
         this.canal = canal;
     }
-    
     
     public String getConsulta()
     {
@@ -133,7 +134,12 @@ public class Pedido extends EntidadeDominio
     {
         this.prestadorFinalista = prestadorFinalista;
     }
-
+    
+    public void addPrestadores(PrestadorServico prestador)
+    {
+        prestadores.add(prestador);
+    }
+    
     public List<EntidadeDominio> getPrestadores()
     {
         return prestadores;

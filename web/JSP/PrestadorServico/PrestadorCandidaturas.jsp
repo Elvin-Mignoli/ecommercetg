@@ -42,7 +42,7 @@
                                 <td style="text-align: center">${list.cliente.nome}&nbsp;${list.cliente.sobrenome}</td>
                                 <td style="text-align: center">${prestador.candidatura}</td>
                                 <td style="text-align: center">
-                                  <a href="ConsultarPedido?id_pedido=${list.id}" value="Ver" id="btn_Ver" class="btn btn-info ver" >Ver</a>
+                                  <a href="ConsultarPedido?id_pedido=${list.id}&local=candidaturas" value="Ver" id="btn_Ver" class="btn btn-info ver" >Ver</a>
                                 </td>
                             </tr>
                         </c:forEach>

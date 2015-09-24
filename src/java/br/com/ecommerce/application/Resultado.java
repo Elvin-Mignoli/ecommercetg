@@ -28,6 +28,12 @@ public class Resultado extends EntidadeAplicacao
     /*
         Método utilizado para retornar várias mensagens
     */
+    
+    public void setEntidades(List<EntidadeDominio> entidades)
+    {
+        this.entidades = entidades;
+    }
+    
     public String getMensagemSimples()
     {
         return mensagemSimples;
@@ -71,12 +77,5 @@ public class Resultado extends EntidadeAplicacao
     public void setEntidade(EntidadeDominio entidade)
     {
         this.entidade = entidade;
-    }
-
-    /**
-     * @param entidades the entidades to set
-     */
-    public void setEntidades(List<EntidadeDominio> entidades) {
-        this.entidades = entidades;
     }
 }

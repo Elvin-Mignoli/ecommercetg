@@ -10,14 +10,17 @@ import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
+import br.com.ecommerce.core.impl.IStrategy.ValidaHabilidadePedido;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.InteressadoDAO;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.Interessado;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.sql.SQLException;
@@ -51,6 +54,7 @@ public class Fachada implements IFachada
         daos.put(CartaoCredito.class.getName(), new CartaoCreditoDAO());
         daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
         daos.put(Pedido.class.getName(), new PedidoDAO()); 
+        daos.put(Interessado.class.getName(), new InteressadoDAO());
         /* 
          Lista de Regras de negocio! 
          */
@@ -80,10 +84,19 @@ public class Fachada implements IFachada
         rnsPrestador.put("Salvar", rnsSalvarPrestador);
         //Fim das regras do Prestador de serviço
         
+        // --> Regras de Negócio SalvarPedido
+        List<IStrategy> rnsSalvarPedido = new ArrayList<>();
+        rnsSalvarPedido.add(new ValidaHabilidadePedido());
+        
+        //Map para regras do Pedido!
+        Map<String,List<IStrategy>> rnsPedido = new HashMap<>();
+        rnsPedido.put("Salvar", rnsSalvarPedido);
+        
         //Map final com todas as regras separados por operacao!
         rns.put(Cliente.class.getName(), rnsCliente);
         rns.put(PrestadorServico.class.getName(), rnsPrestador);
         rns.put(CartaoCredito.class.getName(), rnsCartao);
+        rns.put(Pedido.class.getName(), rnsPedido);
     }
 
     @Override

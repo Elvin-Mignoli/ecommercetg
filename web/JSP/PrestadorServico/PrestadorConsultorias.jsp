@@ -41,7 +41,7 @@
                             <td style="text-align: center">${list.cliente.nome}&nbsp;${list.cliente.sobrenome}</td>
                             <td style="text-align: center">${list.status}</td>
                             <td style="text-align: center">
-                                <a href="ConsultarPedido?id_pedido=${list.id}" value="Ver" name="btn_ver"  class="btn btn-info ver" data-titulo="Pedido" >Ver</a>
+                                <a href="ConsultarPedido?id_pedido=${list.id}&local=vazio" value="Ver" name="btn_ver"  class="btn btn-info ver" data-titulo="Pedido" >Ver</a>
                             </td>
                         </tr>
             
