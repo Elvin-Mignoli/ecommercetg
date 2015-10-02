@@ -50,7 +50,7 @@
                     <c:if test="${param.acao == 'entrada'}">
                 <tr>
                     <td>
-                        <button type="button" class="btn btn-success"  value="Responder" id="bt_responder" onclick="responderMsg(${param.id})">Responder</button>
+                        <button type="button" class="btn btn-success"  value="Responder" id="bt_responder" onclick="responderMsgCliente(${param.id})">Responder</button>
                     </td>
                 </tr>
                     </c:if>

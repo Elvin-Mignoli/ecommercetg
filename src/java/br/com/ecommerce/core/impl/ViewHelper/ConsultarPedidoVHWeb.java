@@ -40,6 +40,9 @@ public class ConsultarPedidoVHWeb implements IViewHelper{
       
         if(resultado.getMensagens()!=null){
             request.setAttribute("pedido", pedido);
+            if(request.getParameter("local") == null)
+               request.getRequestDispatcher("PrestadorConsultarPedido.jsp").forward(request, response);   
+            
             if(request.getParameter("local").equals("candidaturas"))
               request.getRequestDispatcher("PrestadorConsultarPedido.jsp?local=candidaturas").forward(request, response);
             else

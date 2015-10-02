@@ -335,6 +335,8 @@ public class PedidoDAO extends AbstractDAO
                 {
                     PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
                     pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+                    logindao = new AutenticarDAO(conexao);
+                    pe.setPrestadorFinalista((PrestadorServico)logindao.consultarLogin(pe.getPrestadorFinalista()));
 
                 }
                 pe.setDescricao(rs.getString("descricao"));

@@ -4,7 +4,6 @@
     Author     : Elvin
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
-<%@page import="br.com.ecommerce.domain.PrestadorServico"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -55,8 +54,8 @@
         </nav><!--fim Navbar -->
 
 
-        <div class="container">
-            <div class="row profile">
+        <div class="container-fluid">
+            <div class="row-fluid profile">
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -67,22 +66,16 @@
                                 </div>
                                 <!-- END SIDEBAR USERPIC -->
                                 <!-- SIDEBAR USER TITLE -->
-                                <div class="profile-usertitle">
-                                    <div class="profile-usertitle-name">
+                                <div class="profile-usertitle ">
+                                    <div class="profile-usertitle-name text-center">
                                         ${sessionScope.user.nome} ${sessionScope.user.sobrenome}
                                     </div>
-                                    <div class="profile-usertitle-job">
+                                    <div class="profile-usertitle-job text-center">
                                         Developer
                                     </div>
                                 </div>
                                 <!-- END SIDEBAR USER TITLE -->
-                                <!-- SIDEBAR BUTTONS -->
-                                <div class="profile-userbuttons">
-                                    <button type="button" class="btn btn-success">Seguir</button>
-                                    <button type="button" class="btn btn-danger">Mensagem</button>
-                                    
-                                </div>
-                                <!-- END SIDEBAR BUTTONS -->
+                                
                                 <!-- SIDEBAR MENU -->
                                 <div class="profile-usermenu">
                                     <ul class="nav">
@@ -182,7 +175,7 @@
                 </div>
                 <div class="col-md-9">
                     <div class="profile-content">
-                        <div class="row">
+                        <div class="row-fluid-fluid">
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="panel-heading"></div>
                                 <div class="panel-body">
@@ -288,7 +281,7 @@
                     $("#sub").trigger("click");
                 }
                     
-            }, 60000); //fim do ajax
+            }, 120000); //fim do ajax
             
             if(${requestScope.MsgAtualiza == null})//existe mensagem de alerta?
             {//não

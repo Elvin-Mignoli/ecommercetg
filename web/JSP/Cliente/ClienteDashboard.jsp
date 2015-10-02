@@ -115,7 +115,7 @@
                                 <div class="profile-usermenu">
                                     <ul class="nav">
                                         <li class="active">
-                                            <a href="ClienteDashboard.jsp">
+                                            <a href="ClientePerfil.jsp" id="meu_perfil_cliente" data-titulo="Perfil">
                                                 <i class="glyphicon glyphicon-home"></i>
                                                 Meu Perfil </a>
                                         </li>
@@ -149,6 +149,27 @@
                                                 Editar meus dados 
                                             </a>
                                         </li>
+                                        <li class="active" id="listMensagens">
+                                            <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                                Mensagens
+                                            </a>
+                                        </li>
+                                        <div class="collapse active" id="collapseMenuMensagens">
+                                            <ul id="option_mensagens">
+                                                <a href= "CaixaEntrada" id="caixa_entrada_cliente" data-titulo="Caixa de Entrada" >
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                                Caixa de entrada 
+                                                </a>
+                                                <br/>
+                                                <a href= "MensagemEnviada" id="mensagens_enviadas_cliente" data-titulo="Mensagens enviadas" >
+                                                <i class="glyphicon glyphicon-cloud"></i>
+                                                Mensagens enviadas
+                                                </a>
+                                                <br/>
+                                              
+                                            </ul>
+                                        </div>
                                         <li class="active" id="listPedidos">
                                             <a href="#collapsePedidos" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-stats"></i>
@@ -236,5 +257,18 @@
         <!-- Implementando script de load de paginas de funcoes -->
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <script>
+        $(document).ready(    
+        function() {
+            //AJAX para Caixa de entrada
+           setInterval(function() {
+                if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
+                {//sim
+                      $("#caixa_entrada_cliente").trigger("click");
+                      
+                }  
+            },120000); //fim do ajax
+        });
+        </script>
     </body>
 </html>

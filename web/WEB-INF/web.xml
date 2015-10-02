@@ -22,6 +22,10 @@
         <url-pattern>/JSP/PrestadorServico/Consultorias</url-pattern>
         <url-pattern>/JSP/PrestadorServico/EnviarMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
+        <url-pattern>/JSP/Cliente/ExcluirMensagem</url-pattern>
+        <url-pattern>/JSP/Cliente/ExcluirMensagemFront</url-pattern>
+         <url-pattern>/JSP/Cliente/ResponderMensagem</url-pattern>
+           <url-pattern>/JSP/Cliente/EnviarMensagem</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>

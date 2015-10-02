@@ -11,8 +11,7 @@
 <html>
     <head>
          <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- Custom styles for this template -->
-        <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
+        
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
