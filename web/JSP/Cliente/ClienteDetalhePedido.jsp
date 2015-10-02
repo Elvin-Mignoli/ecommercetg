@@ -124,8 +124,8 @@
                     <div id="div_mensagem" hidden="true">
                         <form action="EnviarMensagem" method="POST">
                             <input type="hidden" name="operacao" value="Atualizar"/>
-                            <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.cliente.email}"/>
-                            <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.cliente.entrada.id}"/>
+                            <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.prestadorFinalista.email}"/>
+                            <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.prestadorFinalista.entrada.id}"/>
                             <!-- Assunto-->
                             <div class="form-group">
                                 <div class="input-group">
@@ -146,14 +146,14 @@
                     <br>
                     <div class="row">
                         <div class="col-md-2">
-                            <button class="btn btn-primary">
+                            <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary"  <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">disabled="true"</c:if> >
                                 Video Chat
                                 <span class="glyphicon glyphicon-film"></span>
-                            </button>
+                            </a>
                         </div>
                         <div class="col-md-2">
-                            <!-- <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">disabled="true"</c:if> -->
-                            <button class="btn btn-success" id="btnMensagem">
+                            
+                            <button class="btn btn-success" id="btnMensagem"  <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">disabled="true"</c:if> >
                                 Mensagem
                                 <span class="glyphicon glyphicon-send"></span>
                             </button>

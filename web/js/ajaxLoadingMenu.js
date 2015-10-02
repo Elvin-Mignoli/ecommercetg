@@ -138,8 +138,8 @@ $(document).ready(function ()
 
     //ajax mostrar o perfil do  prestador de serviço
     $("#meu_perfil").on("click", function (e) {
-         e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Perfil");
+        e.preventDefault(); //eliminamos o evento
         var path = $(this).attr("href"); //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
         document.title = titulo; // Alterar o titulo da página
@@ -285,6 +285,46 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
-   
+    
+      //ajax mostrar o perfil do cliente
+    $("#meu_perfil_cliente").on("click", function (e) {
+        $("#panel-heading").html("Perfil");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    
+     //ajax mostrar o caixa de mensagens do  cliente
+    $("#caixa_entrada_cliente").on("click", function (e) {
+        $("#panel-heading").html("Caixa de Entrada");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+    //ajax mostrar as mensagens enviadas do cliente
+     $("#mensagens_enviadas_cliente").on("click", function (e) {
+         e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Mensagens Enviadas");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
 });
 
