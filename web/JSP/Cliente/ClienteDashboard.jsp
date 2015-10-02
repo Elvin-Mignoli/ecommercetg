@@ -32,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="ClienteDashboard.jsp">Home</a></li>
-                        <li class="dropdown">
+                        <!--<li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Page 1-1</a></li>
@@ -41,7 +41,7 @@
                             </ul>
                         </li>
                         <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
+                        <li><a href="#">Page 3</a></li> -->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="logoff"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
@@ -216,7 +216,6 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="panel-heading"></div>
                                 <div class="panel-body">
-
                                     <c:if test="${requestScope.MsgAtualiza ne null}">
                                         <div class="alert alert-info alert-dismissible" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">

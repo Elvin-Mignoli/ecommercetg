@@ -5,9 +5,12 @@
  */
 package br.com.ecommerce.core.impl.dao;
 
+import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.domain.BuscaPedidoMes;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HabilidadeProcurada;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Status;
@@ -86,7 +89,7 @@ public class PedidoDAO extends AbstractDAO
 
                 pst = conexao.prepareStatement(sql.toString());
 
-                pst.setString(1, h);
+                pst.setString(1, h.toLowerCase().trim());
                 pst.setInt(2, pedido.getId());
 
                 pst.execute();
@@ -434,8 +437,17 @@ public class PedidoDAO extends AbstractDAO
         if (pedido.getConsulta().equals(Pedido.CLIENTE))
         {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT * FROM PEDIDOS AS p ");
-            sql.append("WHERE p.id_cliente = ? ORDER BY p.data_pedido DESC");
+            sql.append("SELECT p.*,");
+            sql.append("(SELECT count(i.id) as qtde ");
+            sql.append("FROM INTERESSADOS as i ");
+            sql.append("WHERE i.id_pedidos = p.id) ");
+            sql.append("FROM PEDIDOS AS p, INTERESSADOS as i ");
+            sql.append("WHERE p.id_cliente = ? ");
+            sql.append("GROUP BY p.id");
+            /*sql.append("SELECT p.*,count(i.id) as qtde FROM PEDIDOS AS p, INTERESSADOS as i ");
+            sql.append("WHERE p.id_cliente = ? ");
+            sql.append("GROUP BY p.id ");
+            sql.append("ORDER BY p.data_pedido DESC");*/
 
             pst = conexao.prepareStatement(sql.toString());
 
@@ -463,7 +475,8 @@ public class PedidoDAO extends AbstractDAO
                 pe.setStatus(Status.valueOf(rs.getString("status")));
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
-
+                pe.setQtdeInteressados(rs.getInt("qtde"));
+                
                 entidades.add(pe);
             }
         } else if (pedido.getConsulta().equals(Pedido.PRESTADOR))
@@ -567,5 +580,210 @@ public class PedidoDAO extends AbstractDAO
         }
 
         return entidades;
+    }
+    
+    public Resultado habilidadesMaisProcuradas() throws SQLException
+    {
+        try
+        {
+            if(conexao == null || conexao.isClosed())   //conexao esta fechada??
+            {
+                openConnection();   //abrindo conexao!
+            }
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("SELECT lower(ph.habilidade) AS habilidade, count(ph.habilidade) AS quantidade ");
+            sql.append("FROM pedido_habilidades AS ph, pedidos AS p ");
+            sql.append("WHERE ph.id_pedido = p.id ");
+            sql.append("GROUP BY ph.habilidade ");
+            sql.append("ORDER BY quantidade DESC ");
+            sql.append("LIMIT 5");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            Resultado result = new Resultado();
+            
+            while(rs.next())    //existem registros no resultset?
+            {
+                HabilidadeProcurada hb = new HabilidadeProcurada();
+                hb.setLabel(rs.getString("habilidade"));
+                hb.setValue(rs.getInt("quantidade"));
+                
+                result.addEntidades(hb);
+            }
+            
+            return result;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            return null;
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public Resultado TotalPedidos() throws SQLException
+    {
+            Resultado rs = new Resultado();
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+                openConnection();   //abrindo conexao!
+            
+            StringBuilder sql = new StringBuilder();
+            sql.append("select count(p.id) as qtde, p.data_pedido ");
+            sql.append("FROM pedidos as p ");
+            sql.append("WHERE p.data_pedido between '2015-09-01' and '2015-09-30' ");
+            sql.append("GROUP BY  p.data_pedido");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            ResultSet result = pst.executeQuery();
+            
+            while(result.next())    //iterando pelos dados do retorno!
+            {
+                //String label = rs.get
+                BuscaPedidoMes bpm = new BuscaPedidoMes();
+            }
+            
+            return rs;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            return rs;
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    //metodo para retornar a quantidade de pedidos em Range de Meses
+    public Resultado totalPedidosMes() throws SQLException
+    {
+        Resultado rs = new Resultado();
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();   //abrindo conexao!
+            }
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("SELECT count(p.id) as quantidade,date_part('month',p.data_pedido) as mes ");
+            sql.append("FROM pedidos as p ");
+            sql.append("WHERE status = 'ABERTO' and date_part('month',p.data_pedido) between 08 and 12 ");
+            sql.append("GROUP BY mes");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            ResultSet result = pst.executeQuery();
+            
+            String mes[] = {"Janeiro","Fevereiro","Maio","Abril","Março","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"};
+            
+            while(result.next())
+            {
+                Integer x = result.getInt("mes");
+                Integer quantidade = result.getInt("quantidade");
+                
+                BuscaPedidoMes bpm = new BuscaPedidoMes();
+                
+                bpm.getValues().put(mes[x-1], quantidade);
+                
+                bpm.setStatus("ABERTO");
+                
+                rs.addEntidades(bpm);
+            }
+            
+            sql = new StringBuilder();
+            
+            sql.append("SELECT count(p.id) as quantidade,date_part('month',p.data_pedido) as mes ");
+            sql.append("FROM pedidos as p ");
+            sql.append("WHERE status = 'FECHADO' and date_part('month',p.data_pedido) between 08 and 12 ");
+            sql.append("GROUP BY mes");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            result = pst.executeQuery();
+            
+            while(result.next())
+            {
+                Integer x = result.getInt("mes");
+                Integer quantidade = result.getInt("quantidade");
+                
+                BuscaPedidoMes bpm = new BuscaPedidoMes();
+               
+                bpm.getValues().put(mes[x-1], quantidade);
+                
+                bpm.setStatus("FECHADO");
+                
+                rs.addEntidades(bpm);
+            }
+            
+            sql = new StringBuilder();
+            
+            sql.append("SELECT count(p.id) as quantidade,date_part('month',p.data_pedido) as mes ");
+            sql.append("FROM pedidos as p ");
+            sql.append("WHERE status = 'CANCELADO' and date_part('month',p.data_pedido) between 08 and 12 ");
+            sql.append("GROUP BY mes");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            result = pst.executeQuery();
+            
+            while(result.next())
+            {
+                Integer x = result.getInt("mes");
+                Integer quantidade = result.getInt("quantidade");
+                
+                BuscaPedidoMes bpm = new BuscaPedidoMes();
+               
+                bpm.getValues().put(mes[x-1], quantidade);
+                
+                bpm.setStatus("CANCELADO");
+                
+                rs.addEntidades(bpm);
+            }
+            
+            return rs;
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            return rs;
+        }
+        finally
+        {
+            try
+            {
+                conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 }

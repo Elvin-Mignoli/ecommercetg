@@ -7,7 +7,7 @@
 function validaCPF()
 {
     var cpf = $('#input_cpf').val();
-    if($('#input_cpf').val()!== "")
+    if ($('#input_cpf').val() !== "")
     {
         $.post("CPF", {cpf: cpf}, function (responseJson)
         {
@@ -37,7 +37,7 @@ function validaCPF()
 
             $("#statusCPF").text(responseJson);
         });
-    }else
+    } else
     {
         $("#div_cpf").removeClass();
         $("#span_cpf").removeClass();
@@ -158,7 +158,7 @@ function confirmSenha()
         $("#span_senha_confirm").removeClass();
         $("#span_senha_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
         $("#status_senha_confirm").text("");
-        $("#submit").prop("type","submit");
+        $("#submit").prop("type", "submit");
     }
     //Modificou a senha novamente
     $("#input_senha").on("click", function (e)
@@ -268,7 +268,7 @@ function confirmEmail()
         $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback ");
         $("#status_confirm").addClass("text-warning");
         $("#status_confirm").text("Digite antes um novo E-mail!");
-    } 
+    }
     else if ($("#input_email").val() !== $("#input_confirm").val())
     {
         $("#div_confirm").removeClass();
@@ -277,7 +277,7 @@ function confirmEmail()
         $("#span_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
         $("#status_confirm").addClass("text-warning");
         $("#status_confirm").text("Os dois novos E-mails não conferem, tente novamente!");
-    } 
+    }
     else    //deu tudo certo?
     {
         $("#div_confirm").removeClass();
@@ -285,7 +285,7 @@ function confirmEmail()
         $("#span_confirm").removeClass();
         $("#span_confirm").addClass("glyphicon glyphicon-ok form-control-feedback");
         $("#status_confirm").text("");
-        $("#submit").prop("type","submit");
+        $("#submit").prop("type", "submit");
     }
     //Modificou o email novamente
     $("#input_email").on("click", function (e)
@@ -297,68 +297,69 @@ function confirmEmail()
         $("#input_confirm").val("");
     });
 }
-    //função que verifica se há algum erro nos campos do cadastro
-    function confirmCadastro()
-    {
-        var select = $("#select_doc").val();
-        var cpf = $("#statusCPF").text();
-        var cnpj = $("#statusCNPJ").text();
-        var email = $("#statusEmail").text();
-        var senha = $("#status_senha_confirm").text();
-        //alert(cpf); alert(email);alert(senha);alert($("#status_senha_confirm").text());alert(select);alert(cnpj);
-        if(select === "CPF")//o usuário selecionou o documento CPF?
-        {//sim
-            if(cpf === "")
+//função que verifica se há algum erro nos campos do cadastro
+function confirmCadastro()
+{
+    var select = $("#select_doc").val();
+    var cpf = $("#statusCPF").text();
+    var cnpj = $("#statusCNPJ").text();
+    var email = $("#statusEmail").text();
+    var senha = $("#status_senha_confirm").text();
+    //alert(cpf); alert(email);alert(senha);alert($("#status_senha_confirm").text());alert(select);alert(cnpj);
+    if (select === "CPF")//o usuário selecionou o documento CPF?
+    {//sim
+        if (cpf === "")
+        {
+            if (email === "")
             {
-                if(email === "")
+                if (senha === "")
                 {
-                    if(senha === "")
-                    {
-                        $("#bt_cadastro").prop("type","submit");
-                    }
+                    $("#bt_cadastro").prop("type", "submit");
                 }
             }
-        }else if(select === "CNPJ")//o usuário selecionou o documento CNPJ?
-        {//sim
-           if(cnpj === "")
+        }
+    } else if (select === "CNPJ")//o usuário selecionou o documento CNPJ?
+    {//sim
+        if (cnpj === "")
+        {
+            if (email === "")
             {
-                if(email === "")
+                if (senha === "")
                 {
-                    if(senha === "")
-                    {
-                        $("#bt_cadastro").prop("type","submit");
-                    }
+                    $("#bt_cadastro").prop("type", "submit");
                 }
-            } 
-        }else if(select === "")//o usuário selecionounenhum documento?
-        {//não
-           $("#select_doc").focus() ;
+            }
         }
+    } else if (select === "")//o usuário selecionounenhum documento?
+    {//não
+        $("#select_doc").focus();
+    }
 
-    }//fim 
-    
-    //função para identificar o documentação CPF ou CNPJ
-    function indentificarSelect()
+}//fim 
+
+//função para identificar o documentação CPF ou CNPJ
+function indentificarSelect()
+{
+    if ($("#select_doc").val() === "CPF") {
+        $("#div_cnpj").toggle(false);
+        $("#div_cpf").toggle(true);
+    } else if ($("#select_doc").val() === "CNPJ")
     {
-        if( $("#select_doc").val()=== "CPF"){
-            $("#div_cnpj").toggle(false);
-            $("#div_cpf").toggle(true);
-        }else if($("#select_doc").val() === "CNPJ")
-        {
-             $("#div_cpf").toggle(false);
-             $("#div_cnpj").toggle(true);
-        }else if($("#select_doc").val() === "")
-        {
-            $("#div_cpf").toggle(false);
-            $("#div_cnpj").toggle(false);
-        }
-     };   
+        $("#div_cpf").toggle(false);
+        $("#div_cnpj").toggle(true);
+    } else if ($("#select_doc").val() === "")
+    {
+        $("#div_cpf").toggle(false);
+        $("#div_cnpj").toggle(false);
+    }
+}
+;
 
 //funcao ajax para o CNPJ
 function validaCNPJ()
 {
     var cnpj = $('#input_cnpj').val();
-    if($('#input_cnpj').val()!== "")
+    if ($('#input_cnpj').val() !== "")
     {
         $.post("CNPJ", {cnpj: cnpj}, function (responseJson)
         {
@@ -389,7 +390,7 @@ function validaCNPJ()
 
             $("#statusCNPJ").text(responseJson);
         });
-    }else
+    } else
     {
         $("#div_cnpj").removeClass();
         $("#span_cnpj").removeClass();
@@ -404,7 +405,7 @@ function abrirMsg(id_msg, acao){
     var url = 'OpenMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
-    url = url.concat('&acao='+btn_acao);
+    url = url.concat('&acao=' + btn_acao);
     //window.open(url,'','height=1024,width=800');
     $("#panel-heading").html("Mensagem");
     var path = url; //Pegamos o caminh"o
@@ -422,31 +423,31 @@ function abrirMsg(id_msg, acao){
 function excluirMensagem()
 {
     var opcao = confirm("Você deseja realmente excluir essa mensagem?");
-    if(opcao){
-        $("#bt_excluir").prop("type","submit");
+    if (opcao) {
+        $("#bt_excluir").prop("type", "submit");
     }
 }
 //function para excluir a mensagem na front da caixa de mensagem do prestadro de serviço
 function excluirMensagemFront(op,id_entrada,id_msg)
 {
-        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
-         if(opcao){
-            var operacao = op;
-            var entrada = id_entrada;
-            var txtId = id_msg;
-            var local = 'entrada';
-              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId,local:local}, function(responseJson){
-                var resposta= responseJson;
-                 if (resposta === "Mensagem excluida com sucesso!")
-                {
-                    alert("Mensagem excluída com sucesso!");
-                    $("#caixa_entrada").trigger("click");
-                }else{
-                    $("#div_fail").toggle(true);
-                }
-	
-            });
-        }//if
+    var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+    if (opcao) {
+        var operacao = op;
+        var entrada = id_entrada;
+        var txtId = id_msg;
+        var local = 'entrada';
+        $.post("ExcluirMensagemFront", {operacao: operacao, entrada: entrada, txtId: txtId, local: local}, function (responseJson) {
+            var resposta = responseJson;
+            if (resposta === "Mensagem excluida com sucesso!")
+            {
+                alert("Mensagem excluída com sucesso!");
+                $("#caixa_entrada").trigger("click");
+            } else {
+                $("#div_fail").toggle(true);
+            }
+
+        });
+    }//if
 }//function
 
 
@@ -468,33 +469,33 @@ function responderMsg(id_msg){
 }
 
 //function para ativar o botão de enviar mensagem
-function showButtonMsg(){
+function showButtonMsg() {
     $("#div_mensagem").toggle(true);
     $("#btn_enviar").toggle(false);
 }
 
 
 //function para excluir a mensagem na front de mensagens enviadas
-function excluirMsgEnviadasFront(op,id_entrada,id_msg)
+function excluirMsgEnviadasFront(op, id_entrada, id_msg)
 {
-        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
-         if(opcao){
-            var operacao = op;
-            var entrada = id_entrada;
-            var txtId = id_msg;
-            var local = 'enviadas';
-              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId, local:local}, function(responseJson){
-                var resposta= responseJson;
-                 if (resposta === "Mensagem excluida com sucesso!")
-                {
-                    alert("Mensagem excluída com sucesso!");
-                    $("#mensagens_enviadas").trigger("click");
-                }else{
-                    $("#div_fail").toggle(true);
-                }
-	
-            });
-        }//if
+    var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+    if (opcao) {
+        var operacao = op;
+        var entrada = id_entrada;
+        var txtId = id_msg;
+        var local = 'enviadas';
+        $.post("ExcluirMensagemFront", {operacao: operacao, entrada: entrada, txtId: txtId, local: local}, function (responseJson) {
+            var resposta = responseJson;
+            if (resposta === "Mensagem excluida com sucesso!")
+            {
+                alert("Mensagem excluída com sucesso!");
+                $("#mensagens_enviadas").trigger("click");
+            } else {
+                $("#div_fail").toggle(true);
+            }
+
+        });
+    }//if
 }//function
 
 //function para abrir uma mensagem do cleinte
@@ -577,4 +578,88 @@ function responderMsgCliente(id_msg){
     $("#conteudo").load(path); //Faz uma requisição http para o servidor.
     window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
     return false;
+}
+//funcao para mudar a legenda de um gráfico em JS
+function legend(parent, data)
+{
+    legend(parent, data, null);
+}
+
+function legend(parent, data, chart) {
+    parent.className = 'legend';
+    var datas = data.hasOwnProperty('datasets') ? data.datasets : data;
+
+    // remove possible children of the parent
+    while (parent.hasChildNodes()) {
+        parent.removeChild(parent.lastChild);
+    }
+
+    var show = chart ? showTooltip : noop;
+    datas.forEach(function (d, i) {
+        //span to div: legend appears to all element (color-sample and text-node)
+        var title = document.createElement('div');
+        title.className = 'title';
+        parent.appendChild(title);
+
+        var colorSample = document.createElement('div');
+        colorSample.className = 'color-sample';
+        colorSample.style.backgroundColor = d.hasOwnProperty('strokeColor') ? d.strokeColor : d.color;
+        colorSample.style.borderColor = d.hasOwnProperty('fillColor') ? d.fillColor : d.color;
+        title.appendChild(colorSample);
+
+        var text = document.createTextNode(d.label);
+        text.className = 'text-node';
+        title.appendChild(text);
+
+        show(chart, title, i);
+    });
+
+    alert('Executou Legende');
+}
+
+//add events to legend that show tool tips on chart
+function showTooltip(chart, elem, indexChartSegment)
+{
+    var helpers = Chart.helpers;
+
+    var segments = chart.segments;
+    //Only chart with segments
+    if (typeof segments !== 'undefined')
+    {
+        helpers.addEvent(elem, 'mouseover', function () {
+            var segment = segments[indexChartSegment];
+            segment.save();
+            segment.fillColor = segment.highlightColor;
+            chart.showTooltip([segment]);
+            segment.restore();
+        });
+
+        helpers.addEvent(elem, 'mouseout', function () {
+            chart.draw();
+        });
+    }
+}
+
+function noop() {
+}
+
+
+//definindo cores aleatórios
+function aleatorio(inferior, superior)
+{
+    numPossibilidades = superior - inferior;
+    aleat = Math.random() * numPossibilidades;
+    aleat = Math.floor(aleat);
+    return parseInt(inferior) + aleat;
+}
+
+function dar_cor_aleatoria()
+{
+    hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+    cor_aleatoria = "#";
+    for (i = 0; i < 6; i++) {
+        posarray = aleatorio(0, hexadecimal.length);
+        cor_aleatoria += hexadecimal[posarray];
+    }
+    return cor_aleatoria;
 }
