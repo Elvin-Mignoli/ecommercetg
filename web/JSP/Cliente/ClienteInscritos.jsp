@@ -14,6 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- Implementacao de CSS para Bootstrap tag input  -->
+        <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
     </head>
 
@@ -50,7 +51,7 @@
                 </table>
             </div>
         </div>
-        <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+        <!-- <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script> -->
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
     </body>
 </html>

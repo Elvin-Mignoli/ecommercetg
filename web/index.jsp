@@ -22,9 +22,6 @@
 
         <!-- Custom styles for this template -->
         <link href="bootstrap/dist/css/jumbotron.css" rel="stylesheet">
-        <!--Para funcionar o collapsed-->
-        <script src="js/libs/jquery-1.11.1.min.js"></script>
-        <script src="bootstrap/dist/js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -45,7 +42,7 @@
                             <div class="form-group">
                                 <span class="alert alert-info">
                                     ${requestScope.loginError}
-                                    <% request.setAttribute("loginError", null); %>
+                                    <% request.setAttribute("loginError", null);%>
                                 </span>
                             </div>
                         </c:if>
@@ -76,15 +73,20 @@
         <div class="container">
             <!-- Example row of columns -->
             <div class="row">
-                <div class="col-md-4">
-                    <h2>Titulo 1</h2>
-                    <p>Alguns informações aqui</p>
-                    <p><a class="btn btn-default" href="#" role="button">Mais detalhes &raquo;</a></p>
+                <div class="col-md-4 text-center">
+                    <h2>Habilidades mais procuradas</h2>
+                    <!-- Div do Gráfico -->
+                    <div class="box-chart">
+                        <canvas id="graficoRosquinha" style="width: 100%"></canvas>
+                    </div>
+                    <!-- <p>Alguns informações aqui</p>
+                    <p><a class="btn btn-default" href="#" role="button">Mais detalhes &raquo;</a></p> -->
                 </div>
                 <div class="col-md-4">
-                    <h2>Titulo 2</h2>
-                    <p>Algumas informações aqui também </p>
-                    <p><a class="btn btn-default" href="#" role="button">Mais detalhes &raquo;</a></p>
+                    <h2>Nossos Pedidos</h2>
+                    <div class="box-chart">
+                        <canvas id="GraficoBarra" style="width: 100%"></canvas>
+                    </div>
                 </div>
                 <div class="col-md-4">
                     <h2>Titulo 3</h2>
@@ -99,14 +101,97 @@
                 <p>&copy; Company 2014</p>
             </footer>
         </div> <!-- /container -->
-        
-        
-        <!-- Bootstrap core JavaScript
-        ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
+        <!--Para funcionar o collapsed-->
+        <script src="js/libs/jquery-1.11.1.min.js"></script>
         <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-        
-        
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="js/libs/Charts/Chart.min.js" type="text/javascript"></script>
+        <script src="js/ajaxFuntions.js" type="text/javascript"></script>
+        <!-- Funcoes para o gráfico -->
+        <script type="text/javascript">
+            window.onload = function ()
+            {
+                /*var ctx = document.getElementById("graficoRosquinha").getContext("2d");
+                window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive: true});*/
+                 graficoRosquinha();
+                /*ctx = document.getElementById("GraficoBarra").getContext("2d");
+                var Bar = new Chart(ctx).Bar(dataBar, option);
+                alert("Criou os gráficos");*/
+                graficoBarras();
+            };
+
+            function graficoRosquinha()
+            {
+                var doughnutData = [
+            <c:forEach var="hb" items="${requestScope.donnutHabilidade}">
+                    {
+                        value: '${hb.value}',
+                        color: this.dar_cor_aleatoria(),
+                        highlight: "#D3D3D3",
+                        label: '${hb.label}'
+                    },
+            </c:forEach>
+                ];
+                var ctx = document.getElementById("graficoRosquinha").getContext("2d");
+                window.myDoughnut = new Chart(ctx).Doughnut(doughnutData, {responsive: true});
+            }
+            
+            function graficoBarras()
+            {
+                var options = {
+                        responsive: true
+                    };
+
+                    var data = {
+                        labels: ["Setembro", "Outubro","Novembro","Dezembro"],
+                        datasets: [
+                            
+                    <c:forEach var="pedido" items="${requestScope.pedidos}">
+                        <c:choose>
+                            <c:when test="${pedido.status eq 'ABERTO'}">
+                                {
+                                label: "Abertos",
+                                fillColor: "rgba(50,205,50,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: ['${pedido.values.get("Setembro")}','${pedido.values.get("Outubro")}','${pedido.values.get("Novembro")}','${pedido.values.get("Dezembro")}']
+                                },
+                            </c:when>
+                            <c:when test="${pedido.status eq 'FECHADO'}">
+                                {
+                                label: "Fechados",
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(220,220,220,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: ['${pedido.values.get("Setembro")}','${pedido.values.get("Outubro")}','${pedido.values.get("Novembro")}','${pedido.values.get("Dezembro")}']
+                                },
+                            </c:when>
+                            <c:otherwise>
+                                {
+                                label: "Cancelados",
+                                fillColor: "rgba(178,34,34,0.2)",
+                                strokeColor: "rgba(178,34,34,1)",
+                                pointColor: "rgba(220,220,220,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                data: ['${pedido.values.get("Setembro")}','${pedido.values.get("Outubro")}','${pedido.values.get("Novembro")}','${pedido.values.get("Dezembro")}']
+                                },
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                        ]
+                    };
+                    var ctx = document.getElementById("GraficoBarra").getContext("2d");
+                    var BarChart = new Chart(ctx).Bar(data, options);
+            }
+        </script>
     </body>
 </html>
 

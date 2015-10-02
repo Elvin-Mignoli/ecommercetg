@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
     "/JSP/PrestadorServico/AlterarEmail", "/JSP/PrestadorServico/AlterarSenha","/JSP/PrestadorServico/CNPJ",
     "/JSP/Cliente/FiltroAtualizarPedido","/JSP/Cliente/ConsultaInscritos","/JSP/Cliente/SelecionarPrestador",
     "/JSP/Cliente/ConsultaPedido","/JSP/PrestadorServico/CaixaEntrada","/JSP/PrestadorServico/Candidatar","/JSP/PrestadorServico/ConsultarPedido",
-    "/JSP/PrestadorServico/MensagemEnviada"
+    "/JSP/PrestadorServico/MensagemEnviada","/index.jsp"
         
 })
 public class FilterBusiness implements Filter

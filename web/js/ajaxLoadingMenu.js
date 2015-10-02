@@ -272,7 +272,7 @@ $(document).ready(function ()
     });
    
    //ajax mostrar os daodos dos prestadores inscritos
-    $("#buttonInscritos").on("click", function (e) 
+    $(document).on("click",'.consultaInscritos', function (e) 
     {
          e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Meus Pedidos");
@@ -285,6 +285,8 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
+    
+    //funções para os gráficos
    
 });
 
