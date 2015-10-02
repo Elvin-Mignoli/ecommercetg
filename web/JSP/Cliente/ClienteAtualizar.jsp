@@ -31,7 +31,7 @@
     <input type="text" name="operacao" value="Atualizar" hidden="true"/>
     <div class="container-fluid">
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Nome
                 </span>
@@ -40,7 +40,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Sobrenome
                 </span>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Sexo
                 </span>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     CPF
                 </span>
@@ -85,7 +85,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Data Nascimento
                 </span>
@@ -94,7 +94,7 @@
             </div>
 
             <div class="form-group">
-                <div class="input-group col-lg-3">
+                <div class="input-group col-lg-7">
                     <span class="input-group-addon">
                         Telefone
                     </span>
@@ -103,7 +103,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Celular
                 </span>
@@ -116,7 +116,7 @@
         </div>
 
         <div class="form-group" id="div_cep">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon" id="span_cep">
                     CEP
                 </span>
@@ -125,7 +125,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Logradouro
                 </span>
@@ -133,7 +133,15 @@
             </div>
         </div>
         <div class="form-group">
-            <div class="input-group col-lg-3">
+               <div class="input-group col-lg-7">
+                   <span class="input-group-addon">
+                       Número
+                   </span>
+                   <input type="text" max="10000" name="txtNumero" id="numero" value="${sessionScope.user.endereco.numero}" class="form-control"/>
+               </div>
+           </div> 
+        <div class="form-group">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Bairro
                 </span>
@@ -142,7 +150,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Cidade
                 </span>
@@ -151,7 +159,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Estado
                 </span>
@@ -160,7 +168,7 @@
         </div>
 
         <div class="form-group">
-            <div class="input-group col-lg-3">
+            <div class="input-group col-lg-7">
                 <span class="input-group-addon">
                     Complemento
                 </span>

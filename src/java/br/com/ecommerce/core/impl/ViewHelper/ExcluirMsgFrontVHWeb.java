@@ -24,12 +24,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ExcluirMsgFrontVHWeb implements IViewHelper{
 
-    Usuario usuario = new PrestadorServico();
+    Usuario usuario = new Usuario();
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
         String local = request.getParameter("local");
         //boolean flag = false; // flag para identificar se foi exlcuido uma mensagem na arraylist
-        usuario = (PrestadorServico)request.getSession().getAttribute("user");
+        usuario = (Usuario)request.getSession().getAttribute("user");
         Mensagem msg = new Mensagem();
         msg.setId(Integer.parseInt(request.getParameter("txtId")));
 

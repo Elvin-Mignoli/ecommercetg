@@ -32,17 +32,17 @@ public class MensagensEnviadasVHWeb implements IViewHelper{
     public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
        Usuario usuario = (Usuario) request.getSession().getAttribute("user");
         MensagensEnviadas entrada = new MensagensEnviadas();
-        Resultado rs = new Resultado();
+        Resultado rs;
         rs = entrada.processar(usuario.getEntrada());
-        usuario.getEntrada().setMensagens(rs.getEntidades());
-        if(rs.getEntidade()!=null)
-        {
+        if(rs != null)//conseguiu resgatar as mensagens no banco?
+        {//sim
+            usuario.getEntrada().setMensagens(rs.getEntidades());
              //decidino se é Cliente ou Prestador
             if (request.getRequestURI().contains("Cliente"))
             {
                 request.getSession().setAttribute("user", (Cliente)usuario);
                 request.setAttribute("user",(Cliente)usuario);
-                request.getRequestDispatcher("").forward(request, response);
+                request.getRequestDispatcher("ClienteMensagensEnviadas.jsp").forward(request, response);
             }else if (request.getRequestURI().contains("Prestador"))
             {
                 
@@ -50,6 +50,12 @@ public class MensagensEnviadasVHWeb implements IViewHelper{
                 request.setAttribute("user", (PrestadorServico)usuario);
                 request.getRequestDispatcher("PrestadorMensagensEnviadas.jsp").forward(request, response);
             }
+        }else{//não
+              request.setAttribute("MsgAtualiza", "Houve algum erro no servidor, tente novamente mais tarde!");
+               if (request.getRequestURI().contains("Cliente"))
+                    request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);    
+               else if(request.getRequestURI().contains("Prestador"))
+                    request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response); 
         }
     }
     

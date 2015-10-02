@@ -1,6 +1,6 @@
 <%-- 
-    Document   : PrestadorPerfil
-    Created on : 14/08/2015, 16:06:49
+    Document   : ClientePerfil
+    Created on : 24/09/2015, 19:19:36
     Author     : Elvin
 --%>
 
@@ -52,8 +52,7 @@
                     sessionScope.user.endereco.numero == ''||
                     sessionScope.user.endereco.bairro == ''||
                     sessionScope.user.endereco.cidade == ''||
-                    sessionScope.user.endereco.estado == ''||
-                    sessionScope.user.habilidades== null}">
+                    sessionScope.user.endereco.estado == ''}">
              
               <div class="alert alert-info alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -96,30 +95,15 @@
                                         </c:choose>
                                     </div>
                             </div>
-                            <c:choose>
-                                <c:when test="${sessionScope.user.cpf != null}">
-                                    <!--CPF-->
-                                    <div class="form-group">
-                                        <div class="input-group col-lg-5">
-                                            <span class="input-group-addon"  id="span_cpf">
-                                                CPF
-                                            </span>
-                                            <input type="text"  id="input_cpf" value="${sessionScope.user.cpf}" readonly="readonly"  class="form-control"/>
-                                        </div>
-                                    </div>
-                                </c:when>
-                                <c:when test="${sessionScope.user.cnpj != null}">
-                                    <!--CNPJ-->
-                                    <div class="form-group">
-                                        <div class="input-group col-lg-5">
-                                            <span class="input-group-addon"  id="span_cnpj">
-                                                CNPJ
-                                            </span>
-                                            <input type="text"  id="input_cnpj" value="${sessionScope.user.cnpj}" readonly="readonly"  class="form-control"/>
-                                        </div>
-                                    </div>
-                                </c:when>
-                            </c:choose>
+                            <!--CPF-->
+                            <div class="form-group">
+                                <div class="input-group col-lg-5">
+                                    <span class="input-group-addon"  id="span_cpf">
+                                        CPF
+                                    </span>
+                                    <input type="text"  id="input_cpf" value="${sessionScope.user.cpf}" readonly="readonly"  class="form-control"/>
+                                </div>
+                            </div>
                              <!--Data de nascimento-->
                             <div class="form-group">
                                 <div class="input-group col-lg-5">
@@ -220,20 +204,7 @@
                         </div>
                         </div><!--panel body-->
        </div><!--panel-->
-        <!--Panel informações Competências -->
-       <div class="panel  panel-primary col-lg-10" >
-            <div class="panel panel-heading text-center" id="panel_info">Competências</div>
-            <div class="panel-body">
-                <!-- Conteudo dos Panels! -->
-                 <div class="form-group">
-                    <div class="input-group col-lg-3">
-                        <textarea  rows="3" id="show_skill" style="width:642px; height:100px "
-
-                                   readonly name="txtSkill"><c:forEach var="list" items="${sessionScope.user.habilidades}"><c:choose><c:when test='${sessionScope.user.habilidades != null}'>${list.descricao}${" "}</c:when><c:otherwise></c:otherwise></c:choose></c:forEach></textarea>
-                    </div>
-                </div>
-            </div><!--panel body-->
-       </div><!--panel-->
+        
          <!-- Scripts da Pagina -->
        <!-- Mask -->
        <script>
@@ -248,3 +219,4 @@
 
     </body>
 </html>
+

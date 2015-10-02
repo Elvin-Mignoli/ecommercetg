@@ -32,7 +32,7 @@
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="ClienteDashboard.jsp">Home</a></li>
-                        <li class="dropdown">
+                        <!--<li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Page 1-1</a></li>
@@ -41,7 +41,7 @@
                             </ul>
                         </li>
                         <li><a href="#">Page 2</a></li>
-                        <li><a href="#">Page 3</a></li>
+                        <li><a href="#">Page 3</a></li> -->
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="logoff"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
@@ -115,7 +115,7 @@
                                 <div class="profile-usermenu">
                                     <ul class="nav">
                                         <li class="active">
-                                            <a href="ClienteDashboard.jsp">
+                                            <a href="ClientePerfil.jsp" id="meu_perfil_cliente" data-titulo="Perfil">
                                                 <i class="glyphicon glyphicon-home"></i>
                                                 Meu Perfil </a>
                                         </li>
@@ -149,6 +149,27 @@
                                                 Editar meus dados 
                                             </a>
                                         </li>
+                                        <li class="active" id="listMensagens">
+                                            <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                                Mensagens
+                                            </a>
+                                        </li>
+                                        <div class="collapse active" id="collapseMenuMensagens">
+                                            <ul id="option_mensagens">
+                                                <a href= "CaixaEntrada" id="caixa_entrada_cliente" data-titulo="Caixa de Entrada" >
+                                                <i class="glyphicon glyphicon-envelope"></i>
+                                                Caixa de entrada 
+                                                </a>
+                                                <br/>
+                                                <a href= "MensagemEnviada" id="mensagens_enviadas_cliente" data-titulo="Mensagens enviadas" >
+                                                <i class="glyphicon glyphicon-cloud"></i>
+                                                Mensagens enviadas
+                                                </a>
+                                                <br/>
+                                              
+                                            </ul>
+                                        </div>
                                         <li class="active" id="listPedidos">
                                             <a href="#collapsePedidos" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-stats"></i>
@@ -195,7 +216,6 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading" id="panel-heading"></div>
                                 <div class="panel-body">
-
                                     <c:if test="${requestScope.MsgAtualiza ne null}">
                                         <div class="alert alert-info alert-dismissible" role="alert">
                                             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -237,5 +257,18 @@
         <!-- Implementando script de load de paginas de funcoes -->
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <script>
+        $(document).ready(    
+        function() {
+            //AJAX para Caixa de entrada
+           setInterval(function() {
+                if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
+                {//sim
+                      $("#caixa_entrada_cliente").trigger("click");
+                      
+                }  
+            },120000); //fim do ajax
+        });
+        </script>
     </body>
 </html>

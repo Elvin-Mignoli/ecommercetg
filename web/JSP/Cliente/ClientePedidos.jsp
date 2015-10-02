@@ -17,7 +17,6 @@
         <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css">
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
-        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <div class="container">
@@ -58,36 +57,55 @@
                             <td>
                                 <form method="post" action="ConsultarPedido">
                                     <input type="text" name="operacao" value="Consultar" hidden="true"/>
-                                    <a href="/Ecommerce/JSP/Cliente/ConsultaPedido?txtId=${pedido.id}" class="btn btn-primary consultaPedido" id="btnConsultaPedido">
-                                        Detalhes <span class="glyphicon glyphicon-info-sign"></span>
-                                    </a>
+                                    <c:choose>
+                                        <c:when test="${pedido.status eq 'CANCELADO'}">
+                                            <a href="/Ecommerce/JSP/Cliente/ConsultaPedido?txtId=${pedido.id}" class="btn btn-primary consultaPedido disabled" id="btnConsultaPedido">
+                                                Detalhes <span class="glyphicon glyphicon-info-sign"></span>
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="/Ecommerce/JSP/Cliente/ConsultaPedido?txtId=${pedido.id}" class="btn btn-primary consultaPedido" id="btnConsultaPedido">
+                                                Detalhes <span class="glyphicon glyphicon-info-sign"></span>
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </form>
                             </td>
                             <td>
-                                <!-- <form method="post" action="FiltroAtualizarPedido"> 
-                                    <input type="text" name="operacao" value="Atualizar" hidden="true"/>
-                                    <input type="text" name="txtId" value="${pedido.id}" hidden="true"/>
-                                    <input type="text" name="txtDescricao" value="${pedido.descricao}" hidden="true"/>
-                                    <input type="text" name="txtHabilidadesRequeridas" value="${pedido.habilidadePrestador.toString().replace("[","").replace("]","")}" hidden="true"/>
-                                    <input type="text" name="txtMinhaHabilidade" value="${pedido.habilidadeCliente.toString().replace("[","").replace("]","")}" hidden="true"/>
-                                    <input type="text" name="txtDataInicio" value="<f:formatDate pattern="dd/MM/yyy" value="${pedido.dataInicio}"/>" hidden="true"/>
-                                    <input type="text" name="txtDataFim" value="<f:formatDate pattern="dd/MM/yyy" value="${pedido.dataFim}"/>" hidden="true"/>
-                                    <input type="text" name="txtHora" value="<f:formatDate pattern="HH:mm:ss" value="${pedido.horaConsultoria.getTime()}"/>" hidden="true"/> -->
-
-                                <a href="/Ecommerce/JSP/Cliente/FiltroAtualizarPedido?txtId=${pedido.id}" class="btn btn-success filtroAtualiza" data-titulo="Atualizar Pedido">
-                                    Atualizar
-                                    <span class="glyphicon glyphicon-refresh"></span>
-                                </a>
+                                <c:choose>
+                                    <c:when test="${pedido.status eq 'CANCELADO'}">
+                                        <a href="/Ecommerce/JSP/Cliente/FiltroAtualizarPedido?txtId=${pedido.id}" class="btn btn-success filtroAtualiza disabled" data-titulo="Atualizar Pedido">
+                                            Atualizar
+                                            <span class="glyphicon glyphicon-refresh"></span>
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="/Ecommerce/JSP/Cliente/FiltroAtualizarPedido?txtId=${pedido.id}" class="btn btn-success filtroAtualiza" data-titulo="Atualizar Pedido">
+                                            Atualizar
+                                            <span class="glyphicon glyphicon-refresh"></span>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
                                 <!-- </form> -->
                             </td>
                             <td>
                                 <form method="post" action="DesativarPedido">
                                     <input type="text"  name="operacao" value="Excluir" hidden="true"/>
                                     <input type="text"  name="txtId" value="${pedido.id}" hidden="true"/>
-                                    <button type="submit" class="btn btn-danger">
-                                        Cancelar
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                                    <c:choose>
+                                        <c:when test="${pedido.status eq 'CANCELADO'}">
+                                            <button type="submit" class="btn btn-danger disabled">
+                                                Cancelar
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="btn btn-danger">
+                                                Cancelar
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </form>
                             </td>
                             <td>
@@ -97,9 +115,17 @@
                                             Inscritos
                                             <span class="glyphicon glyphicon-star"></span>
                                         </a>
-                                    </c:when>   
+                                    </c:when>
+                                    <c:when test="${pedido.qtdeInteressados eq 0}">
+                                        <button class="btn btn-default" disabled="true">
+                                            <span class="badge">${pedido.qtdeInteressados} </span>
+                                            Inscritos
+                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                        </button>
+                                    </c:when>
                                     <c:otherwise>
-                                        <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}" class="btn btn-default" id="buttonInscritos" data-titulo="Inscritos">
+                                        <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}" class="btn btn-default consultaInscritos" data-titulo="Inscritos">
+                                            <span class="badge">${pedido.qtdeInteressados} </span>
                                             Inscritos
                                             <span class="glyphicon glyphicon-star"></span>
                                         </a>
@@ -111,6 +137,6 @@
                 </table>
             </div>
         </div>
-        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script        
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>       
     </body>
 </html>

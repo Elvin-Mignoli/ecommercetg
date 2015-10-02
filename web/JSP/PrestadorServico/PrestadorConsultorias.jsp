@@ -13,8 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
        
-        <!-- Custom styles for this template -->
-        <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
+        
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
@@ -48,9 +47,7 @@
                     </c:forEach>
                 </c:if>
             </table>       
-            <c:if test="${requestScope.ListaPedido.pedidos == null}">
-                <span class="col-lg-12" style="text-align: center">Nenhuma candidatura até esse momento.</span> 
-            </c:if>
+            
         </div>
        
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>

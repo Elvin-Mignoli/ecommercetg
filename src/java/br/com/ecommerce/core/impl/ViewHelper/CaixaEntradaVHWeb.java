@@ -36,23 +36,39 @@ public class CaixaEntradaVHWeb implements IViewHelper{
         
         Usuario usuario = (Usuario) request.getSession().getAttribute("user");
         OpenCaixaEntrada entrada = new OpenCaixaEntrada();
-        Resultado rs = new Resultado();
+        Resultado rs;
         rs = entrada.processar(usuario);
-        if(rs.getEntidade()!=null)
-        {
-             //decidino se é Cliente ou Prestador
-            if (request.getRequestURI().contains("Cliente"))
-            {
-                request.getSession().setAttribute("user", (Cliente)usuario);
-                request.setAttribute("user",(Cliente)usuario);
-                request.getRequestDispatcher("").forward(request, response);
-            }else if (request.getRequestURI().contains("Prestador"))
-            {
-                
-                request.getSession().setAttribute("user", (PrestadorServico)rs.getEntidade());
-                request.setAttribute("user", (PrestadorServico)usuario);
-                request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response);
+        String mensagemRetorno = rs.getMensagemSimples();
+        if(mensagemRetorno == null)//ocorreu algum erro?
+        {//não
+            if(rs.getEntidade()!= null)//conseguiu resgatar alguma entidade no banco?
+            {//sim
+                 //decidino se é Cliente ou Prestador
+                if (request.getRequestURI().contains("Cliente"))
+                {
+                    request.getSession().setAttribute("user", (Cliente)usuario);
+                    request.setAttribute("user",(Cliente)usuario);
+                    request.getRequestDispatcher("ClienteCaixaEntrada.jsp").forward(request, response);
+                }else if (request.getRequestURI().contains("Prestador"))
+                {
+
+                    request.getSession().setAttribute("user", (PrestadorServico)rs.getEntidade());
+                    request.setAttribute("user", (PrestadorServico)usuario);
+                    request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response);
+                }
+            }else{//não
+               request.setAttribute("MsgAtualiza", rs.getMensagemSimples()); //setar a mensagem de erro
+               if (request.getRequestURI().contains("Cliente"))
+                    request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);    
+               else if(request.getRequestURI().contains("Prestador"))
+                    request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response);
             }
+        }else{//sim
+            request.setAttribute("MsgAtualiza", rs.getMensagemSimples()); //setar a mensagem de erro
+               if (request.getRequestURI().contains("Cliente"))
+                    request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);    
+               else if(request.getRequestURI().contains("Prestador"))
+                    request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response); 
         }
     }
     
