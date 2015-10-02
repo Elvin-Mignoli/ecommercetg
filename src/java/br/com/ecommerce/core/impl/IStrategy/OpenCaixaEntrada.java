@@ -38,7 +38,7 @@ public class OpenCaixaEntrada implements IStrategy{
                 return resultado;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                resultado.getMensagens().add("Houve algum erro inesperado");
+                resultado.setMensagemSimples("Houve algum erro inesperado");
                 return null;
             }
         }else if(entidade instanceof PrestadorServico)
@@ -53,7 +53,7 @@ public class OpenCaixaEntrada implements IStrategy{
                 return resultado;
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                resultado.getMensagens().add("Houve algum erro inesperado");
+                resultado.setMensagemSimples("Houve algum erro inesperado");
                 return null;
             }
             

@@ -13,8 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
        
-        <!-- Custom styles for this template -->
-        <link href="../../bootstrap/dist/css/jumbotron.css" rel="stylesheet" type="text/css"/>
+        
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <!-- CSS das fontes -->
@@ -55,9 +54,11 @@
                         <br>
                         <br>
                         <c:if test="${param.local != 'candidaturas'}">
-                        <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success">Videoconferencia</a>
+                        <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success">Video Chat 
+                            <span class="glyphicon glyphicon-film"></span></a>
                         <br> <br>
-                        <button type="button" id="btn_enviar" class="btn btn-success" onclick="showButtonMsg()">Enviar Mensagem para o cliente</button>
+                        <button type="button" id="btn_enviar" class="btn btn-success" onclick="showButtonMsg()">Mensagem
+                         <span class="glyphicon glyphicon-send"></span></button>
                         <br><br>
                         
                             <!--Form pra mandar a mensagem -->

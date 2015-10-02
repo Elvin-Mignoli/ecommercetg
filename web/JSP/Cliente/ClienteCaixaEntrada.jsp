@@ -43,9 +43,9 @@
                                     <td style="text-align: center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data_msg}"></f:formatDate></td>
                                     <td style="text-align: center">
                                         <button type="button" value="Abrir" id="btn_abrir" class="btn btn-info" 
-                                                onclick="abrirMsg(${list.id},'entrada')">Abrir</button>
+                                                onclick="abrirMsgCliente(${list.id},'entrada')">Abrir</button>
                                         <button type="button" value="Excluir" id="btn_excluir"  class="btn btn-info" 
-                                                onclick="excluirMensagemFront('Excluir',${requestScope.user.entrada.id},${list.id})">Excluir</button>
+                                                onclick="excluirMsgFrontCliente('Excluir',${requestScope.user.entrada.id},${list.id})">Excluir</button>
                                     </td>
                                 </tr>
                             </c:if>

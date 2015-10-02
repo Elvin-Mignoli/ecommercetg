@@ -399,9 +399,9 @@ function validaCNPJ()
 }
 
 
-//function para abrir uma mensagem
-function abrirMsg(id_msg, acao) {
-    var btn_acao = acao;
+//function para abrir uma mensagem do prestador de servico
+function abrirMsg(id_msg, acao){
+    var btn_acao= acao;
     var url = 'OpenMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
@@ -427,8 +427,8 @@ function excluirMensagem()
         $("#bt_excluir").prop("type", "submit");
     }
 }
-//function para excluir a mensagem na front da caixa de mensagem
-function excluirMensagemFront(op, id_entrada, id_msg)
+//function para excluir a mensagem na front da caixa de mensagem do prestadro de serviço
+function excluirMensagemFront(op,id_entrada,id_msg)
 {
     var opcao = confirm("Você deseja realmente excluir essa mensagem?");
     if (opcao) {
@@ -451,8 +451,8 @@ function excluirMensagemFront(op, id_entrada, id_msg)
 }//function
 
 
-//function para responder
-function responderMsg(id_msg) {
+//function para responder as mensagens (prestador de servico)
+function responderMsg(id_msg){
     var url = 'ResponderMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
@@ -498,6 +498,87 @@ function excluirMsgEnviadasFront(op, id_entrada, id_msg)
     }//if
 }//function
 
+//function para abrir uma mensagem do cleinte
+function abrirMsgCliente(id_msg, acao){
+    var btn_acao= acao;
+    var url = 'OpenMensagemCliente.jsp?id=';
+    var id = id_msg;
+    url = url.concat(id);
+    url = url.concat('&acao='+btn_acao);
+    //window.open(url,'','height=1024,width=800');
+    $("#panel-heading").html("Mensagem");
+    var path = url; //Pegamos o caminh"o
+    var titulo = "Mensagem"; //pegamos o titulo da página
+    document.title = titulo; // Alterar o titulo da página
+    window.history.pushState("", titulo, path);
+    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+    window.history.pushState('Object', 'Dashboard', './ClienterDashboard.jsp');
+    return false;
+}
+
+//function para excluir a mensagem na front da caixa de mensagem
+function excluirMsgFrontCliente(op,id_entrada,id_msg)
+{
+        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+         if(opcao){
+            var operacao = op;
+            var entrada = id_entrada;
+            var txtId = id_msg;
+            var local = 'entrada';
+              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId,local:local}, function(responseJson){
+                var resposta= responseJson;
+                 if (resposta === "Mensagem excluida com sucesso!")
+                {
+                    alert("Mensagem excluída com sucesso!");
+                    $("#caixa_entrada_cliente").trigger("click");
+                }else{
+                    $("#div_fail").toggle(true);
+                }
+	
+            });
+        }//if
+}//function
+
+//function para excluir a mensagem na front de mensagens enviadas
+function excluirMsgEnviadasFrontCliente(op,id_entrada,id_msg)
+{
+        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+         if(opcao){
+            var operacao = op;
+            var entrada = id_entrada;
+            var txtId = id_msg;
+            var local = 'enviadas';
+              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId, local:local}, function(responseJson){
+                var resposta= responseJson;
+                 if (resposta === "Mensagem excluida com sucesso!")
+                {
+                    alert("Mensagem excluída com sucesso!");
+                    $("#mensagens_enviadas_cliente").trigger("click");
+                }else{
+                    $("#div_fail").toggle(true);
+                }
+	
+            });
+        }//if
+}//function
+//
+//function para responder a mensagend (Cliente)
+function responderMsgCliente(id_msg){
+    var url = 'ResponderMendagemCliente.jsp?id=';
+    var id = id_msg;
+    url = url.concat(id);
+    //window.open(url,'','height=1024,width=800');
+    $("#panel-heading").html(" Responder Mensagem");
+    var path = url; //Pegamos o caminh"o
+    var titulo = " Responder Mensagem"; //pegamos o titulo da página
+    document.title = titulo; // Alterar o titulo da página
+    window.history.pushState("", titulo, path);
+    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+    window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+    return false;
+}
 //funcao para mudar a legenda de um gráfico em JS
 function legend(parent, data)
 {
@@ -574,7 +655,7 @@ function aleatorio(inferior, superior)
 
 function dar_cor_aleatoria()
 {
-    hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+    hexadecimal = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
     cor_aleatoria = "#";
     for (i = 0; i < 6; i++) {
         posarray = aleatorio(0, hexadecimal.length);
