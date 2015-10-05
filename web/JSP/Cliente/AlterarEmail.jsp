@@ -29,24 +29,33 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Email antigo</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Email</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </span>
                             <input type="email" name="txtEmail" class="form-control" required="required" placeholder="Email atual"/>
                         </div> 
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Senha</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Senha</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock"></span>
+                            </span>
                             <input type="password" name="txtSenha" class="form-control" placeholder="Senha atual"/>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Novo email</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Novo Email</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </span>
                             <input type="email" name="txtNovoEmail" required="required" class="form-control" placeholder="Novo Email"/>
                         </div>
                     </div>

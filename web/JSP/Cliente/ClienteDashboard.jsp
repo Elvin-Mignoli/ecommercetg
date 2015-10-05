@@ -163,7 +163,7 @@
                                                 </a>
                                                 <br/>
                                                 <a href= "MensagemEnviada" id="mensagens_enviadas_cliente" data-titulo="Mensagens enviadas" >
-                                                <i class="glyphicon glyphicon-cloud"></i>
+                                                <i class="glyphicon glyphicon-cloud-download"></i>
                                                 Mensagens enviadas
                                                 </a>
                                                 <br/>
@@ -265,7 +265,6 @@
                 if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
                 {//sim
                       $("#caixa_entrada_cliente").trigger("click");
-                      
                 }  
             },120000); //fim do ajax
         });

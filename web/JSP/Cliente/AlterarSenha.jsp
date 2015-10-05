@@ -38,21 +38,31 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Senha antiga</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Senha</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock"></span>
+                            </span>
                             <input type="password" name="txtSenha" class="form-control" required="required" placeholder="Senha atual"/>
                         </div> 
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Nova Senha</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Nova Senha</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </span>
                             <input type="password" name="txtNovaSenha" class="form-control" placeholder="Nova Senha" required="required"/>
                         </div>
                     </div>
                 </div>
-                <input type="submit" class="btn btn-success" value="Alterar"/>  
+                <button class="btn btn-success btn-lg" type="submit">
+                    Atualizar
+                    <span class="glyphicon glyphicon-refresh"></span>
+                </button>
+                <!-- <input type="submit" class="btn btn-success" value="Alterar"/>  -->
             </div>
         </form>
     </body>
