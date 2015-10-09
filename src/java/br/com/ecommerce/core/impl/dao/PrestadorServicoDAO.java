@@ -45,7 +45,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
             PrestadorServico prestador= (PrestadorServico) entidade;
             
-            openConnection(); //Abrir conexão com banco
+            if(conexao == null || conexao.isClosed())
+                openConnection(); //Abrir conexão com banco
             
             conexao.setAutoCommit(false);
             
@@ -89,8 +90,6 @@ public class PrestadorServicoDAO extends AbstractDAO
             
             dao.salvar(new CaixaEntrada(null, prestador));
 
-           
-            
             conexao.commit();   //commitando as alteracoes feitas no banco!
 
         } catch (SQLException ex)
@@ -108,7 +107,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
                 throw new SQLException();
@@ -134,8 +134,13 @@ public class PrestadorServicoDAO extends AbstractDAO
                 sql.append("SEXO = ? ");
                 sql.append("WHERE ID = ?");  //criando sql para insert no banco
                 
-                openConnection();//Abrir conexão com banco
+                if(conexao == null || conexao.isClosed())
+                {
+                    openConnection();
+                }//Abrir conexão com banco
+                
                 conexao.setAutoCommit(false);//setando auto commit para false
+                
                 IDAO dao = new EnderecoDAO(conexao);
 
                 dao.atualizar(prestador.getEndereco());   //atualizando dados do endereco!
@@ -177,7 +182,8 @@ public class PrestadorServicoDAO extends AbstractDAO
             {
                 try
                 {
-                    conexao.close();
+                    if(transaction)
+                        conexao.close();
                 } catch (SQLException e)
                 {
                     e.printStackTrace();
@@ -229,7 +235,9 @@ public class PrestadorServicoDAO extends AbstractDAO
     @Override
     public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
+        if(conexao == null || conexao.isClosed())
+            openConnection();//Abrir conexão com banco
+        
         ArrayList<EntidadeDominio> lista = new ArrayList<>();
         PreparedStatement preparador;
         String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
@@ -248,14 +256,14 @@ public class PrestadorServicoDAO extends AbstractDAO
                 do
                 {
                     PrestadorServico prestador = new PrestadorServico();
-                    EnderecoDAO endDao = new EnderecoDAO();
+                    EnderecoDAO endDao = new EnderecoDAO(conexao);
                     Endereco end = new Endereco();
                     end.setId(resultado.getInt("id_endereco"));
                     prestador.setEndereco((Endereco) endDao.consultarUm(end));
                     //pegar o id do banco 
                     prestador.setId(resultado.getInt("id"));
                     //pegar os dados do login
-                    AutenticarDAO autenticar = new AutenticarDAO();
+                    AutenticarDAO autenticar = new AutenticarDAO(conexao);
                     autenticar.consultarUm(prestador);
                     //pegar os dados do contato
                     Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
@@ -267,7 +275,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                     prestador.setSexo(resultado.getString("sexo"));
                     prestador.setSobrenome(resultado.getString("sobrenome"));
                     //recuperar as competencias
-                    CompetenciaDAO compDAO = new CompetenciaDAO();
+                    CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
                     compDAO.consultarUm(prestador);
                     lista.add(prestador);
 
@@ -282,7 +290,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
                 throw new SQLException();
@@ -293,7 +302,9 @@ public class PrestadorServicoDAO extends AbstractDAO
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
-        openConnection();//Abrir conexão com banco
+        if(conexao == null || conexao.isClosed())
+            openConnection();//Abrir conexão com banco
+        
         PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
         String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS WHERE PRESTADOR_SERVICOS.ID = ?";
@@ -342,14 +353,14 @@ public class PrestadorServicoDAO extends AbstractDAO
             }
         } catch (SQLException ex)
         {
-            conexao.close();
             ex.printStackTrace();
             throw new SQLException();
         } finally
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
                 throw new SQLException();
@@ -364,7 +375,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
            PrestadorServico prestador = (PrestadorServico) entidade;
             
-            openConnection();
+           if(conexao == null || conexao.isClosed()) 
+              openConnection();
             
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT NOME FROM PRESTADOR_SERVICOS ");
@@ -387,7 +399,6 @@ public class PrestadorServicoDAO extends AbstractDAO
         }
         catch(SQLException ex)
         {
-            conexao.close();
             ex.printStackTrace();
             throw new SQLException(ex);
         }
@@ -395,7 +406,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             }
             catch(SQLException ex)
             {
@@ -410,7 +422,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
            PrestadorServico prestador = (PrestadorServico) entidade;
             
-            openConnection();
+           if(conexao == null || conexao.isClosed()) 
+              openConnection();
             
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT NOME FROM PRESTADOR_SERVICOS ");
@@ -433,7 +446,6 @@ public class PrestadorServicoDAO extends AbstractDAO
         }
         catch(SQLException ex)
         {
-            conexao.close();
             ex.printStackTrace();
             throw new SQLException(ex);
         }
@@ -441,7 +453,8 @@ public class PrestadorServicoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             }
             catch(SQLException ex)
             {

@@ -400,8 +400,8 @@ function validaCNPJ()
 
 
 //function para abrir uma mensagem do prestador de servico
-function abrirMsg(id_msg, acao){
-    var btn_acao= acao;
+function abrirMsg(id_msg, acao) {
+    var btn_acao = acao;
     var url = 'OpenMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
@@ -415,6 +415,27 @@ function abrirMsg(id_msg, acao){
     $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
     $("#conteudo").load(path); //Faz uma requisição http para o servidor.
     window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+
+    $.post("MensagemAberta", {idMensagem: id}, function (responseJson)
+    {
+
+    });
+
+    var badge = $('#qtdeMsg').html();
+
+    if (badge !== 0)
+    {
+        if ((badge - 1) === 0)
+        {
+            $('#qtdeMsg').html(badge - 1);
+            $('#qtdeMsg').html('');
+        }
+        else
+        {
+            $('#qtdeMsg').html(badge - 1);
+        }
+    }
+
     return false;
 }
 
@@ -428,7 +449,7 @@ function excluirMensagem()
     }
 }
 //function para excluir a mensagem na front da caixa de mensagem do prestadro de serviço
-function excluirMensagemFront(op,id_entrada,id_msg)
+function excluirMensagemFront(op, id_entrada, id_msg)
 {
     var opcao = confirm("Você deseja realmente excluir essa mensagem?");
     if (opcao) {
@@ -452,7 +473,7 @@ function excluirMensagemFront(op,id_entrada,id_msg)
 
 
 //function para responder as mensagens (prestador de servico)
-function responderMsg(id_msg){
+function responderMsg(id_msg) {
     var url = 'ResponderMensagem.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
@@ -499,12 +520,13 @@ function excluirMsgEnviadasFront(op, id_entrada, id_msg)
 }//function
 
 //function para abrir uma mensagem do cleinte
-function abrirMsgCliente(id_msg, acao){
-    var btn_acao= acao;
+function abrirMsgCliente(id_msg, acao)
+{
+    var btn_acao = acao;
     var url = 'OpenMensagemCliente.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
-    url = url.concat('&acao='+btn_acao);
+    url = url.concat('&acao=' + btn_acao);
     //window.open(url,'','height=1024,width=800');
     $("#panel-heading").html("Mensagem");
     var path = url; //Pegamos o caminh"o
@@ -513,58 +535,77 @@ function abrirMsgCliente(id_msg, acao){
     window.history.pushState("", titulo, path);
     $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
     $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-    window.history.pushState('Object', 'Dashboard', './ClienterDashboard.jsp');
+    window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+
+    $.post("MensagemAberta", {idMensagem: id}, function (responseJson) {
+
+    });
+
+    var badge = $('#qtdeMsg').html();
+
+    if (badge !== 0)
+    {
+        if ((badge - 1) === 0)
+        {
+            $('#qtdeMsg').html(badge - 1);
+            $('#qtdeMsg').html('');
+        }
+        else
+        {
+            $('#qtdeMsg').html(badge - 1);
+        }
+    }
     return false;
 }
 
 //function para excluir a mensagem na front da caixa de mensagem
-function excluirMsgFrontCliente(op,id_entrada,id_msg)
+function excluirMsgFrontCliente(op, id_entrada, id_msg)
 {
-        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
-         if(opcao){
-            var operacao = op;
-            var entrada = id_entrada;
-            var txtId = id_msg;
-            var local = 'entrada';
-              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId,local:local}, function(responseJson){
-                var resposta= responseJson;
-                 if (resposta === "Mensagem excluida com sucesso!")
-                {
-                    alert("Mensagem excluída com sucesso!");
-                    $("#caixa_entrada_cliente").trigger("click");
-                }else{
-                    $("#div_fail").toggle(true);
-                }
-	
-            });
-        }//if
+    var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+    if (opcao) {
+        var operacao = op;
+        var entrada = id_entrada;
+        var txtId = id_msg;
+        var local = 'entrada';
+        $.post("ExcluirMensagemFront", {operacao: operacao, entrada: entrada, txtId: txtId, local: local}, function (responseJson) {
+            var resposta = responseJson;
+            if (resposta === "Mensagem excluida com sucesso!")
+            {
+                alert("Mensagem excluída com sucesso!");
+                $("#caixa_entrada_cliente").trigger("click");
+            } else {
+                $("#div_fail").toggle(true);
+            }
+
+        });
+    }//if
 }//function
 
 //function para excluir a mensagem na front de mensagens enviadas
-function excluirMsgEnviadasFrontCliente(op,id_entrada,id_msg)
+function excluirMsgEnviadasFrontCliente(op, id_entrada, id_msg)
 {
-        var opcao = confirm("Você deseja realmente excluir essa mensagem?");
-         if(opcao){
-            var operacao = op;
-            var entrada = id_entrada;
-            var txtId = id_msg;
-            var local = 'enviadas';
-              $.post("ExcluirMensagemFront", {operacao: operacao,entrada:entrada,txtId:txtId, local:local}, function(responseJson){
-                var resposta= responseJson;
-                 if (resposta === "Mensagem excluida com sucesso!")
-                {
-                    alert("Mensagem excluída com sucesso!");
-                    $("#mensagens_enviadas_cliente").trigger("click");
-                }else{
-                    $("#div_fail").toggle(true);
-                }
-	
-            });
-        }//if
+    var opcao = confirm("Você deseja realmente excluir essa mensagem?");
+    if (opcao) {
+        var operacao = op;
+        var entrada = id_entrada;
+        var txtId = id_msg;
+        var local = 'enviadas';
+        $.post("ExcluirMensagemFront", {operacao: operacao, entrada: entrada, txtId: txtId, local: local}, function (responseJson) {
+            var resposta = responseJson;
+            if (resposta === "Mensagem excluida com sucesso!")
+            {
+                alert("Mensagem excluída com sucesso!");
+                $("#mensagens_enviadas_cliente").trigger("click");
+            } else {
+                $("#div_fail").toggle(true);
+            }
+
+        });
+    }//if
 }//function
 //
 //function para responder a mensagend (Cliente)
-function responderMsgCliente(id_msg){
+function responderMsgCliente(id_msg) {
     var url = 'ResponderMendagemCliente.jsp?id=';
     var id = id_msg;
     url = url.concat(id);
@@ -662,4 +703,57 @@ function dar_cor_aleatoria()
         cor_aleatoria += hexadecimal[posarray];
     }
     return cor_aleatoria;
+}
+function refreshMenu(url)
+{
+    $("#panel-heading").html("Pedido");
+    var path = url;
+    var titulo = "Teste"; //pegamos o titulo da página
+    document.title = titulo; // Alterar o titulo da página
+    window.history.pushState("", titulo, path);
+    $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+    $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+    window.history.pushState('Object', 'Dashboard', './ClienteDashBoard.jsp');
+    alert(url);
+    return false;
+}
+
+function atualizarDataHora()
+{
+    var dataInicio = $('#txtDataInicio').val();
+    var dataFim = $('#txtDataTermino').val();
+    var hora = $('#txtHora').val();
+    var id = $('#txtId').val();
+
+    $.post("AtualizarDataHora", {txtDataInicio: dataInicio, txtDataTermino: dataFim, txtHora: hora, txtId: id}, function (responseJson)
+    {
+        if (responseJson === null || responseJson === "")
+        {
+            swal({
+                title: "Sinto Muito!",
+                text: "Ocorreu algum problema no processo. =/",
+                type: "error",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
+        }
+        else
+        {
+            var pedido = jQuery.parseJSON(responseJson);
+
+            $('#spanDataInicio').html(pedido.dataInicio);
+            $('#spanDataFim').html(pedido.dataFim);
+            $('#spanHora').html(pedido.hora);
+
+            swal({
+                title: "Sucesso!",
+                text: "Seus dados foram atualizados",
+                type: "success",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
+        }
+    });
+
+    return false;
 }

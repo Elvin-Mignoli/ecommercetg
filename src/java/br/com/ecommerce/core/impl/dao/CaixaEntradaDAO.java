@@ -81,6 +81,18 @@ public class CaixaEntradaDAO extends AbstractDAO
             
             throw new SQLException("Desculpe, algum erro inesperado aconteceu!");
         }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -156,6 +168,18 @@ public class CaixaEntradaDAO extends AbstractDAO
             ex.printStackTrace();
             
             return null;
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
         }
        
     }

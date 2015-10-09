@@ -7,56 +7,71 @@ package br.com.ecommerce.core.impl.IStrategy;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
-import br.com.ecommerce.core.impl.dao.AutenticarDAO;
+import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
+import br.com.ecommerce.domain.Usuario;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Elvin
  */
-public class OpenCaixaEntrada implements IStrategy{
+public class OpenCaixaEntrada implements IStrategy
+{
 
     @Override
-    public Resultado processar(EntidadeDominio entidade) {
+    public Resultado processar(EntidadeDominio entidade)
+    {
         Resultado resultado = new Resultado();
-        if(entidade instanceof Cliente)
+        Usuario user = (Usuario) entidade;
+        
+        if (entidade instanceof Cliente)
         {
-            ClienteDAO dao = new ClienteDAO();
-            try {
-                EntidadeDominio ent =dao.consultarUm(entidade);
-                if(ent != null)
-                     resultado.setEntidade(ent);
-                else
+            CaixaEntradaDAO dao = new CaixaEntradaDAO();
+            try
+            {
+                EntidadeDominio ent = dao.consultarUm(user.getEntrada());
+                if (ent != null)
+                {
+                    resultado.setEntidade(ent);
+                } else
+                {
                     resultado.setEntidade(null);
+                }
                 return resultado;
-            } catch (SQLException ex) {
+            } catch (SQLException ex)
+            {
                 ex.printStackTrace();
                 resultado.setMensagemSimples("Houve algum erro inesperado");
                 return null;
             }
-        }else if(entidade instanceof PrestadorServico)
+        }
+        else if (entidade instanceof PrestadorServico)
         {
-            PrestadorServicoDAO dao = new PrestadorServicoDAO();
-            try {
-                EntidadeDominio ent =dao.consultarUm(entidade);
-                if(ent != null)
-                     resultado.setEntidade(ent);
-                else
+            CaixaEntradaDAO dao = new CaixaEntradaDAO();
+            try
+            {
+                EntidadeDominio ent = dao.consultarUm(user.getEntrada());
+                if (ent != null)
+                {
+                    resultado.setEntidade(ent);
+                } else
+                {
                     resultado.setEntidade(null);
+                }
                 return resultado;
-            } catch (SQLException ex) {
+            }
+            catch (SQLException ex)
+            {
                 ex.printStackTrace();
                 resultado.setMensagemSimples("Houve algum erro inesperado");
                 return null;
             }
-            
         }
         return null;
     }

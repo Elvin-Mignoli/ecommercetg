@@ -126,7 +126,7 @@ public class InteressadoDAO extends AbstractDAO
     {
         try
         {
-            if (conexao == null)
+            if (conexao == null || conexao.isClosed())
             {
                 openConnection();
             }
@@ -167,6 +167,20 @@ public class InteressadoDAO extends AbstractDAO
         {
             ex.printStackTrace();
             throw new SQLException();
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                {
+                    conexao.close();
+                }
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
 
