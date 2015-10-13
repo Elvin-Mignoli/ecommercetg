@@ -757,3 +757,45 @@ function atualizarDataHora()
 
     return false;
 }
+
+function salvarTransacao()
+{
+    var numero_cartao = $('#txtNumeroCartao').val();
+    var numero_seg = $('#txtCodSeg').val();
+    var titular = $('#txtTitular').val();
+    var validade = $('#txtValidade').val();
+    var valor = $('#txtValor').val();
+    var termo = $('#txtTermo').val();
+    var idCliente = $('#txtIdCliente').val();
+    var idPrestador = $('#txtIdPrestador').val();
+    alert(idPrestador);
+    
+    $.post("SalvarTransacao",{txtNumeroCartao: numero_cartao, txtNumeroSeg: numero_seg,
+    txtTitular: titular, txtValidade: validade,txtValor: valor, txtTermo: termo,
+    txtIdCliente: idCliente,txtIdPrestador: idPrestador},
+    function(json)
+    {
+        if(json === null || json === "")
+        {
+            swal({
+                title: "Desculpe!",
+                text:  "Erro ao realizar a transacao",
+                type: "error",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
+        }
+        else
+        {
+            swal({
+                title: "Sucesso!",
+                text: "Transacao realizada com sucesso",
+                type: "success",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
+        }
+    });
+    
+    
+}

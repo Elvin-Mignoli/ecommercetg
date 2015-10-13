@@ -25,6 +25,7 @@
         <url-pattern>/JSP/Cliente/SalvarPedido</url-pattern>
         <url-pattern>/JSP/PrestadorServico/ResponderMensagem</url-pattern>
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
+        <url-pattern>/JSP/Cliente/SalvarTransacao</url-pattern>
         <url-pattern>/JSP/Cliente/ExcluirMensagem</url-pattern>
     </servlet-mapping>
     <session-config>

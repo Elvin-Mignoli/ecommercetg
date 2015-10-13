@@ -83,99 +83,103 @@
         <div class="modal fade" id="transfModal" tabindex="-1" role="dialog" aria-labelledby="transfModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Selecionar Consultor</h4>
-                    </div>
-                    <div class="modal-body">
-                        <!-- informacao da transacao -->
-                        <div class="container-fluid">
-                            <div class="alert alert-info">
-                                <b>Atenção</b>!
-                                Para selecionar este consultor como finalista é necessário efetuar a transferência bancária com o valor acordado entre as partes.
-                            </div>
+                    <form method="post" action="SalvarTransacao">
+                        <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${requestScope.pedido.prestadorFinalista.id}" hidden="true" />
+                        <input type="text" name="txtIdCliente" id="txtIdCliente" value="${sessionScope.user.id}" hidden="true" />
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Selecionar Consultor</h4>
+                        </div>
+                        <div class="modal-body">
+                            <!-- informacao da transacao -->
+                            <div class="container-fluid">
+                                <div class="alert alert-info">
+                                    <b>Atenção</b>!
+                                    Para selecionar este consultor como finalista é necessário efetuar a transferência bancária com o valor acordado entre as partes.
+                                </div>
 
-                            <div class="row-fluid">
-                                <h4>Número do Cartão</h4>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="form-group">
-                                    <div class="input-group col-lg-6">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-credit-card"></span>
-                                        </span>
-                                        <input type="text" name="txtNumeroCartao" id="txtNumeroCartao" value="${sessionScope.user.cartao.numeroCartao}" class="form-control" placeholder="Ex. 000111666555" required="required"/>
+                                <div class="row-fluid">
+                                    <h4>Número do Cartão</h4>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-6">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-credit-card"></span>
+                                            </span>
+                                            <input type="text" name="txtNumeroCartao" id="txtNumeroCartao" value="${sessionScope.user.cartao.numeroCartao}" class="form-control" placeholder="Ex. 000111666555" required="required"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <h4>Código de Segurança</h4>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="form-group">
-                                    <div class="input-group col-lg-6">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-lock"></span>
-                                        </span>
-                                        <input type="text" name="txtCodSeg" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required"/>
+                                <div class="row-fluid">
+                                    <h4>Código de Segurança</h4>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-6">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-lock"></span>
+                                            </span>
+                                            <input type="text" name="txtCodSeg" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <h4>Nome do Titular</h4>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="form-group">
-                                    <div class="input-group col-lg-6">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </span>
-                                        <input type="text" placeholder="Nome do Titular" name="txtTitular" id="txtTitular" class="form-control" required="required"/>
+                                <div class="row-fluid">
+                                    <h4>Nome do Titular</h4>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-6">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-user"></span>
+                                            </span>
+                                            <input type="text" placeholder="Nome do Titular" name="txtTitular" id="txtTitular" class="form-control" required="required"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <h4>Data de Validade</h4>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="form-group">
-                                    <div class="input-group col-lg-6">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                        <input type="text" placeholder="ex. 01/15" name="txtValidade" id="txtValidade" class="form-control" required="required"/>
+                                <div class="row-fluid">
+                                    <h4>Data de Validade</h4>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-6">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input type="text" placeholder="ex. 01/15" name="txtValidade" id="txtValidade" class="form-control" required="required"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row-fluid">
-                                <h4>Valor da Transação</h4>
-                            </div>
-                            <div class="row-fluid">
-                                <div class="form-group">
-                                    <div class="input-group col-lg-6">
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-usd"></span>
-                                        </span>
-                                        <input type="text" name="txtValor" id="txtValor" class="form-control" placeholder="1.200,00" required="required"/>
+                                <div class="row-fluid">
+                                    <h4>Valor da Transação</h4>
+                                </div>
+                                <div class="row-fluid">
+                                    <div class="form-group">
+                                        <div class="input-group col-lg-6">
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-usd"></span>
+                                            </span>
+                                            <input type="text" name="txtValor" id="txtValor" class="form-control" placeholder="1.200,00" required="required"/>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row-fluid">
-                                Eu aceito os termos de uso &nbsp;<input type="checkbox" id="txtTermo" name="txtTermo" required="required"/>
+                                <div class="row-fluid">
+                                    Eu aceito os termos de uso &nbsp;<input type="checkbox" id="txtTermo" name="txtTermo" required="required"/>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">
-                            Fechar
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <button type="button" class="btn btn-success">
-                            Transferir
-                            <span class="glyphicon glyphicon-transfer"></span>
-                        </button>                        
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                Fechar
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="salvarTransacao()">
+                                Transferir
+                                <span class="glyphicon glyphicon-transfer"></span>
+                            </button>                        
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -321,7 +325,7 @@
                                </c:if>
                                >
                                 Video Chat
-                                <span class="glyphicon glyphicon-film"></span>
+                                <span class="glyphicon glyphicon-facetime-video"></span>
                             </a>
                         </div>
                         <div class="col-md-2">
@@ -340,6 +344,7 @@
                 </div>
             </div>
         </div>
+        <script src="../../js/ajaxFuntions.js" type="text/javascript"></script>
         <script>
             $(document).ready(function ()
             {
