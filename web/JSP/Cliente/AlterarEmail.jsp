@@ -17,7 +17,7 @@
     </head>
     <body>
         <form action="AtualizaEmail" method="post">
-            <div class="container">
+            <!-- <div class="container"> -->
                 <div class="row">
                     <div class="alert alert-info col-lg-8 alert-dismissable" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -61,7 +61,7 @@
                     </div>
                 </div>
                 <input type="submit" name="txtNovoEmail" class="btn btn-success" value="Alterar" id="changeEmail"/>  
-            </div>
+            <!-- </div> -->
         </form>
         <script src="../../js/libs/jquery-1.11.1.min.js"></script>
         <script src="../../js/libs/jquery-ui.min.js"></script>

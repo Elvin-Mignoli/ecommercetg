@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css">
     </head>
     <body>
-        <div class="container">
+        <!-- <div class="container"> -->
             <form method="post" action="SalvarPedido">
                 <input type="text" name="operacao" value="Salvar" hidden="true" />
                 <!-- PRIMEIRA LINHA DO FORM -->
@@ -100,7 +100,7 @@
                     </div>
                 </div>
             </form>
-        </div>
+        <!-- </div> -->
         <!-- JavaScript Bootstrap tag-input -->
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.min.js"></script>
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js"></script>

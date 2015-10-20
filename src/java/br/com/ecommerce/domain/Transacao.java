@@ -19,7 +19,18 @@ public class Transacao extends EntidadeDominio
     private Status status;
     private String tipoPagamento;
     private Cliente cliente;
+    private Double valor;
 
+    public Double getValor()
+    {
+        return valor;
+    }
+
+    public void setValor(Double valor)
+    {
+        this.valor = valor;
+    }
+    
     public Cliente getCliente()
     {
         return cliente;

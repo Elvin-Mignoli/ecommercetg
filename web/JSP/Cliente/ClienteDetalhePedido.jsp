@@ -83,9 +83,10 @@
         <div class="modal fade" id="transfModal" tabindex="-1" role="dialog" aria-labelledby="transfModal">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form method="post" action="SalvarTransacao">
+                    <form method="post" action="SalvarTransacao" id="formTransferencia">
                         <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${requestScope.pedido.prestadorFinalista.id}" hidden="true" />
                         <input type="text" name="txtIdCliente" id="txtIdCliente" value="${sessionScope.user.id}" hidden="true" />
+                        <input type="text" name="txtIdPedido" id="txtIdPedido" value="${requestScope.pedido.id}" hidden="true"/>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Selecionar Consultor</h4>
@@ -107,7 +108,7 @@
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-credit-card"></span>
                                             </span>
-                                            <input type="text" name="txtNumeroCartao" id="txtNumeroCartao" value="${sessionScope.user.cartao.numeroCartao}" class="form-control" placeholder="Ex. 000111666555" required="required"/>
+                                            <input type="text" name="txtNumeroCartao" id="txtNumeroCartao" value="${sessionScope.user.cartao.numeroCartao}" class="form-control" placeholder="Ex. 000111666555" required="required" onchange="validaBandeira()"/>
                                         </div>
                                     </div>
                                 </div>
@@ -120,12 +121,12 @@
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="text" name="txtCodSeg" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required"/>
+                                            <input type="text" name="txtCodSeguranca" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row-fluid">
-                                    <h4>Nome do Titular</h4>
+                                    <label for="txtTitular"><h4>Nome do Titular</h4></label>
                                 </div>
                                 <div class="row-fluid">
                                     <div class="form-group">
@@ -330,30 +331,35 @@
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-success" id="btnMensagem"  <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">disabled="true"</c:if> >
-                                Mensagem
-                                <span class="glyphicon glyphicon-send"></span>
-                            </button>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-default" id="selPrestador" data-toggle="modal" data-target="#transfModal">
-                                Pagamento
-                                <span class="glyphicon glyphicon-briefcase"></span>
-                            </button>
+                                    Mensagem
+                                    <span class="glyphicon glyphicon-send"></span>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                            <c:if test="${requestScope.pedido.status eq 'FECHADO'}">
+                                <button class="btn btn-default" id="selPrestador" data-toggle="modal" data-target="#transfModal">
+                                    Pagamento
+                                    <span class="glyphicon glyphicon-briefcase"></span>
+                                </button>
+                            </c:if>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <script src="../../js/ajaxFuntions.js" type="text/javascript"></script>
+        <script src="../../js/libs/validate/dist/jquery.validate.min.js" type="text/javascript"></script>
         <script>
-            $(document).ready(function ()
-            {
-                $('#btnMensagem').on('click', function ()
-                {
-                    $('#div_mensagem').attr("hidden", false);
-                    $('#btnMensagem').attr('disabled', true);
-                });
-            });
+                                //Mascaras dos campos!
+                                $(document).ready(function ()
+                                {
+                                    $('#txtValor').mask('000,000.00', {reverse: true});
+                                    $('#btnMensagem').on('click', function ()
+                                    {
+                                        $('#div_mensagem').attr("hidden", false);
+                                        $('#btnMensagem').attr('disabled', true);
+                                    });
+                                });
         </script>
     </body>
 </html>

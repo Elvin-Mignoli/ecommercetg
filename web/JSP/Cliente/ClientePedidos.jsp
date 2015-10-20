@@ -77,8 +77,8 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownAcao">
                                 <c:choose>
                                     <c:when test="${pedido.status eq 'CANCELADO'}">
-                                        <li class="disabled text-center">
-                                            <a href="#" class="consultaPedido" id="btnConsultaPedido">
+                                        <li class="text-center">
+                                            <a href="/Ecommerce/JSP/Cliente/ConsultaPedido?txtId=${pedido.id}" class="consultaPedido" id="btnConsultaPedido">
                                                 Detalhes <span class="glyphicon glyphicon-info-sign"></span>
                                             </a>
                                         </li>
@@ -101,20 +101,10 @@
                                 <!-- Atualizar -->
                                 <c:choose>
                                     <c:when test="${pedido.status eq 'CANCELADO'}">
-                                        <li class="disabled text-center">
-                                            <a href="/Ecommerce/JSP/Cliente/FiltroAtualizarPedido?txtId=${pedido.id}" class="filtroAtualiza disabled" data-titulo="Atualizar Pedido">
-                                                Atualizar
-                                                <span class="glyphicon glyphicon-refresh"></span>
-                                            </a>
-                                        </li>
+                                        
                                     </c:when>
                                     <c:when test="${pedido.status eq 'FECHADO'}">
-                                        <li class="disabled text-center">
-                                            <a href="#" class="filtroAtualiza disabled" data-titulo="Atualizar Pedido">
-                                                Atualizar
-                                                <span class="glyphicon glyphicon-refresh"></span>
-                                            </a>
-                                        </li>
+                                        
                                     </c:when>
                                     <c:otherwise>
                                         <li class="text-center">
@@ -132,10 +122,7 @@
                                         <input type="text"  name="txtId" value="${pedido.id}" hidden="true"/>
                                         <c:choose>
                                             <c:when test="${pedido.status eq 'CANCELADO'}">
-                                                <button type="submit" class="btn btn-default btn-link disabled">
-                                                    Cancelar
-                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                </button>
+                                                
                                             </c:when>
                                             <c:when test="${pedido.status eq 'FECHADO'}">
                                                 <button type="" class="btn btn-default btn-link disabled">
@@ -164,7 +151,7 @@
                         </c:if>
 
                         <c:choose>
-                            <c:when test="${pedido.status.toString() eq 'EM_PROCESSO' or pedido.status.toString() eq 'CANCELADO'}">
+                            <c:when test="${pedido.status.toString() eq 'EM_PROCESSO' or pedido.status.toString() eq 'CANCELADO' or pedido.status.toString() eq 'FECHADO'}">
                                 <a href="/Ecommerce/JSP/Cliente/ConsultaInscritos?txtId=${pedido.id}" class="btn btn-default disabled" id="buttonInscritos" data-titulo="Inscritos">
                                     Inscritos
                                     <span class="glyphicon glyphicon-star"></span>

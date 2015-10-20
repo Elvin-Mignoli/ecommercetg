@@ -26,7 +26,7 @@
     </head>
     <body>
         <form method="post" action="AtualizaSenha">
-            <div class="container">
+            <!-- <div class="container"> -->
                 <div class="row">
                     <div class="alert alert-info col-lg-5 alert-dismissable" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -63,7 +63,7 @@
                     <span class="glyphicon glyphicon-refresh"></span>
                 </button>
                 <!-- <input type="submit" class="btn btn-success" value="Alterar"/>  -->
-            </div>
+            <!-- </div> -->
         </form>
     </body>
 </html>

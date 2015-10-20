@@ -14,6 +14,7 @@ import br.com.ecommerce.domain.HabilidadeProcurada;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Status;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,11 +32,20 @@ import java.util.List;
 public class PedidoDAO extends AbstractDAO
 {
 
+    public PedidoDAO(Connection conexao)
+    {
+        super(conexao);
+    }
+
+    public PedidoDAO()
+    {
+    }
+    
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
         Pedido pedido = (Pedido) entidade;
-
+        
         try
         {
             openConnection();   //abrindo conexao com o banco de dados
@@ -107,7 +117,7 @@ public class PedidoDAO extends AbstractDAO
                 ex1.printStackTrace();
             }
             ex.printStackTrace();
-            throw new SQLException("Algum erro inesperado ocorreu");
+            throw new SQLException("Algum erro inesperado ocorreu ao tentar salvar o pedido");
         } finally
         {
             try
@@ -252,7 +262,7 @@ public class PedidoDAO extends AbstractDAO
                 ex.printStackTrace();
             }
             ex.printStackTrace();
-            throw new SQLException("Erro ao tentar fechar o pedido");
+            throw new SQLException("Erro ao tentar cancelar o pedido");
         } finally
         {
             try
@@ -301,7 +311,7 @@ public class PedidoDAO extends AbstractDAO
             } catch (SQLException ex)
             {
                 ex.printStackTrace();
-                throw new SQLException("Algum erro ocorreu ao tentar fechar a conexao!");
+                throw new SQLException("Algum erro ocorreu ao consultar um pedido");
             }
         }
     }
@@ -361,7 +371,13 @@ public class PedidoDAO extends AbstractDAO
 
             }
             return pe;
-        } finally
+        } 
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException("Erro ao consultar o pedido");
+        }
+        finally
         {
             try
             {
@@ -380,8 +396,11 @@ public class PedidoDAO extends AbstractDAO
         {
             Pedido pedido = (Pedido) entidade;
 
-            openConnection();   //abrindo conexao
-            conexao.setAutoCommit(false);   //setando autocommit para false
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);   //setando autocommit para false
+            }   //abrindo conexao
 
             StringBuilder sql = new StringBuilder();
 
@@ -393,7 +412,7 @@ public class PedidoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql.toString());
 
             pst.setInt(1, pedido.getPrestadorFinalista().getId());
-            pst.setString(2, Status.EM_PROCESSO.name());
+            pst.setString(2,pedido.getStatus().getValue());
             pst.setInt(3, pedido.getId());
 
             pst.executeUpdate();
@@ -405,7 +424,8 @@ public class PedidoDAO extends AbstractDAO
 
             interDAO.atualizar(pedido);   //atualizando status dos campos!
 
-            conexao.commit();
+            if(transaction)
+                conexao.commit();
 
         } catch (SQLException ex)
         {
@@ -422,7 +442,8 @@ public class PedidoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException ex)
             {
                 ex.printStackTrace();

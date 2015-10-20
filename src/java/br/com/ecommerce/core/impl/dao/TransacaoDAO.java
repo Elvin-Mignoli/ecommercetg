@@ -55,6 +55,12 @@ public class TransacaoDAO extends AbstractDAO
             
             pst.execute();  //executa o codigo sql no banco!
             
+            PedidoDAO dao = new PedidoDAO(conexao);
+            
+            dao.AtualizarStatusPedido(tr.getPedido());
+            
+            TransferirValor(tr);
+            
             if(transaction) //eh a sua transacao?
                 conexao.commit();
         }
@@ -258,6 +264,120 @@ public class TransacaoDAO extends AbstractDAO
         {
             ex.printStackTrace();
             throw new SQLException("Erro ao consultar uma transacao");
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * Verifica o saldo e transfere os dados de uma conta para outra caso tenha alguma saldo
+     * @param entidade - Transação contendo os dados do Cliente
+     */
+    public void TransferirValor(EntidadeDominio entidade) throws SQLException
+    {
+        Transacao tr = (Transacao) entidade;
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();   //abrindo conexao
+                conexao.setAutoCommit(false);
+            }
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE saldos ");
+            sql.append("SET valor = valor - ? ");
+            sql.append("WHERE id_cliente = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setDouble(1, tr.getValor());
+            pst.setInt(2, tr.getCliente().getId());
+            
+            pst.executeUpdate();
+            
+            //if(transaction)
+              //  conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException  ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException("Erro ao efetuar a Transação");
+        }
+        finally
+        {
+            /*try
+            {
+              //  if(transaction) //foi essa classe que abriu a transacao?
+                   // conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            } */
+        }
+    }
+    
+    /**
+     * Consulta o saldo de um cliente para uma determinada transacao
+     * @param entidade
+     * @return
+     * @throws SQLException 
+     */
+    public Boolean consultaSaldo(EntidadeDominio entidade) throws SQLException
+    {
+        Transacao tr = (Transacao) entidade;
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+               openConnection();
+               conexao.setAutoCommit(false);
+            }
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("SELECT valor FROM saldos WHERE id_cliente = ? AND valor > ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setInt(1, tr.getCliente().getId());
+            pst.setDouble(2, tr.getValor());
+            
+            ResultSet rs = pst.executeQuery();
+            
+            if(rs.next())//retorno alguma consulta?
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            return false;
         }
         finally
         {

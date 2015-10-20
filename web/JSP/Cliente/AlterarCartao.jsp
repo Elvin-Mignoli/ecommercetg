@@ -14,12 +14,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- implementando CSS do bootstrap -->
-        <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+        <!-- <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" /> -->
         <title>Alterar Cartão</title>
     </head>
     <body>
         <form method="post" action="AtualizaCartao">
-            <div class="container">
+            <!-- <div class="container"> -->
                 <div class="row">
                     <div class="col-lg-20">
                         <div class="form-group col-lg-4" id="div_cartao">
@@ -81,15 +81,15 @@
                     <span class="glyphicon glyphicon-refresh"></span>
                 </button>
                 <!-- <input type="submit" name="txtNovoEmail" class="btn btn-success" value="Atualizar" id="changeEmail"/> -->
-            </div>
+            <!-- </div> -->
         </form>
-        <script src="../../js/ajaxFuntions.js"></script>
+        <!-- <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/libs/jquery-1.11.1.min.js"></script>
         <script src="../../js/libs/jquery-ui.min.js"></script>
         <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <!-- implementando bootstrap na página -->
+        <!-- implementando bootstrap na página
         <script src="../../bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
+        <script src="../../bootstrap/js/tab.js"></script> -->
     </body>
 </html>

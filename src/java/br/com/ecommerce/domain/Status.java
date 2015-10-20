@@ -12,4 +12,11 @@ package br.com.ecommerce.domain;
 public enum Status
 {
     ABERTO,FECHADO,NEGOCIACAO,EM_ANDAMENTO,SELECIONADO,NAO_SELECIONADO,CANCELADO,EM_PROCESSO;
+    
+    private String name;
+    
+    public String getValue()
+    {
+        return this.name();
+    }
 }

@@ -768,18 +768,30 @@ function salvarTransacao()
     var termo = $('#txtTermo').val();
     var idCliente = $('#txtIdCliente').val();
     var idPrestador = $('#txtIdPrestador').val();
-    alert(idPrestador);
+    var idPedido = $('#txtIdPedido').val();
     
-    $.post("SalvarTransacao",{txtNumeroCartao: numero_cartao, txtNumeroSeg: numero_seg,
+    //alert(idPrestador);
+    
+    $('#formTransferencia').validate({
+        rules:{
+            name: "required"
+        }
+    });
+    
+    $.post("SalvarTransacao",
+    //parametros enviados pela requiscao
+    {txtNumeroCartao: numero_cartao, txtCodSeguranca: numero_seg,
     txtTitular: titular, txtValidade: validade,txtValor: valor, txtTermo: termo,
-    txtIdCliente: idCliente,txtIdPrestador: idPrestador},
+    txtIdCliente: idCliente,txtIdPrestador: idPrestador,operacao: 'Salvar',txtIdPedido:idPedido},
+    //funcao para decidir oque fazer com as mensagens de retorno
     function(json)
     {
-        if(json === null || json === "")
+        //alert('Resultado: '+json);
+        if(json !== null && json !== "")
         {
             swal({
                 title: "Desculpe!",
-                text:  "Erro ao realizar a transacao",
+                text:  json,
                 type: "error",
                 showConfirmButton: true,
                 confirmButtonText: "OK"
@@ -789,7 +801,7 @@ function salvarTransacao()
         {
             swal({
                 title: "Sucesso!",
-                text: "Transacao realizada com sucesso",
+                text: "Transacao realizada!",
                 type: "success",
                 showConfirmButton: true,
                 confirmButtonText: "OK"
