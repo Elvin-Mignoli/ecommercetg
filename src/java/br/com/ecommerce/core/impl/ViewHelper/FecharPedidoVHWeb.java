@@ -36,6 +36,7 @@ public class FecharPedidoVHWeb implements IViewHelper
     {
         Pedido pedido = new Pedido();
         pedido.setPrestadorFinalista(new PrestadorServico());
+        pedido.setStatus(Status.EM_PROCESSO);
         
         pedido.setId(new Integer(request.getParameter("txtId")));
         pedido.setStatus(Status.EM_PROCESSO);

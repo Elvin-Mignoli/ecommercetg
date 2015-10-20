@@ -39,7 +39,9 @@ public class MensagemDAO extends AbstractDAO
         
         try
         {
-            openConnection();
+            if(conexao == null || conexao.isClosed())
+                openConnection();
+            
             conexao.setAutoCommit(false);
             
             //procurar a caixa de mensagem do destinatario
@@ -78,7 +80,8 @@ public class MensagemDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             }
             catch(SQLException ex1)
             {
@@ -100,7 +103,9 @@ public class MensagemDAO extends AbstractDAO
         
         try
         {
-            openConnection();
+            if(conexao == null || conexao.isClosed())
+                openConnection();
+            
             conexao.setAutoCommit(false);
             
             StringBuilder sql = new StringBuilder();
@@ -150,7 +155,8 @@ public class MensagemDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
                 throw new SQLException();
@@ -195,6 +201,7 @@ public class MensagemDAO extends AbstractDAO
                 msg.setFlg_resposta(rs.getBoolean("flg_resposta"));
                 msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
                 msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
+                msg.setFlgAberto(rs.getBoolean("flg_msg_aberta"));
                 mensagens.add(msg);
             }           
             return mensagens;
@@ -204,6 +211,18 @@ public class MensagemDAO extends AbstractDAO
             ex.printStackTrace();
             throw new SQLException("Erro ao consultar as mensagens!");
         }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
         
     }
 
@@ -212,7 +231,8 @@ public class MensagemDAO extends AbstractDAO
     {
        try{
         CaixaEntrada entrada = (CaixaEntrada) entidade;
-        openConnection();
+        if(conexao == null || conexao.isClosed())
+            openConnection();
 
         String sql = "SELECT * FROM MENSAGENS WHERE ID=?";
 
@@ -232,14 +252,17 @@ public class MensagemDAO extends AbstractDAO
             msg.setFlg_resposta(rs.getBoolean("flg_resposta"));
             msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
             msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
+            msg.setFlgAberto(rs.getBoolean("flg_msg_aberta"));
             entrada.setMensagem(msg);
         }
          return entrada;
-       }finally
+       }
+       finally
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException ex)
             {
                 ex.printStackTrace();
@@ -247,7 +270,8 @@ public class MensagemDAO extends AbstractDAO
         }
     } 
     //Métodoas para buscar as mensagens envioadas por um usupario
-     public List<EntidadeDominio> consultarMensagensEnvidas(EntidadeDominio entidade) throws SQLException{
+     public List<EntidadeDominio> consultarMensagensEnvidas(EntidadeDominio entidade) throws SQLException
+     {
          CaixaEntrada entrada = (CaixaEntrada) entidade;
         
         List<EntidadeDominio> mensagens = new ArrayList<>();
@@ -290,7 +314,8 @@ public class MensagemDAO extends AbstractDAO
         {
             ex.printStackTrace();
             throw new SQLException("Erro ao consultar as mensagens!");
-        }finally
+        }
+        finally
         {
             try
             {
@@ -300,5 +325,56 @@ public class MensagemDAO extends AbstractDAO
                 ex.printStackTrace();
             }
         }
+     }
+     
+     public void AtualizaMensagemAberta(EntidadeDominio entidade) throws SQLException
+     {
+         Mensagem msg = (Mensagem) entidade;
+         try
+         {
+             if(conexao == null || conexao.isClosed())
+             {
+                 openConnection();  //abrindo conexao com o banco
+                 conexao.setAutoCommit(false);
+             }
+             
+             StringBuilder sql = new StringBuilder();
+             
+             sql.append("UPDATE MENSAGENS ");
+             sql.append("SET flg_msg_aberta = true ");
+             sql.append("WHERE id = ?");
+             
+             pst = conexao.prepareStatement(sql.toString());
+             
+             pst.setInt(1, msg.getId());
+             
+             pst.executeUpdate();
+             
+             conexao.commit();
+         }
+         catch(SQLException ex)
+         {
+             try
+             {
+                 conexao.rollback();
+             }
+             catch(SQLException ex1)
+             {
+                 ex1.printStackTrace();
+             }
+             throw new SQLException("Erro ao altera mensagem");
+         }
+         finally
+         {
+             try
+             {
+                 if(transaction)
+                    conexao.close();
+             }
+             catch(SQLException ex)
+             {
+                 ex.printStackTrace();
+             }
+         }
      }
 }

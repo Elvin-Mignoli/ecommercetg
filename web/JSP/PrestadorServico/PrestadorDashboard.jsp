@@ -114,6 +114,9 @@
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens
+                                                <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
+                                                    <i class="badge" id="qtdeMsg" style="background-color: #2ECC40">${sessionScope.user.entrada.QtdeAbertas()}</i>
+                                                </c:if>
                                             </a>
                                         </li>
                                         <div class="collapse active" id="collapseMenuMensagens">

@@ -14,6 +14,8 @@ import br.com.ecommerce.domain.HabilidadeProcurada;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Status;
+import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,11 +32,20 @@ import java.util.List;
 public class PedidoDAO extends AbstractDAO
 {
 
+    public PedidoDAO(Connection conexao)
+    {
+        super(conexao);
+    }
+
+    public PedidoDAO()
+    {
+    }
+    
     @Override
     public void salvar(EntidadeDominio entidade) throws SQLException
     {
         Pedido pedido = (Pedido) entidade;
-
+        
         try
         {
             openConnection();   //abrindo conexao com o banco de dados
@@ -106,7 +117,7 @@ public class PedidoDAO extends AbstractDAO
                 ex1.printStackTrace();
             }
             ex.printStackTrace();
-            throw new SQLException("Algum erro inesperado ocorreu");
+            throw new SQLException("Algum erro inesperado ocorreu ao tentar salvar o pedido");
         } finally
         {
             try
@@ -251,7 +262,7 @@ public class PedidoDAO extends AbstractDAO
                 ex.printStackTrace();
             }
             ex.printStackTrace();
-            throw new SQLException("Erro ao tentar fechar o pedido");
+            throw new SQLException("Erro ao tentar cancelar o pedido");
         } finally
         {
             try
@@ -295,11 +306,12 @@ public class PedidoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();    //fechando a conexao
+                if(transaction)
+                    conexao.close();    //fechando a conexao
             } catch (SQLException ex)
             {
                 ex.printStackTrace();
-                throw new SQLException("Algum erro ocorreu ao tentar fechar a conexao!");
+                throw new SQLException("Algum erro ocorreu ao consultar um pedido");
             }
         }
     }
@@ -333,7 +345,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
                 if (pe.getPrestadorFinalista().getId() != 0)
                 {
-                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO(conexao);
                     pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
                     logindao = new AutenticarDAO(conexao);
                     pe.setPrestadorFinalista((PrestadorServico)logindao.consultarLogin(pe.getPrestadorFinalista()));
@@ -359,7 +371,13 @@ public class PedidoDAO extends AbstractDAO
 
             }
             return pe;
-        } finally
+        } 
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+            throw new SQLException("Erro ao consultar o pedido");
+        }
+        finally
         {
             try
             {
@@ -378,8 +396,11 @@ public class PedidoDAO extends AbstractDAO
         {
             Pedido pedido = (Pedido) entidade;
 
-            openConnection();   //abrindo conexao
-            conexao.setAutoCommit(false);   //setando autocommit para false
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);   //setando autocommit para false
+            }   //abrindo conexao
 
             StringBuilder sql = new StringBuilder();
 
@@ -391,7 +412,7 @@ public class PedidoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql.toString());
 
             pst.setInt(1, pedido.getPrestadorFinalista().getId());
-            pst.setString(2, Status.EM_PROCESSO.name());
+            pst.setString(2,pedido.getStatus().getValue());
             pst.setInt(3, pedido.getId());
 
             pst.executeUpdate();
@@ -403,7 +424,8 @@ public class PedidoDAO extends AbstractDAO
 
             interDAO.atualizar(pedido);   //atualizando status dos campos!
 
-            conexao.commit();
+            if(transaction)
+                conexao.commit();
 
         } catch (SQLException ex)
         {
@@ -420,7 +442,8 @@ public class PedidoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException ex)
             {
                 ex.printStackTrace();
@@ -437,7 +460,7 @@ public class PedidoDAO extends AbstractDAO
         if (pedido.getConsulta().equals(Pedido.CLIENTE))
         {
             StringBuilder sql = new StringBuilder();
-            sql.append("SELECT p.*,");
+            sql.append("SELECT p.*, ");
             sql.append("(SELECT count(i.id) as qtde ");
             sql.append("FROM INTERESSADOS as i ");
             sql.append("WHERE i.id_pedidos = p.id) ");
@@ -498,14 +521,14 @@ public class PedidoDAO extends AbstractDAO
                 //buscar dados do cliente
                 pe.setCliente(new Cliente());
                 pe.getCliente().setId(rs.getInt("id_cliente"));
-                ClienteDAO clientedao = new ClienteDAO();
+                ClienteDAO clientedao = new ClienteDAO(conexao);
                 pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
                 //buscar dado do prestador
                 pe.setPrestadorFinalista(new PrestadorServico());
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
                 if (pe.getPrestadorFinalista().getId() != 0)
                 {
-                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO(conexao);
                     pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
 
                 }
@@ -523,7 +546,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
                 //procurar interessados
-                InteressadoDAO dao = new InteressadoDAO();
+                InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
                 pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);
@@ -547,14 +570,14 @@ public class PedidoDAO extends AbstractDAO
                 //buscar dados do cliente
                 pe.setCliente(new Cliente());
                 pe.getCliente().setId(rs.getInt("id_cliente"));
-                ClienteDAO clientedao = new ClienteDAO();
+                ClienteDAO clientedao = new ClienteDAO(conexao);
                 pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
                 //buscar dado do prestador
                 pe.setPrestadorFinalista(new PrestadorServico());
                 pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
                 if (pe.getPrestadorFinalista().getId() != 0)
                 {
-                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO();
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO(conexao);
                     pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
 
                 }
@@ -784,6 +807,94 @@ public class PedidoDAO extends AbstractDAO
             {
                 ex.printStackTrace();
             }
+        }
+    }
+    
+    public Resultado consultarPedidosStatus()
+    {
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+                openConnection();
+            
+            StringBuilder sql = new StringBuilder();
+            
+            return null;
+        }
+        catch(SQLException ex)
+        {
+            return null;
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void AtualizarDataHora(EntidadeDominio entidade) throws SQLException
+    {
+        try
+        {
+            Pedido pedido = (Pedido) entidade;
+            if(conexao == null || conexao.isClosed())
+                openConnection();
+            
+            conexao.setAutoCommit(false);
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE pedidos ");
+            sql.append("SET data_inicio = ?,");
+            sql.append("data_fim = ?,");
+            sql.append("horapedido = ? ");
+            sql.append("WHERE id = ?");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            java.sql.Date dt_inicio = new Date(pedido.getDataInicio().getTime());
+            pst.setDate(1, dt_inicio);
+            java.sql.Date dt_fim = new Date(pedido.getDataFim().getTime());
+            pst.setDate(2,dt_fim);
+            Timestamp time = new Timestamp(pedido.getHoraConsultoria().getTimeInMillis());
+            pst.setTimestamp(3, time);
+            pst.setInt(4, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException("Erro ao atualizar Data e Hora da consultoria");
+        }
+        finally
+        {
+          try
+          {
+              if(transaction)
+                  conexao.close();
+          }
+          catch(SQLException ex)
+          {
+              ex.printStackTrace();
+          }
         }
     }
 }

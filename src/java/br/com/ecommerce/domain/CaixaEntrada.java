@@ -69,4 +69,20 @@ public class CaixaEntrada extends EntidadeDominio
         this.mensagens = mensagens;
     }
     
+    public int QtdeAbertas()
+    {
+        int count = 0;
+        
+        for (EntidadeDominio ed : mensagens)
+        {
+                Mensagem m = (Mensagem) ed;
+                
+                if(!m.isFlgAberto())
+                {
+                    count++;
+                } 
+        }
+        return count;
+    }
+    
 }

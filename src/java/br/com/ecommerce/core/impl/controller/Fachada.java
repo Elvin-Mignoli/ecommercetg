@@ -5,6 +5,7 @@ import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
+import br.com.ecommerce.core.impl.IStrategy.ConsultaSaldo;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
@@ -17,12 +18,14 @@ import br.com.ecommerce.core.impl.dao.ClienteDAO;
 import br.com.ecommerce.core.impl.dao.InteressadoDAO;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
+import br.com.ecommerce.core.impl.dao.TransacaoDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.Interessado;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
+import br.com.ecommerce.domain.Transacao;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,6 +58,7 @@ public class Fachada implements IFachada
         daos.put(CaixaEntrada.class.getName(),new CaixaEntradaDAO());
         daos.put(Pedido.class.getName(), new PedidoDAO()); 
         daos.put(Interessado.class.getName(), new InteressadoDAO());
+        daos.put(Transacao.class.getName(), new TransacaoDAO());
         /* 
          Lista de Regras de negocio! 
          */
@@ -92,11 +96,20 @@ public class Fachada implements IFachada
         Map<String,List<IStrategy>> rnsPedido = new HashMap<>();
         rnsPedido.put("Salvar", rnsSalvarPedido);
         
+        //Lista com Regras para salvar uma transacao
+        List<IStrategy> rnsSalvarTransacao = new ArrayList<>();
+        rnsSalvarTransacao.add(new ConsultaSaldo());
+        
+        //Map para regras da Transacao
+        Map<String,List<IStrategy>> rnsTransacao = new HashMap<>();
+        rnsTransacao.put("Salvar", rnsSalvarTransacao);
+        
         //Map final com todas as regras separados por operacao!
         rns.put(Cliente.class.getName(), rnsCliente);
         rns.put(PrestadorServico.class.getName(), rnsPrestador);
         rns.put(CartaoCredito.class.getName(), rnsCartao);
         rns.put(Pedido.class.getName(), rnsPedido);
+        rns.put(Transacao.class.getName(), rnsTransacao);
     }
 
     @Override
@@ -118,7 +131,7 @@ public class Fachada implements IFachada
         catch (SQLException ex) //--> Algum erro grave ocorreu!
         {
             ex.printStackTrace();
-            resultado.addMensagens(ex.getMessage());
+            resultado.addMensagens("Erro ao processar a requisição");
             return resultado;
         }
     }
@@ -142,7 +155,7 @@ public class Fachada implements IFachada
         catch(SQLException ex)
         {
             ex.printStackTrace();
-            resultado.addMensagens(ex.getMessage());
+            resultado.addMensagens("Erro ao processar a requisição");
             return resultado;
         }
     }
@@ -166,7 +179,7 @@ public class Fachada implements IFachada
         catch(SQLException ex)
         {
             ex.printStackTrace();
-            resultado.addMensagens(ex.getMessage());
+            resultado.addMensagens("Erro ao processar a requisição");
             return resultado;
         }
     }
@@ -190,7 +203,7 @@ public class Fachada implements IFachada
         catch(SQLException ex)
         {
             ex.printStackTrace();
-            resultado.addMensagens(ex.getMessage());
+            resultado.addMensagens("Erro ao processar a requisição");
             return resultado;
         }
     }

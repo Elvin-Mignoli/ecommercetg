@@ -10,7 +10,6 @@ import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import java.util.Calendar;
 import javax.servlet.ServletException;

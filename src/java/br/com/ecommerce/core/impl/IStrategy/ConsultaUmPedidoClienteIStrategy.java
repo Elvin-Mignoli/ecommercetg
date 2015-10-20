@@ -8,7 +8,6 @@ package br.com.ecommerce.core.impl.IStrategy;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
-import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.domain.EntidadeDominio;
 import java.sql.SQLException;
 

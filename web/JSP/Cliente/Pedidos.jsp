@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css">
     </head>
     <body>
-        <div class="container">
+        <!-- <div class="container"> -->
             <form method="post" action="SalvarPedido">
                 <input type="text" name="operacao" value="Salvar" hidden="true" />
                 <!-- PRIMEIRA LINHA DO FORM -->
@@ -69,13 +69,16 @@
                             <input type="date" name="txtDataTermino" class="form-control" required="required"/>
                         </div>
                     </div>
+                    <div class="col-lg-3">
+                        <h4><span class="glyphicon glyphicon-question-sign" id="ajudaData"></span></h4>
+                    </div>
                     <!-- **** Fim do Campo!  ***** --> 
                 </div>
 
                 <!-- QUINTA LINHA -->
                 <div class="row">
                     <div class="form-group col-lg-6">
-                        <h4>Hora da Consultoria</h4>
+                        <h4>Hora da Consultoria&nbsp;<span class="glyphicon glyphicon-question-sign" id="ajudaHora"></span></h4>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
@@ -97,9 +100,30 @@
                     </div>
                 </div>
             </form>
-        </div>
+        <!-- </div> -->
         <!-- JavaScript Bootstrap tag-input -->
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.min.js"></script>
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#ajudaData').popover(
+                        {
+                            animation: true,
+                            content: 'Essa é apenas uma data de ínicio e término inicial, pode ser alterada futuramente!',
+                            placement: 'top',
+                            title: 'Observações',
+                            trigger: 'hover focus'
+                        });
+
+                $('#ajudaHora').popover(
+                        {
+                            animation: true,
+                            content: 'Essa é apenas uma hora inicial, pode ser alterada futuramente!',
+                            placement: 'right',
+                            title: 'Observações',
+                            trigger: 'hover focus'
+                        });
+            });
+        </script>
     </body>
 </html>

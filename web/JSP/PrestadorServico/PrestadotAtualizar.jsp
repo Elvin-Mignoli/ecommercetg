@@ -182,7 +182,7 @@
                </div>    
                <div class="form-group">
                    <div class="input-group col-lg-7">
-                      <input id="skill_bar" data-role="tagsinput" value="${sessionScope.user.habilidades.toString().replace("]","").replace("[","")}" name="txtSkill"/>
+                      <input id="skill_bar" data-role="tagsinput" value="${sessionScope.user.habilidades.toString().replace("]","").replace("[","").trim()}" name="txtSkill"/>
                    </div>
                </div>
                

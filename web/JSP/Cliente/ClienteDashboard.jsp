@@ -17,8 +17,9 @@
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
-    </head>
-    <body>
+        <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/> 
+   </head>
+    <body id="dashBoard">
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -51,29 +52,7 @@
         </nav>
 
         <div class="container-fluid">
-            <!-- Modal -->
-            <div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel">Modal Title</h4>
-                        </div>
-                        <div class="modal-body">
-                            <input class="form-control" placeholder="Seu Nome?" id="myInput" />
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">
-                                Close
-                            </button>
-                            <button type="button" class="btn btn-success">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row-fluid profile">
+            <div class="row-fluid profile" id="userProfile">
                 <div class="col-md-3">
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -153,6 +132,9 @@
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens
+                                                <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
+                                                    <i class="badge" id="qtdeMsg" style="background-color: #2ECC40">${sessionScope.user.entrada.QtdeAbertas()}</i>
+                                                </c:if>
                                             </a>
                                         </li>
                                         <div class="collapse active" id="collapseMenuMensagens">
@@ -163,7 +145,7 @@
                                                 </a>
                                                 <br/>
                                                 <a href= "MensagemEnviada" id="mensagens_enviadas_cliente" data-titulo="Mensagens enviadas" >
-                                                <i class="glyphicon glyphicon-cloud"></i>
+                                                <i class="glyphicon glyphicon-cloud-download"></i>
                                                 Mensagens enviadas
                                                 </a>
                                                 <br/>
@@ -186,7 +168,7 @@
                                             <ul id="collapse_pedidos">
                                                 <a href="/Ecommerce/JSP/Cliente/MeusPedidos?txtId=${sessionScope.user.id}&operacao=Consultar" id="consulta_pedido" data-titulo="Meus Pedidos">
                                                     <i class="glyphicon glyphicon-th-list"></i>
-                                                    Consultar Pedidos
+                                                    Todos Pedidos
                                                 </a>
                                             </ul>
                                         </div>
@@ -224,9 +206,10 @@
                                             </button>
                                             ${requestScope.MsgAtualiza} <!-- Mostra a mensagem --> 
                                         </div>
-                                        <% request.setAttribute("MsgAtualiza", null);%>
+                                        <%request.setAttribute("MsgAtualiza", null);%>
                                     </c:if>
                                     <!-- Aqui vai toda as informações que o usuário precisar! -->
+                                    <input type="text" hidden="true" value="" id="lastURL" />
                                     <main id="conteudo">
 
                                     </main>
@@ -254,18 +237,26 @@
         <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
         <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
         <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+        <!-- Plug-ins Jquery Notify -->
+        <script src="../../js/libs/noty/packaged/jquery.noty.packaged.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/noty/layouts/topRight.js" type="text/javascript"></script>
+        <script src="../../js/libs/noty/jquery.noty.js" type="text/javascript"></script>
         <!-- Implementando script de load de paginas de funcoes -->
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+        <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
         <script>
-        $(document).ready(    
-        function() {
+        $(document).ready
+        (
+        function() 
+        {
             //AJAX para Caixa de entrada
-           setInterval(function() {
+           setInterval(function() 
+           {
                 if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
                 {//sim
-                      $("#caixa_entrada_cliente").trigger("click");
-                      
+                    //$(this).load('ClienteDashboard.jsp')
+                    $("#caixa_entrada_cliente").trigger("click");
                 }  
             },120000); //fim do ajax
         });

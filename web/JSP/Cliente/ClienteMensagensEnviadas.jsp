@@ -24,7 +24,7 @@
 
     <body>
         <div>
-            <table data-toggle="table">
+            <table data-toggle="table" data-pagination="true" data-search="true">
                 <thead>
                 <tr>
                     <th id="rmt">Destinatario</th> <th id="asst">Assunto</th> <th id="data">Data</th><th id="acao">Ação</th>

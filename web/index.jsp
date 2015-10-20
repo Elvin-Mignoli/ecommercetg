@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : 21/04/2015, 16:31:43
-    Author     : java
+    Author     : Felipe Monteiro
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
