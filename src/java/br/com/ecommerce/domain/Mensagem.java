@@ -23,6 +23,17 @@ public class Mensagem extends EntidadeDominio
     private boolean flg_resposta; //a mensagem é uma resposta de uma outra mensagem?
     private boolean flg_excluida_enviada;// flag para identificar se a mensagem enviada foi excluida
     private boolean flg_excluida_recebido;//flag para identificar se a mensagem recebida foi excluida
+    private boolean flgAberto;
+
+    public boolean isFlgAberto()
+    {
+        return flgAberto;
+    }
+
+    public void setFlgAberto(boolean flgAberto)
+    {
+        this.flgAberto = flgAberto;
+    }
 
     public boolean isFlg_excluida_enviada() {
         return flg_excluida_enviada;

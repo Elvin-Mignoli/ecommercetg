@@ -46,13 +46,14 @@ public class CaixaEntradaVHWeb implements IViewHelper{
                  //decidino se é Cliente ou Prestador
                 if (request.getRequestURI().contains("Cliente"))
                 {
+                    usuario.setEntrada((CaixaEntrada)rs.getEntidade());
                     request.getSession().setAttribute("user", (Cliente)usuario);
                     request.setAttribute("user",(Cliente)usuario);
                     request.getRequestDispatcher("ClienteCaixaEntrada.jsp").forward(request, response);
                 }else if (request.getRequestURI().contains("Prestador"))
                 {
-
-                    request.getSession().setAttribute("user", (PrestadorServico)rs.getEntidade());
+                    usuario.setEntrada((CaixaEntrada)rs.getEntidade());
+                    request.getSession().setAttribute("user", (PrestadorServico)usuario);
                     request.setAttribute("user", (PrestadorServico)usuario);
                     request.getRequestDispatcher("PrestadorCaixaEntrada.jsp").forward(request, response);
                 }

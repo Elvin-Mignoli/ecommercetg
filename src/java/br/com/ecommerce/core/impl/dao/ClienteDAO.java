@@ -292,7 +292,8 @@ public class ClienteDAO extends AbstractDAO
     {
         try
         {
-            openConnection();//Abrir conexão com banco
+            if(conexao == null || conexao.isClosed())
+                openConnection();//Abrir conexão com banco
             Cliente cliente = (Cliente) entidade;
 
             StringBuilder sql = new StringBuilder();
@@ -308,7 +309,7 @@ public class ClienteDAO extends AbstractDAO
             if (rs.next())
             {
                 //pegar os dados de  endereço
-                EnderecoDAO endDao = new EnderecoDAO();
+                EnderecoDAO endDao = new EnderecoDAO(conexao);
                 Endereco end = new Endereco();
                 end.setId(rs.getInt("id_endereco"));
                 cliente.setEndereco((Endereco) endDao.consultarUm(end));
@@ -349,10 +350,11 @@ public class ClienteDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             } catch (SQLException e)
             {
-                throw new SQLException();
+                e.printStackTrace();
             }
         }
     }

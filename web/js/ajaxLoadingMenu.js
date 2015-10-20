@@ -4,7 +4,8 @@
  * and open the template in the editor.
  */
 $(document).ready(function ()
-{
+{   
+    
     //ajax para carregar dados do cliente
     $('#submit').click(function (event) //evento botão de click
     {
@@ -14,7 +15,7 @@ $(document).ready(function ()
         });
     });
     //Codigo para carregar os campos do cadastro de pedidos!
-    $("#criar_pedido").on("click",function (e)
+    $("#criar_pedido").on("click", function (e)
     {
         $("#panel-heading").html("Dados do Pedido");
         e.preventDefault(); //eliminamos o evento
@@ -27,9 +28,9 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
-    
+
     //Codigo para carregar os campos de atualização
-    $("#editar_dados").on("click", function (e) 
+    $("#editar_dados").on("click", function (e)
     {
         $("#panel-heading").html("Dados Pessoais");
         e.preventDefault(); //eliminamos o evento
@@ -149,7 +150,7 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
+
     //ajax mostrar o caixa de mensagens do  prestador de serviço
     $("#caixa_entrada").on("click", function (e) {
         $("#panel-heading").html("Caixa de Entrada");
@@ -163,14 +164,14 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
-    
-   //ajax mostrar as candidaturas de consultorias do prestador de serviço
+
+
+    //ajax mostrar as candidaturas de consultorias do prestador de serviço
     $("#candidaturas").on("click", function (e) {
-      //  alert("oi");
+        //  alert("oi");
         $("#panel-heading").html("Candidaturas");
         e.preventDefault(); //eliminamos o evento
-        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var path = $(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
         document.title = titulo; // Alterar o titulo da página
         window.history.pushState("", titulo, path);
@@ -179,24 +180,9 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
+
     //ajax mostrar o perfil do  prestador de serviço
-    $("#consulta_pedido").on("click", function (e) 
-    {
-         e.preventDefault(); //eliminamos o evento
-        $("#panel-heading").html("Meus Pedidos");
-        var path = $(this).attr("href"); //Pegamos o caminho
-        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
-        return false;
-    });
-    
-    //ajax mostrar o perfil do  prestador de serviço
-    $(document).on("click", '.filtroAtualiza', function (e) 
+    $("#consulta_pedido").on("click", function (e)
     {
         e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Meus Pedidos");
@@ -208,14 +194,30 @@ $(document).ready(function ()
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
-    });    
-    
+    });
+
+    //ajax mostrar o perfil do  prestador de serviço
+    $(document).on("click", '.filtroAtualiza', function (e)
+    {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meus Pedidos");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
+        return false;
+    });
+
     //ajax mostrar os dados do pedido!
-    $(document).on("click",'.consultaPedido', function (e) 
+    $(document).on("click", '.consultaPedido', function (e)
     {
         e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Meus Pedidos");
         var path = $(this).attr("href"); //Pegamos o caminho
+        $("#lastURL").val(path);
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
         document.title = titulo; // Alterar o titulo da página
         window.history.pushState("", titulo, path);
@@ -224,13 +226,13 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
-    
+
     //Ajax para mostrar os dados de um determinado pedido
-      $(document).on("click",'.ver', function (e) {
+    $(document).on("click", '.ver', function (e) {
         //alert("oi");
         $("#panel-heading").html("Pedido");
         e.preventDefault(); //eliminamos o evento
-        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var path = $(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
         document.title = titulo; // Alterar o titulo da página
         window.history.pushState("", titulo, path);
@@ -239,15 +241,15 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
-    
-    
+
+
+
     //ajax mostrar as  consultorias do prestador de serviço
     $("#minhas_consultorias").on("click", function (e) {
-      //  alert("oi");
+        //  alert("oi");
         $("#panel-heading").html("Minhas Consultorias");
         e.preventDefault(); //eliminamos o evento
-        var path =$(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
+        var path = $(this).attr("href");//"PrestadorCandidaturas.jsp"; //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
         document.title = titulo; // Alterar o titulo da página
         window.history.pushState("", titulo, path);
@@ -256,10 +258,10 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-    
+
     //ajax mostrar as mensagens enviadas do  prestador de serviço
-     $("#mensagens_enviadas").on("click", function (e) {
-         e.preventDefault(); //eliminamos o evento
+    $("#mensagens_enviadas").on("click", function (e) {
+        e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Mensagens Enviadas");
         var path = $(this).attr("href"); //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
@@ -270,11 +272,11 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     });
-   
-   //ajax mostrar os daodos dos prestadores inscritos
-    $(document).on("click",'.consultaInscritos', function (e) 
+
+    //ajax mostrar os daodos dos prestadores inscritos
+    $(document).on("click", '.consultaInscritos', function (e)
     {
-         e.preventDefault(); //eliminamos o evento
+        e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Meus Pedidos");
         var path = $(this).attr("href"); //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
@@ -285,8 +287,8 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
-    
-      //ajax mostrar o perfil do cliente
+
+    //ajax mostrar o perfil do cliente
     $("#meu_perfil_cliente").on("click", function (e) {
         $("#panel-heading").html("Perfil");
         e.preventDefault(); //eliminamos o evento
@@ -299,8 +301,8 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     });
-    
-     //ajax mostrar o caixa de mensagens do  cliente
+
+    //ajax mostrar o caixa de mensagens do  cliente
     $("#caixa_entrada_cliente").on("click", function (e) {
         $("#panel-heading").html("Caixa de Entrada");
         e.preventDefault(); //eliminamos o evento
@@ -314,8 +316,8 @@ $(document).ready(function ()
         return false;
     });
     //ajax mostrar as mensagens enviadas do cliente
-     $("#mensagens_enviadas_cliente").on("click", function (e) {
-         e.preventDefault(); //eliminamos o evento
+    $("#mensagens_enviadas_cliente").on("click", function (e) {
+        e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Mensagens Enviadas");
         var path = $(this).attr("href"); //Pegamos o caminho
         var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
@@ -325,6 +327,6 @@ $(document).ready(function ()
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
-    });
+    }); 
 });
 

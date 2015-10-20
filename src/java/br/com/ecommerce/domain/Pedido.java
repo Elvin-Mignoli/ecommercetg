@@ -5,6 +5,7 @@
  */
 package br.com.ecommerce.domain;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,13 +29,13 @@ public class Pedido extends EntidadeDominio
     private Double valor;
     private Integer qtdeInteressados;
     private Calendar horaConsultoria = Calendar.getInstance();
-    private List<EntidadeDominio> pedidos;
+    private transient List<EntidadeDominio> pedidos;
     public static final String CLIENTE = "CLIENTE";
     public static final String PRESTADOR = "PRESTADOR";
     public static final String MURAL = "MURAL";
     private String consulta;
     private String canal;
-
+    
     public String getCanal()
     {
         return canal;

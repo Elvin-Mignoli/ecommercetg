@@ -17,7 +17,7 @@
     </head>
     <body>
         <form action="AtualizaEmail" method="post">
-            <div class="container">
+            <!-- <div class="container"> -->
                 <div class="row">
                     <div class="alert alert-info col-lg-8 alert-dismissable" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -29,30 +29,39 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Email antigo</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Email</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-envelope"></span>
+                            </span>
                             <input type="email" name="txtEmail" class="form-control" required="required" placeholder="Email atual"/>
                         </div> 
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Senha</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Senha</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-lock"></span>
+                            </span>
                             <input type="password" name="txtSenha" class="form-control" placeholder="Senha atual"/>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-3">
+                        <h4>Novo email</h4>
                         <div class="input-group">
-                            <span class="input-group-addon">Novo Email</span>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </span>
                             <input type="email" name="txtNovoEmail" required="required" class="form-control" placeholder="Novo Email"/>
                         </div>
                     </div>
                 </div>
                 <input type="submit" name="txtNovoEmail" class="btn btn-success" value="Alterar" id="changeEmail"/>  
-            </div>
+            <!-- </div> -->
         </form>
         <script src="../../js/libs/jquery-1.11.1.min.js"></script>
         <script src="../../js/libs/jquery-ui.min.js"></script>

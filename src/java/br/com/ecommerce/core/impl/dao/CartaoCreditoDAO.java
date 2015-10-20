@@ -167,7 +167,9 @@ public class CartaoCreditoDAO extends AbstractDAO
         
         try
         {
-            openConnection();   //abrindo conexao com o banco
+            if(conexao == null || conexao.isClosed())
+                openConnection();   //abrindo conexao com o banco
+            
             sql.append("SELECT * FROM CARTOES ");
             sql.append("WHERE ID = ?");
             
@@ -208,8 +210,8 @@ public class CartaoCreditoDAO extends AbstractDAO
         {
             try
             {
-                pst.close();
-                conexao.close();
+                if(transaction)
+                    conexao.close();
             }
             catch(SQLException ex)
             {

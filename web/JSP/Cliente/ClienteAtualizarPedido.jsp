@@ -9,7 +9,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Efetuar um Pedido</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -36,7 +35,7 @@
                     <div class="form-group col-lg-6">
                         <h4>Habilidades Requeridas</h4>
                         <div class="input-group">
-                            <input data-role="tagsinput" name="txtHabilidadeRequirida" class="form-control col-lg-6" value="${requestScope.pedido.habilidadePrestador.toString().replace("[","").replace("]","")}"/>
+                            <input data-role="tagsinput" name="txtHabilidadeRequirida" class="form-control col-lg-6" value="${requestScope.pedido.habilidadePrestador.toString().replace("[","").replace("]","").trim()}"/>
                         </div>
                     </div>
                 </div>    
@@ -45,7 +44,7 @@
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <h4>Suas Habilidades</h4>
-                        <input id="my_habilities" data-role="tagsinput" name="txtMinhaHabilidade" value="${requestScope.pedido.habilidadeCliente.toString().replace("[","").replace("]","")}"/>
+                        <input id="my_habilities" data-role="tagsinput" name="txtMinhaHabilidade" value="${requestScope.pedido.habilidadeCliente.toString().replace("[","").replace("]","").trim()}"/>
                     </div>
                 </div>
 
