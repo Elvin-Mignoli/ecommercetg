@@ -46,7 +46,7 @@ public class InteressadoDAO extends AbstractDAO
             pst = conexao.prepareStatement(sql);
             pst.setInt(1, usuario.getId());
             pst.setInt(2, usuario.getPedido().getId());
-            pst.setString(3, usuario.getPedido().getStatus().EM_ANDAMENTO.toString());
+            pst.setString(3, Status.EM_PROCESSO.getValue());
             pst.executeUpdate();
             conexao.commit();
         } catch (SQLException e)
@@ -79,46 +79,130 @@ public class InteressadoDAO extends AbstractDAO
     {
         Pedido pedido = (Pedido) entidade;
 
-        if (conexao == null || conexao.isClosed())
+        try
         {
-            openConnection();
-            conexao.setAutoCommit(false);
+            if (conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE INTERESSADOS ");
+            sql.append("SET STATUS = ? ");
+            sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR != ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setString(1, pedido.getStatus().name());
+            pst.setInt(2, pedido.getId());
+            pst.setInt(3, pedido.getPrestadorFinalista().getId());
+
+            pst.executeUpdate();
+
+            //Por favor, não repare nessa parte do código! Ainda somos iniciantes! Bjoos Abraços!
+            sql = new StringBuilder();
+
+            sql.append("UPDATE INTERESSADOS ");
+            sql.append("SET STATUS = ? ");
+            sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR = ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setString(1, Status.SELECIONADO.name());
+            pst.setInt(2, pedido.getId());
+            pst.setInt(3, pedido.getPrestadorFinalista().getId());
+
+            pst.executeUpdate();
+
+            if (transaction)
+            {
+                conexao.commit();
+            }
+        } catch (SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException("Desculpe, algum erro ocorreum. Tente novamente mais tarde!");
+        } finally
+        {
+            try
+            {
+                if (transaction)
+                {
+                    conexao.close();
+                }
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
         }
 
-        StringBuilder sql = new StringBuilder();
-
-        sql.append("UPDATE INTERESSADOS ");
-        sql.append("SET STATUS = ? ");
-        sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR != ?");
-
-        pst = conexao.prepareStatement(sql.toString());
-
-        pst.setString(1, pedido.getStatus().name());
-        pst.setInt(2, pedido.getId());
-        pst.setInt(3,pedido.getPrestadorFinalista().getId());
-
-        pst.executeUpdate();
-        
-        //Por favor, não repare nessa parte do código! Ainda somos iniciantes! Bjoos Abraços!
-        sql = new StringBuilder();
-        
-        sql.append("UPDATE INTERESSADOS ");
-        sql.append("SET STATUS = ? ");
-        sql.append("WHERE ID_PEDIDOS = ? AND ID_PRESTADOR = ?");
-        
-        pst = conexao.prepareStatement(sql.toString());
-
-        pst.setString(1, Status.SELECIONADO.name());
-        pst.setInt(2, pedido.getId());
-        pst.setInt(3,pedido.getPrestadorFinalista().getId());
-        
-        pst.executeUpdate();
     }
 
     @Override
     public void excluir(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Pedido pedido = (Pedido) entidade;
+        try
+        {
+            if (conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE INTERESSADOS ");
+            sql.append("SET STATUS = ?");
+            sql.append("WHERE id_prestador = ? AND id_pedidos = ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, pedido.getStatus().getValue());
+            pst.setInt(2,pedido.getPrestadorFinalista().getId());
+            pst.setInt(3, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            if (transaction)
+            {
+                conexao.commit();
+            }
+        } 
+        catch (SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException();
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -167,17 +251,15 @@ public class InteressadoDAO extends AbstractDAO
         {
             ex.printStackTrace();
             throw new SQLException();
-        }
-        finally
+        } finally
         {
             try
             {
-                if(transaction)
+                if (transaction)
                 {
                     conexao.close();
                 }
-            }
-            catch(SQLException ex)
+            } catch (SQLException ex)
             {
                 ex.printStackTrace();
             }
@@ -188,6 +270,80 @@ public class InteressadoDAO extends AbstractDAO
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void AtualizarStatus(EntidadeDominio entidade) throws SQLException
+    {
+        Pedido pedido = (Pedido) entidade;
+        try
+        {
+            if (conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+
+            StringBuilder sql = new StringBuilder();
+
+            sql.append("UPDATE INTERESSADOS ");
+            sql.append("SET STATUS = ? ");
+            sql.append("WHERE id_pedidos = ? AND id_prestador != ?");
+
+            pst = conexao.prepareStatement(sql.toString());
+
+            pst.setString(1, pedido.getStatus().getValue());
+            pst.setInt(2, pedido.getId());
+            pst.setInt(3, pedido.getPrestadorFinalista().getId());
+
+            pst.executeUpdate();    //executando update
+
+            if (pedido.getStatus().equals(Status.NAO_SELECIONADO))
+            {
+                pedido.setStatus(Status.SELECIONADO);
+
+                sql = new StringBuilder();
+
+                sql.append("UPDATE INTERESSADOS ");
+                sql.append("SET STATUS = ? ");
+                sql.append("WHERE id_pedidos = ? AND id_prestador = ?");
+
+                pst = conexao.prepareStatement(sql.toString());
+
+                pst.setString(1, pedido.getStatus().getValue());
+                pst.setInt(2, pedido.getId());
+                pst.setInt(3, pedido.getPrestadorFinalista().getId());
+
+                pst.executeUpdate();
+            }
+
+            if (transaction)
+            {
+                conexao.commit();
+            }
+        } catch (SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            } catch (SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException();
+        } finally
+        {
+            try
+            {
+                if (transaction)
+                {
+                    conexao.close();
+                }
+            } catch (SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

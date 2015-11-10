@@ -73,7 +73,7 @@ public class Fachada implements IFachada
         
         // --> Regras de Negócio AtualizarCartao!
         List<IStrategy> rnsAtualizarCartao = new ArrayList<>();
-        rnsAtualizarCartao.add(new ValidaCartaoCredito());
+        //rnsAtualizarCartao.add(new ValidaCartaoCredito());
         
         Map<String,List<IStrategy>> rnsCartao = new HashMap<>();
         rnsCartao.put("Atualizar", rnsAtualizarCartao);

@@ -18,17 +18,17 @@ public class Conexao
 {
     public static Connection conectar() throws ClassNotFoundException, SQLException
     {
-        //Conexao com o banco online
+        /*Conexao com o banco online*
         String url = "jdbc:postgresql://pgsql.knowhow.kinghost.net/knowhow";
         String usuario = "knowhow";
-        String senha = "c8naydes1012";
+        String senha = "c8naydes1012";*/
         
-        /*
+        
         //Conexao com o banco local
         String url = "jdbc:postgresql://localhost:5432/Ecommerce";
         String usuario = "postgres";
         //senha deve ser padrão em todas as máquinas
-        String senha = "admin";*/
+        String senha = "admin";
         
         Class.forName("org.postgresql.Driver");
         Connection conn;
