@@ -24,10 +24,14 @@
     </head>
     <body>
          <div >
-            <table data-toggle="table">
+            <table data-toggle="table" data-show-columns="true" data-pagination="true" data-search="true" 
+                data-select-item-name="toolbar1" data-sort-order="desc" >
                 <thead>
                 <tr>
-                    <th id="desc">Descrição</th> <th id="cliente">Cliente</th> <th id="status">Status</th><th>Acão</th>
+                    <th id="desc" data-sortable="true">Descrição</th> 
+                    <th id="cliente" data-sortable="true">Cliente</th> 
+                    <th id="status" data-sortable="true">Status</th>
+                    <th>Acão  <span class="glyphicon glyphicon-question-sign"></span></th>
                 </tr>
                 </thead>
                 <c:if test="${requestScope.ListaPedido.pedidos ne null}"><!--A lista de pedidos esta vazia?-->
@@ -51,5 +55,33 @@
             
         </div>
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script>
+         $('#pesquisa').popover(
+            {
+                animation: true,
+                content: 'Digite qualquer valor da tabela',
+                placement: 'top',
+                title: 'Pesquisa',
+                trigger: 'hover focus'
+            });
+
+        $('#colunas').popover(
+            {
+            animation: true,
+            content: 'Selecionador de Colunas',
+            placement: 'top',
+            title: 'Colunas',
+            trigger: 'hover focus'
+        });
+        $('.glyphicon-question-sign').popover(
+        {
+            animation: true,
+            content:'Selecione uma ação para esse pedido',
+            placement: 'top',
+            title: 'Olá',
+            trigger: 'hover focus'
+        });
+    </script>
     </body>
+   
 </html>

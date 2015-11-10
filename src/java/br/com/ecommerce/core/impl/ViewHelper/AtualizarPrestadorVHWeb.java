@@ -13,6 +13,7 @@ import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +64,7 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
         String nome = request.getParameter("txtNome");
         String sobrenome = request.getParameter("txtSobrenome");
         String cpf = request.getParameter("txtCpf");
+         String cnpj = request.getParameter("txtCnpj");
         String sexo = request.getParameter("txtSexo").substring(0, 1);
         String dataNascimento = request.getParameter("txtDatanascimento");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -100,6 +102,7 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
         prestador.setNome(nome);
         prestador.setSobrenome(sobrenome);
         prestador.setCpf(cpf);
+        prestador.setCnpj(cnpj);
         prestador.setSexo(sexo);
         prestador.setDataNascimento(data);
         prestador.setContato(contato);
@@ -110,17 +113,24 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
 
     @Override
     public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        
+        
          if (!resultado.getMensagens().isEmpty())    //a lista de mensagens de erro esta vazia
         {
-            request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens
+            //request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens
+            out.print(resultado.getMensagens().toString());
         }
         else
         {
-            request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
+            //request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
             request.getSession().setAttribute("user", prestador);
+            out.print("");
             
         }
-        request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
+        //request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
     }
     
 }

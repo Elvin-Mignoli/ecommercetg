@@ -18,6 +18,7 @@
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/> 
+        <link href="../../js/libs/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" type="text/css"/>
    </head>
     <body id="dashBoard">
         <nav class="navbar navbar-inverse">
@@ -63,7 +64,7 @@
                                         <div class="media">
                                             <div class="media-left media-middle">
                                                 <a href="#" id="file">
-                                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive">
+                                                    <img src="http://static2.businessinsider.com/image/51fbc0cf6bb3f7333600001a/us-album-sales-hit-record-low-but-people-are-still-downloading-new-music.jpg" class="img-responsive">
                                                     <!-- <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil"> -->
                                                 </a>
                                             </div>
@@ -122,12 +123,6 @@
                                                 </a>
                                             </ul>
                                         </div>
-                                        <li>
-                                            <a href="ClienteAtualizar.jsp" id="editar_dados" data-titulo="Editar Dados">
-                                                <i class="glyphicon glyphicon-pencil"></i>
-                                                Editar meus dados 
-                                            </a>
-                                        </li>
                                         <li class="active" id="listMensagens">
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
@@ -245,6 +240,7 @@
         <script src="../../js/ajaxFuntions.js"></script>
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
         <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
         <script>
         $(document).ready
         (
@@ -253,11 +249,15 @@
             //AJAX para Caixa de entrada
            setInterval(function() 
            {
+               
                 if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
                 {//sim
                     //$(this).load('ClienteDashboard.jsp')
                     $("#caixa_entrada_cliente").trigger("click");
-                }  
+                }else if($('#panel-heading').html() === "Mensagens Enviadas")//está na page da mensagens enviadas?
+                {//sim
+                     $("#mensagens_enviadas_cliente").trigger("click");
+                }
             },120000); //fim do ajax
         });
         </script>

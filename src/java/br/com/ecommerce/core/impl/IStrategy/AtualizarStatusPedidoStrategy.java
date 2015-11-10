@@ -10,8 +10,6 @@ import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.domain.EntidadeDominio;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -29,7 +27,7 @@ public class AtualizarStatusPedidoStrategy implements IStrategy
         
         try
         {
-            dao.AtualizarStatusPedido(entidade);
+            dao.SelecionarPrestador(entidade);
         } 
         catch (SQLException ex)
         {

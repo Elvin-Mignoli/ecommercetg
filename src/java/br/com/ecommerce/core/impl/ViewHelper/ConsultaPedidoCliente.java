@@ -9,9 +9,11 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.ConsultaUmPedidoClienteIStrategy;
+import br.com.ecommerce.core.impl.IStrategy.HistoricoMensagem;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
+import br.com.ecommerce.domain.PrestadorServico;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +46,18 @@ public class ConsultaPedidoCliente implements IViewHelper
         pedido.setCliente(cliente);
         
         Resultado rs = st.processar(pedido);
+        pedido = (Pedido) rs.getEntidade();
+        if(!pedido.getStatus().toString().equals("ABERTO"))
+        {
+            if(!pedido.getStatus().toString().equals("CANCELADO"))
+            {
+                //buscar o histórico da mensagens
+                cliente.setPedido((Pedido) rs.getEntidade());
+                HistoricoMensagem historico = new HistoricoMensagem();
+                resultado = historico.processar(cliente);
+            }
+        } 
+        
         
         if(rs.getMensagemSimples() != null) //tem alguma mensagem de erro?
         {
@@ -53,6 +67,8 @@ public class ConsultaPedidoCliente implements IViewHelper
         else
         {
             request.setAttribute("pedido", rs.getEntidade());
+            if(resultado != null)
+                request.setAttribute("mensagens",resultado.getEntidades());
             request.getRequestDispatcher("ClienteDetalhePedido.jsp").forward(request, response);
         }
     }

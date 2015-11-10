@@ -38,7 +38,7 @@ public class FecharPedidoVHWeb implements IViewHelper
         pedido.setPrestadorFinalista(new PrestadorServico());
         pedido.setStatus(Status.EM_PROCESSO);
         
-        pedido.setId(new Integer(request.getParameter("txtId")));
+        pedido.setId(new Integer(request.getParameter("txtIdPedido")));
         pedido.setStatus(Status.EM_PROCESSO);
         pedido.getPrestadorFinalista().setId(new Integer(request.getParameter("txtIdPrestador")));
         IStrategy strategy = new AtualizarStatusPedidoStrategy();
@@ -47,14 +47,12 @@ public class FecharPedidoVHWeb implements IViewHelper
         
         if(rs.getMensagemSimples() != null) //existe uma mensagem de erro?
         {
-            request.setAttribute("MsgAtualiza", rs.getMensagemSimples());
+            response.getWriter().write(rs.getMensagemSimples());
         }
         else
         {
-            request.setAttribute("MsgAtualiza", "Prestador de Servicos Selecionado");
+            response.getWriter().write("");
         }
-        
-        request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }
     
 }

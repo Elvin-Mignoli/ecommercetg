@@ -11,7 +11,8 @@
 <html>
     <head>
        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
        
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
@@ -22,11 +23,11 @@
     <body>
          <div class="table-responsive">
             <Form method="POST" action="ResponderMensagem">
-            <table class="table table-responsive">
-                
+                <table class="table table-responsive">
                 <c:forEach var="list" items="${sessionScope.user.entrada.mensagens}">
                     <c:if test="${list.id == param.id}">
                         <!--Assunto da mensagem -->
+                            ${list.idPedido}
                         <tr>
                             <th class="segoe-ui-light-font" id="assunto">Re:&nbsp;${list.assunto}</th>
                         </tr>  
@@ -53,15 +54,15 @@
                                 <input type="hidden" name="txtDestinatario" value="${list.remetente}"/>
                                 <input type="hidden" name="txtRemetente_id" value="${list.id_caixa_remetente}"/>
                                 <input type="hidden" name="txtAssunto" value="${list.assunto}"/>
+                                <input type="hidden" name="txtId" value="${list.idPedido}"/>
                                 <button type="submit" class="btn btn-success"   value="Responder">Responder</button>
+                               
                         </td
                     </c:if>
                 </c:forEach>
             </table>
             </Form>
          </div>
-                             
-        
         
     </body>
 </html>

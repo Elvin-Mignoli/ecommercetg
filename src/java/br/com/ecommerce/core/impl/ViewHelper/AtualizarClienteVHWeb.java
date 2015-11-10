@@ -13,6 +13,7 @@ import br.com.ecommerce.domain.Contato;
 import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -86,16 +87,21 @@ public class AtualizarClienteVHWeb implements IViewHelper
     @Override
     public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        PrintWriter out = response.getWriter();
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        
         if (!resultado.getMensagens().isEmpty())    //a lista de mensagens de erro esta vazia
         {
-            request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens
+           // request.setAttribute("MsgAtualiza", resultado.getMensagens());   //retorna lista de mensagens
+            out.print(resultado.getMensagens().toString());
         }
         else
         {
             request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
             request.getSession().setAttribute("user", cliente);
-            
+            out.print("");
         }
-        request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
+        //request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }
 }

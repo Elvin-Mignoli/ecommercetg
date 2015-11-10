@@ -33,8 +33,41 @@ public class Pedido extends EntidadeDominio
     public static final String CLIENTE = "CLIENTE";
     public static final String PRESTADOR = "PRESTADOR";
     public static final String MURAL = "MURAL";
+    public static final String CANDIDATURAS = "CANDIDATURAS";
     private String consulta;
     private String canal;
+    private Avaliacao avaliacao;
+
+    public Avaliacao getAvaliacao()
+    {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(Avaliacao avaliacao)
+    {
+        this.avaliacao = avaliacao;
+    }
+    private String afinidadePercent;
+    private String afinidade;
+
+    public String getAfinidade() {
+        return afinidade;
+    }
+
+    public void setAfinidade(String afinidade) {
+        this.afinidade = afinidade;
+    }
+    
+    
+    public String getAfinidadePercent() {
+        return afinidadePercent;
+    }
+
+    public void setAfinidadePercent(String afinidadePercent) {
+        this.afinidadePercent = afinidadePercent;
+    }
+    
+    
     
     public String getCanal()
     {

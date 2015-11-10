@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.dao;
 
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IDAO;
+import br.com.ecommerce.domain.Avaliacao;
 import br.com.ecommerce.domain.BuscaPedidoMes;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
@@ -364,6 +365,8 @@ public class PedidoDAO extends AbstractDAO
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
+                pe.setAvaliacao(new Avaliacao());
+                pe.getAvaliacao().setId(rs.getInt("id_avaliacao"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
@@ -405,15 +408,13 @@ public class PedidoDAO extends AbstractDAO
             StringBuilder sql = new StringBuilder();
 
             sql.append("UPDATE PEDIDOS ");
-            sql.append("SET ID_PRESTADOR = ?, ");
-            sql.append("STATUS = ? ");
+            sql.append("SET STATUS = ? ");
             sql.append("WHERE ID = ?");
 
             pst = conexao.prepareStatement(sql.toString());
 
-            pst.setInt(1, pedido.getPrestadorFinalista().getId());
-            pst.setString(2,pedido.getStatus().getValue());
-            pst.setInt(3, pedido.getId());
+            pst.setString(1,pedido.getStatus().getValue());
+            pst.setInt(2, pedido.getId());
 
             pst.executeUpdate();
 
@@ -423,7 +424,7 @@ public class PedidoDAO extends AbstractDAO
             IDAO interDAO = new InteressadoDAO(conexao);
 
             interDAO.atualizar(pedido);   //atualizando status dos campos!
-
+            
             if(transaction)
                 conexao.commit();
 
@@ -499,6 +500,8 @@ public class PedidoDAO extends AbstractDAO
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setQtdeInteressados(rs.getInt("qtde"));
+                pe.setAvaliacao(new Avaliacao());
+                pe.getAvaliacao().setId(rs.getInt("id_avaliacao"));
                 
                 entidades.add(pe);
             }
@@ -555,7 +558,7 @@ public class PedidoDAO extends AbstractDAO
         {
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT * FROM PEDIDOS AS p ");
-            sql.append("WHERE p.status = ?");
+            sql.append("WHERE p.status = ? ORDER BY DATA_PEDIDO");
 
             pst = conexao.prepareStatement(sql.toString());
 
@@ -600,8 +603,52 @@ public class PedidoDAO extends AbstractDAO
                 pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);
             }
-        }
+        }else if(pedido.getConsulta().equals(Pedido.CANDIDATURAS)){
+           StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM PEDIDOS AS p ");
+            sql.append("ORDER BY DATA_PEDIDO");
 
+            pst = conexao.prepareStatement(sql.toString());
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next())    //pegando os dados da pesquisa
+            {
+                Pedido pe = new Pedido();
+                pe.setId(rs.getInt("id"));
+                //buscar dados do cliente
+                pe.setCliente(new Cliente());
+                pe.getCliente().setId(rs.getInt("id_cliente"));
+                ClienteDAO clientedao = new ClienteDAO(conexao);
+                pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
+                //buscar dado do prestador
+                pe.setPrestadorFinalista(new PrestadorServico());
+                pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
+                if (pe.getPrestadorFinalista().getId() != 0)
+                {
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO(conexao);
+                    pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+
+                }
+                pe.setDescricao(rs.getString("descricao"));
+                String habilidades[] = rs.getString("habilidades").split(",");
+                pe.addHabilidadeRequerida(habilidades);
+                String habilidadeCliente[] = rs.getString("habilidade_cliente").split(",");
+                pe.addHabilidadeCliente(habilidadeCliente);
+                pe.setDataInicio(rs.getDate("data_inicio"));
+                pe.setDataFim(rs.getDate("data_fim"));
+                pe.setData(Calendar.getInstance());
+                pe.getData().setTime(rs.getDate("data_pedido"));
+                pe.setStatus(Status.valueOf(rs.getString("status")));
+                pe.setHoraConsultoria(Calendar.getInstance());
+                pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
+                //procurar interessados
+                InteressadoDAO dao = new InteressadoDAO(conexao);
+                pe.setPrestadores(dao.consultar(pe));
+                pe.setQtdeInteressados(pe.getPrestadores().size());
+                entidades.add(pe); 
+            }
+        }
         return entidades;
     }
     
@@ -895,6 +942,175 @@ public class PedidoDAO extends AbstractDAO
           {
               ex.printStackTrace();
           }
+        }
+    }
+    
+    public void removerConsultor(EntidadeDominio entidade) throws SQLException
+    {
+        Pedido pedido = (Pedido) entidade;
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+            
+            InteressadoDAO dao = new InteressadoDAO(conexao);
+            
+            dao.excluir(pedido);  //atualizando status de todos os inscritos
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE PEDIDOS ");
+            sql.append("SET STATUS = ?, ");
+            sql.append("ID_PRESTADOR = ? ");
+            sql.append("WHERE ID = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setString(1, Status.ABERTO.getValue());
+            pst.setInt(2, 0);
+            pst.setInt(3, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            if(transaction)
+                conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+        }
+    }
+    
+    public void SelecionarPrestador(EntidadeDominio entidade) throws SQLException
+    {
+        Pedido pedido = (Pedido) entidade;
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
+            
+            InteressadoDAO dao = new InteressadoDAO(conexao);
+            
+            pedido.setStatus(Status.NAO_SELECIONADO);
+            
+            dao.AtualizarStatus(entidade);
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE PEDIDOS ");
+            sql.append("SET STATUS = ?, ");
+            sql.append("ID_PRESTADOR = ? ");
+            sql.append("WHERE ID = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pedido.setStatus(Status.EM_PROCESSO);
+            
+            pst.setString(1, pedido.getStatus().getValue());
+            pst.setInt(2, pedido.getPrestadorFinalista().getId());
+            pst.setInt(3, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            if(transaction)
+                conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            ex.printStackTrace();
+            throw new SQLException();
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
+        }    
+    }
+    
+    public void AvaliarPedido(EntidadeDominio entidade)throws SQLException
+    {
+        Pedido pedido = (Pedido) entidade;
+        try
+        {
+            if(conexao == null || conexao.isClosed())
+            {
+                openConnection();
+                if(transaction)
+                    conexao.setAutoCommit(false);
+            }
+            
+            IDAO dao = new AvaliacaoDAO(conexao);
+            
+            dao.salvar(pedido); //salvando a avaliacao
+            
+            StringBuilder sql = new StringBuilder();
+            
+            sql.append("UPDATE PEDIDOS ");
+            sql.append("SET ID_AVALIACAO = ? ");
+            sql.append("WHERE ID = ? ");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            
+            pst.setInt(1, pedido.getAvaliacao().getId());
+            pst.setInt(2, pedido.getId());
+            
+            pst.executeUpdate();
+            
+            if(transaction)
+                conexao.commit();
+        }
+        catch(SQLException ex)
+        {
+            try
+            {
+                conexao.rollback();
+            }
+            catch(SQLException ex1)
+            {
+                ex1.printStackTrace();
+            }
+            throw new SQLException(ex.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if(transaction)
+                    conexao.close();
+            }
+            catch(SQLException ex)
+            {
+                ex.printStackTrace();
+            }
         }
     }
 }

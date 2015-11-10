@@ -58,7 +58,7 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/Candidaturas", new CandidaturasVHWeb());
         helpers.put("/Ecommerce/JSP/PrestadorServico/ConsultarPedido", new ConsultarPedidoVHWeb());  
         helpers.put("/Ecommerce/JSP/PrestadorServico/Consultorias", new PrestadorConsultoriasVHWeb());  
-        helpers.put("/Ecommerce/JSP/PrestadorServico/EnviarMensagem", new EnviarMensagemPrestadorVHWeb());  
+        helpers.put("/Ecommerce/JSP/PrestadorServico/EnviarMensagem", new EnviarMensagemVHWeb());  
         helpers.put("/Ecommerce/JSP/PrestadorServico/MensagemEnviada", new MensagensEnviadasVHWeb()); 
         helpers.put("/Ecommerce/index.jsp", new BuscaGraficosInicialVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/CaixaEntrada", new CaixaEntradaVHWeb());
@@ -66,11 +66,13 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/Cliente/ExcluirMensagem", new ExcluirMsgVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/ExcluirMensagemFront", new ExcluirMsgFrontVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/ResponderMensagem", new ResponderMensagemVHWeb());
-        helpers.put("/Ecommerce/JSP/Cliente/EnviarMensagem", new EnviarMensagemPrestadorVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/EnviarMensagem", new EnviarMensagemVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/MensagemAberta", new AtualizarQtdeMensagemVHWeb()); 
         helpers.put("/Ecommerce/JSP/PrestadorServico/MensagemAberta", new AtualizarQtdeMensagemVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/AtualizarDataHora", new AtualizarDataHoraVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/SalvarTransacao", new SalvarTransacaoVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/RemoverConsultor", new RemoverConsultorVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/AvaliarConsultor", new SalvarAvaliacaoVHWeb());
        
     }
     

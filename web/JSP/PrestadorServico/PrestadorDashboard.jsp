@@ -19,6 +19,19 @@
         <!-- CSS das fontes -->
         <link href="../../css/fonts/font.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
+        <!--sweet alert-->
+        <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/>
+   
+        <!-- css table-->
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+        <!-- CSS icons-->
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        
+        <style>
+            .afinidade{
+                color: black;
+            }
+        </style>
     </head>
     <body>
         <!--Navbar -->
@@ -34,17 +47,7 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="PrestadorDashboard.jsp">Home</a></li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">Page 1-2</a></li>
-                    <li><a href="#">Page 1-3</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+                  <li class="active"><a href="PrestadorDashboard.jsp" id="home">Home</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
                  <li><a href="logoff"><span class="glyphicon glyphicon-log-in"></span> Sair</a></li>
@@ -62,7 +65,7 @@
                             <div class="profile-sidebar">
                                 <!-- SIDEBAR USERPIC -->
                                 <div class="profile-userpic">
-                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+                                    <img src="http://wallpaperus.org/wallpapers/09/256/black-people-1920x1080-wallpaper-2340332.jpg" class="img-responsive" alt="">
                                 </div>
                                 <!-- END SIDEBAR USERPIC -->
                                 <!-- SIDEBAR USER TITLE -->
@@ -104,12 +107,6 @@
                                                 <br/>
                                             </ul>
                                         </div>
-                                        <li>
-                                                <a href="PrestadotAtualizar.jsp" id="edit_dados_prest" data-titulo="Editar Dados">
-                                                <i class="glyphicon glyphicon-pencil"></i>
-                                               
-                                                Editar Dados </a>
-                                        </li>
                                         <li class="active" id="listMensagens">
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
@@ -176,6 +173,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- Modal loading-->
+                <div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+                        Carregando os pedidos no mural...
+                      </div>
+                    </div>
+                    <button type="button" hidden="true" id="fechar_modal" data-dismiss="modal">Fechar</button>
+                </div>
+                
                 <div class="col-md-9">
                     <div class="profile-content">
                         <div class="row-fluid-fluid">
@@ -193,45 +200,81 @@
                                     </c:if>
                                     <!-- Aqui vai toda as informações que o usuário precisar! -->
                                     <main id="conteudo">
-                                        <div class="container-fluid">
-                                            <div class="row-fluid ">
+                                        <table data-toggle="table" 
+                                         data-show-columns="true" data-pagination="true" data-search="true" 
+                                         data-select-item-name="toolbar1" data-sort-order="desc" data-page-size="5">
+                                            <thead>
+                                                <tr>
+                                                    <th data-field="Pedido" data-sortable="true">Pedido</th>
+                                                    <th data-field="Data do Pedido" data-sortable="true" class=" text-center col-lg-1">Data do Pedido</th>
+                                                    <th data-field="Afinidade" data-sortable="true" class="text-center col-lg-2">Afinidade <span class="glyphicon glyphicon-question-sign"></span></th>
+                                                </tr>
+                                            </thead>
                                                 <c:forEach var="list" items="${requestScope.ListaPedido.pedidos}">
-                                                    <div class="panel panel-success col-lg-12">
-                                                        <div class="panel panel-heading text-center">Pedido</div>
-                                                        <div class="panel-body">
-                                                            <!-- Span descrição do pedido-->
-                                                            <span><b>Descrição:</b> &nbsp;${list.descricao}</span><br>
-                                                            <div class="text-center">
-                                                                <span class="text-center"><b>Datas da consultoria:</b></span><br><br>
+                                                    <c:if test="${!list.prestadores.contains(sessionScope.user)}">
+                                                    <tr>
+                                                        <td>
+                                                            <div class="panel panel-success col-lg-12">
+                                                                <div class="panel panel-heading text-center">Pedido</div>
+                                                                <div class="panel-body">
+                                                                    
+                                                                    <!-- Span descrição do pedido-->
+                                                                    <span><b>Descrição:</b> &nbsp;${list.descricao}</span><br>
+                                                                    <div class="text-center">
+                                                                        <span class="text-center"><b>Datas da consultoria:</b></span><br><br>
+                                                                    </div>
+                                                                    <!--span da datas do pedidos -->
+                                                                    <span><b>Data de início: &nbsp;</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataInicio}"></f:formatDate>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;<b>Data de fim:</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataFim}"></f:formatDate></span>
+                                                                    <br>
+                                                                    <!-- hora da consultoria-->
+                                                                    <br>
+                                                                    <span><b>Hora:&nbsp;</b><f:formatDate type="time"  value="${list.horaConsultoria.getTime()}"></f:formatDate></span>
+                                                                    <br>
+                                                                    <!--span das habilidades requeridas pelo cliente -->
+                                                                    <span><b>Habilidades requeridas: &nbsp;</b>${list.habilidadePrestador.toString().replace("[","").replace("]","")}</span>
+                                                                    <br>
+                                                                    <span><b>Habilidades do cliente:&nbsp;</b>${list.habilidadeCliente.toString().replace("[","").replace("]","")}</span>
+                                                                    <br>
+                                                                    <c:if test="${!list.prestadores.contains(sessionScope.user)}">
+                                                                        <form action="Candidatar" method="POST">
+                                                                            <input type="hidden"  id="id_prestador" value="${sessionScope.user.id}"/>
+                                                                            <br><button type="button" class="btn btn-success" name="bt_candidatar" id="bt_candidatar" onclick="candidatar(${list.id})">Candidatar-se</button>
+                                                                        </form>
+                                                                    </c:if>
+                                                                  <!--  <c:if test="${list.prestadores.contains(sessionScope.user)}">
+                                                                        <button type="button" class="btn btn-success"disabled="true">Já candidatou-se</button>
+                                                                    </c:if>-->
+                                                                </div>     
                                                             </div>
-                                                            <!--span da datas do pedidos -->
-                                                            <span><b>Data de início: &nbsp;</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataInicio}"></f:formatDate>
-                                                                &nbsp;&nbsp;&nbsp;&nbsp;<b>Data de fim:</b><f:formatDate pattern="dd/MM/yyyy" value="${list.dataFim}"></f:formatDate></span>
-                                                            <br>
-                                                            <!-- hora da consultoria-->
-                                                            <br>
-                                                            <span><b>Hora:&nbsp;</b><f:formatDate type="time"  value="${list.horaConsultoria.getTime()}"></f:formatDate></span>
-                                                            <br>
-                                                            <!--span das habilidades requeridas pelo cliente -->
-                                                            <span><b>Habilidades requeridas: &nbsp;</b>${list.habilidadePrestador.toString().replace("[","").replace("]","")}</span>
-                                                            <br>
-                                                            <span><b>Habilidades do cliente:&nbsp;</b>${list.habilidadeCliente.toString().replace("[","").replace("]","")}</span>
-                                                            <br>
-                                                            <c:if test="${!list.prestadores.contains(sessionScope.user)}">
-                                                                <form action="Candidatar" method="POST">
-                                                                    <input type="hidden" name="id_prestador" id="id_prestador" value="${sessionScope.user.id}"/>
-                                                                    <input type="hidden" name="id_pedido" id="id_prestador" value="${list.id}"/>
-                                                                    <button type="submit" class="btn btn-success" name="bt_candidatar" id="bt_candidatar">Candidatar-se</button>
-                                                                </form>
-                                                            </c:if>
-                                                            <c:if test="${list.prestadores.contains(sessionScope.user)}">
-                                                                <button type="button" class="btn btn-success"disabled="true">Já candidatou-se</button>
-                                                            </c:if>
-                                                        </div>     
-                                                    </div>
+                                                        </td>
+                                                        <td class="text-center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data.getTime()}"></f:formatDate></td>
+                                                        <td class="text-center">
+                                                        <c:if test="${list.afinidade.equals('Nenhuma afinidade')}">
+                                                            <h4 class="btn-danger"> <i class="glyphicon glyphicon-star-empty btn-danger  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
+                                                            <h4 class="btn-danger afinidade">${list.afinidade}</h4>
+                                                        </c:if>
+                                                        <c:if test="${list.afinidade.equals('Pouco afinidade')}">
+                                                            <h4 class="btn-warning"> <i class="glyphicon glyphicon-star-empty btn-warning  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
+                                                            <h4 class="btn-warning afinidade">${list.afinidade}</h4>
+                                                        </c:if>
+                                                        <c:if test="${list.afinidade.equals('Afinidade regular')}">
+                                                            <h4 class="btn-info"> <i class="glyphicon glyphicon-star-empty btn-info afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
+                                                            <h4 class="btn-info afinidade">${list.afinidade}</h4>
+                                                        </c:if>
+                                                        <c:if test="${list.afinidade.equals('Boa afinidade')}">
+                                                            <h4 class="btn-primary"> <i class="glyphicon glyphicon-star-empty btn-primary  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
+                                                            <h4 class="btn-primary afinidade">${list.afinidade}</h4>
+                                                        </c:if>
+                                                        <c:if test="${list.afinidade.equals('Ótima afinidade')}">
+                                                            <h4 class="btn-success"> <i class="glyphicon glyphicon-star-empty btn-success  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
+                                                            <h4 class="btn-success afinidade">${list.afinidade}</h4>
+                                                        </c:if>
+                                                        </td>
+                                                    </tr>
+                                                    </c:if>
                                                 </c:forEach>
-                                            </div>
-                                        </div>
+                                        </table>
                                     </main>
                                 </div>
                             </div>
@@ -243,10 +286,10 @@
         <!--form para resgatar os pedidos para o mural -->
         <form action="Mural" method="POST">
             <input type="hidden" value="Consultar" name="operacao"/>
-            <input type="submit"  hidden="false"id="sub"/>
+            <input type="submit"  hidden="false" id="sub"/>
         </form>
        <!-- Scripts da Pagina -->
-    
+      
      <!-- Arquivos bootstrap da página -->
       <script src="../../bootstrap/js/dropdown.js"></script>
       <script src="../../bootstrap/js/collapse.js"></script>
@@ -266,22 +309,42 @@
       <!-- Implementando script de load de paginas de funcoes -->
       <script src="../../js/ajaxFuntions.js"></script>
       <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
-
+      <!-- js table-->
+       <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>  
+       <!--sweet alert-->
+       <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
+      
+   
         <script>
-        $(document).ready(    
+        $(document).ready(
         function() {
+            
+            //Mask money
+          //  $('.vlConsult').mask('000.000.000.000.000,00', {reverse: true});
             //definindo o nome do pabel-heading
             $('#panel-heading').html("Mural de Pedidos");
             
             //AJAX para Caixa de entrada
            setInterval(function() {
-                if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
+                if($('#panel-heading').html() === "Caixa de Entrada")//está na page da caixa de entrada?
                 {//sim
                       $("#caixa_entrada").trigger("click");
                       
-                }else if($('#panel-heading').html() === "Mural de Pedidos")//est na page do mural de pedidos?
+                }else if($('#panel-heading').html() === "Mensagens Enviadas")//está na page da mensagens enviadas?
+                {//sim
+                     $("#mensagens_enviadas").trigger("click");
+                }
+                else if($('#panel-heading').html() === "Mural de Pedidos")//está na page do mural de pedidos?
                 {//dim
                     $("#sub").trigger("click");
+                    //sweet alert do mural carregando
+                     swal({
+                        title:"Mural",
+                        text:"Carregando os pedidos para o mural",
+                        timer:10000,
+                        imageUrl: "http://oi61.tinypic.com/65r2wp.jpg",
+                        showConfirmButton:false
+                });
                 }
                     
             }, 120000); //fim do ajax
@@ -291,16 +354,42 @@
                if(${requestScope.ListaPedido == null})//já realizou alguma requeisição para o mural?
                {              //não  
                 $("#sub").trigger("click");
+                //sweet alert do mural carregando
+                 swal({
+                        title:"Mural",
+                        text:"Carregando os pedidos para o mural",
+                        timer:10000,
+                        imageUrl: "http://oi61.tinypic.com/65r2wp.jpg",
+                        showConfirmButton:false
+                });
                } 
             }
            //evento: após clicar pra fechar a mensagem de 
            //alerta se dispara uma requisição do mural de pedidos 
            $("#alert_msg").on("click",function(){
                $("#sub").trigger("click");
+               //sweet alert do mural carregando
+                swal({
+                        title:"Mural",
+                        text:"Carregando os pedidos para o mural",
+                        timer:10000,
+                        imageUrl: "http://oi61.tinypic.com/65r2wp.jpg",
+                        showConfirmButton:false
+                });
            });
+           $('.glyphicon-question-sign').popover(
+            {
+                animation: true,
+                placement: 'right',
+                title: 'Afinidade',
+                trigger: 'hover focus',
+                content:'Porcentagem de compatibilidade com o pedido, baseados em suas habilidades'
+            });
         });  
-        
         </script>
+        
+            
+        
     </body>
 </html>
 

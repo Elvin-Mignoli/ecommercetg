@@ -15,6 +15,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+        <link href="../../js/libs/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/>
+        <!--css bootstrap table -->
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
         <title>Pedido</title>
     </head>
     <body>
@@ -26,7 +30,9 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Alterar Data e Hora da Consultoria</h4>
+                        <c:if test="${requestScope.pedido.status ne 'FECHADO' or requestScope.pedido.status ne 'CANCELADO' or requestScope.pedido.avaliacao.id eq 0}">
+                            <h4 class="modal-title" id="myModalLabel">Alterar Data e Hora da Consultoria</h4>
+                        </c:if>
                     </div>
                     <form method="post" action="AtualizarDataHora">
                         <input type="text" name="txtId" id="txtId" value="${requestScope.pedido.id}" hidden="true"/>
@@ -121,7 +127,7 @@
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-lock"></span>
                                             </span>
-                                            <input type="text" name="txtCodSeguranca" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required"/>
+                                            <input type="text" name="txtCodSeguranca" id="txtCodSeg" value="${sessionScope.user.cartao.numeroSeguranca}" class="form-control" placeholder="Ex. 111" required="required" maxlength="3"/>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +177,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" id="fecharTransfe">
                                 Fechar
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
@@ -185,10 +191,47 @@
             </div>
         </div>
         <!-- Fim modal Transferência -->
+
+        <!-- Modal Avaliação -->
+        <div class="modal fade" id="modalAvaliar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Avaliar um consultor</h4>
+                    </div>
+                    <!-- Conteudo do Modal -->
+                    <div class="modal-body">
+                        <div class="row-fluid">
+                            <h3>Como foi o serviço de consultoria?</h3>
+                            <input id="inputAvalicao" value="0" type="number" min=0 max=5 step=0.1 data-size="md" >
+                        </div>
+                        <div class="row-fluid">
+                            <h3>Deixe um breve comentário:</h3>
+                            <textarea class="form-control" id="comentarioAvaliacao">
+                                
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="fecharAvaliacao" data-dismiss="modal">
+                            Fechar
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="avaliarPrestador()">
+                            Avaliar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fim do modal de Avaliação -->
+
         <div class="container">
             <div class="panel panel-success">
                 <div class="panel panel-heading text-center">
-                    <h4>Pedido</h4>
+                    <h4>Pedido (${requestScope.pedido.status})</h4>
                 </div>
                 <div class="panel panel-body">
                     <div class="row">
@@ -272,22 +315,34 @@
                             <h3>
                                 <span class="glyphicon glyphicon-user"></span>
                                 Consultor(a):
+                                <!-- Choose consultor -->
                                 <c:choose>
                                     <c:when test="${requestScope.pedido.prestadorFinalista.id gt 0}">
-                                        <span class="label label-success">
+                                        <span class="label label-success" id="lb_consultor">
                                             ${requestScope.pedido.prestadorFinalista.nome} ${requestScope.pedido.prestadorFinalista.sobrenome}
                                         </span>
                                         &nbsp;
-                                        <button class="btn btn-danger">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span class="label label-success" id="lb_consultor">
+                                            Nenhum prestador selecionado para esse Pedido!
+                                        </span>
+                                    </c:otherwise>
+                                </c:choose>
+                                <!-- Choose button remover -->
+                                <c:choose>
+                                    <c:when test="${requestScope.pedido.status eq 'FECHADO'}">
+                                        <button class="btn btn-danger disabled" id="btnRemover" onclick="removerConsultor()">
                                             Remover
                                             <span class="glyphicon glyphicon-ban-circle"></span>
                                         </button>
                                     </c:when>
-                                    <c:otherwise>
-                                        <span class="label label-success">
-                                            Nenhum prestador selecionado para esse Pedido!
-                                        </span>
-                                    </c:otherwise>
+                                    <c:when test="${requestScope.pedido.prestadorFinalista.id gt 0}">
+                                        <button class="btn btn-danger" id="btnRemover" onclick="removerConsultor()">
+                                            Remover
+                                            <span class="glyphicon glyphicon-ban-circle"></span>
+                                        </button>
+                                    </c:when>
                                 </c:choose>
                             </h3>
                         </div>
@@ -300,6 +355,7 @@
                             <input type="hidden" name="operacao" value="Atualizar"/>
                             <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.prestadorFinalista.email}"/>
                             <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.prestadorFinalista.entrada.id}"/>
+                            <input type="hidden" name="txtId" value="${requestScope.pedido.id}"/>
                             <!-- Assunto-->
                             <div class="form-group">
                                 <div class="input-group">
@@ -320,46 +376,176 @@
                     <br>
                     <div class="row">
                         <div class="col-md-2">
-                            <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary" 
-                               <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">
-                                   disabled="true"
-                               </c:if>
-                               >
-                                Video Chat
-                                <span class="glyphicon glyphicon-facetime-video"></span>
-                            </a>
+                            <c:choose>
+                                <c:when test="${requestScope.pedido.status eq 'FECHADO'}">
+                                    <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary" id="btnChat">
+                                        Video Chat
+                                        <span class="glyphicon glyphicon-facetime-video"></span>
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary disabled" id="btnChat">
+                                        Video Chat
+                                        <span class="glyphicon glyphicon-facetime-video"></span>
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-success" id="btnMensagem"  <c:if test="${requestScope.pedido.prestadorFinalista.id eq 0}">disabled="true"</c:if> >
-                                    Mensagem
-                                    <span class="glyphicon glyphicon-send"></span>
-                                </button>
-                            </div>
-                            <div class="col-md-2">
-                            <c:if test="${requestScope.pedido.status eq 'FECHADO'}">
-                                <button class="btn btn-default" id="selPrestador" data-toggle="modal" data-target="#transfModal">
-                                    Pagamento
-                                    <span class="glyphicon glyphicon-briefcase"></span>
-                                </button>
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${requestScope.pedido.status eq 'ABERTO'}">
+                                    <button class="btn btn-success disabled" id="btnMensagem">
+                                        Mensagem
+                                        <span class="glyphicon glyphicon-send"></span>
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn btn-success" id="btnMensagem">
+                                        Mensagem
+                                        <span class="glyphicon glyphicon-send"></span>
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="col-md-2">
+                            <c:choose>
+                                <c:when test="${requestScope.pedido.status eq 'FECHADO' or requestScope.pedido.status eq 'CANCELADO' or requestScope.pedido.status eq 'ABERTO'}">
+                                    <button class="btn btn-default disabled" id="btnPagamento" data-toggle="modal" data-target="#transfModal">
+                                        Pagamento Efetuado
+                                        <span class="glyphicon glyphicon-briefcase">
+
+                                        </span>
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button class="btn btn-default" id="btnPagamento" data-toggle="modal" data-target="#transfModal">
+                                        Pagamento
+                                        <span class="glyphicon glyphicon-briefcase">
+
+                                        </span>
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="col-md-2">
+                            <c:choose>
+                                <c:when test="${requestScope.pedido.status eq 'FECHADO' and requestScope.pedido.avaliacao.id eq 0}">
+                                    <button id="btnAvaliacao" class="btn btn-danger" data-toggle="modal" data-target="#modalAvaliar">
+                                        <span class="glyphicon glyphicon-heart"></span>
+                                        Avaliar
+                                    </button>
+                                </c:when>
+                                <c:when test="${requestScope.pedido.status eq 'FECHADO' and requestScope.pedido.avaliacao.id ne 0}">
+                                    <button id="btnAvaliacao" class="btn btn-danger disabled">
+                                        <span class="glyphicon glyphicon-heart"></span>
+                                        Consultor Avaliado
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button id="btnAvaliacao" class="btn btn-danger disabled" data-toggle="modal" data-target="#modalAvaliar">
+                                        <span class="glyphicon glyphicon-heart"></span>
+                                        Avaliar
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="panel panel-info col-lg-12">
+            <div class="panel panel-heading text-center">Histórico de mensagens</div>
+            <div class="panel-body">
+                <div class=" col-lg-12">
+                    <table data-toggle="table" data-show-columns="true" data-pagination="true" data-search="true" 
+                           data-select-item-name="toolbar1" data-sort-order="desc" data-page-size="5">
+                        <thead>
+                            <tr>
+                                <th id="rmt" data-sortable="true">Remetente</th> 
+                                <th id="asst" data-sortable="true">Assunto</th> 
+                                <th id="data" data-sortable="true" class="text-center">Data</th>
+
+                            </tr>
+                        </thead>
+                        <c:if test="${!requestScope.mensagens.isEmpty()}">
+                            <c:forEach var="list" items="${requestScope.mensagens}">
+
+                                <tr>
+                                    <c:if test="${list.id_caixa_remetente == sessionScope.user.entrada.id}">
+                                        <td style="text-align: center">Enviada: ${list.remetente}</td>
+                                    </c:if>
+                                    <c:if test="${list.id_caixa_remetente != sessionScope.user.entrada.id}">
+                                        <td style="text-align: center">Recebida: ${list.remetente}</td>
+                                    </c:if>
+                                    <c:if test="${list.flg_resposta == true}">
+                                        <td style="text-align: center">Re:${list.assunto}</td>
+                                    </c:if>
+                                    <c:if test="${list.flg_resposta == false}">
+                                        <td style="text-align: center">${list.assunto}</td>                                
+                                    </c:if>
+                                    <td style="text-align: center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data_msg}"></f:formatDate></td>
+
+                                    </tr>
+
+                            </c:forEach>
+                        </c:if>
+                    </table>
+                </div>
+            </div>
+        </div>                            
         <script src="../../js/ajaxFuntions.js" type="text/javascript"></script>
         <script src="../../js/libs/validate/dist/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
         <script>
-                                //Mascaras dos campos!
-                                $(document).ready(function ()
-                                {
-                                    $('#txtValor').mask('000,000.00', {reverse: true});
-                                    $('#btnMensagem').on('click', function ()
-                                    {
-                                        $('#div_mensagem').attr("hidden", false);
-                                        $('#btnMensagem').attr('disabled', true);
-                                    });
-                                });
+                                            //Mascaras dos campos!
+                                            $(document).ready(function ()
+                                            {
+                                                $('#txtValor').mask('000,000.00', {reverse: true});
+                                                $('#txtValidade').mask('99/9999');
+                                                $('#btnMensagem').on('click', function ()
+                                                {
+                                                    $('#div_mensagem').attr("hidden", false);
+                                                    $('#btnMensagem').attr('disabled', true);
+                                                });
+
+                                                $('#pesquisa').popover(
+                                                        {
+                                                            animation: true,
+                                                            content: 'Digite qualquer valor da tabela',
+                                                            placement: 'top',
+                                                            title: 'Pesquisa',
+                                                            trigger: 'hover focus'
+                                                        });
+
+                                                $('#colunas').popover(
+                                                        {
+                                                            animation: true,
+                                                            content: 'Selecionador de Colunas',
+                                                            placement: 'top',
+                                                            title: 'Colunas',
+                                                            trigger: 'hover focus'
+                                                        });
+
+                                                //js para avaliação
+                                                $('#inputAvalicao').rating({
+                                                    starCaptions: function (val) {
+                                                        return val;
+                                                    },
+                                                    starCaptionClasses: function (val) {
+                                                        if (val < 3) {
+                                                            return 'label label-danger';
+                                                        } else {
+                                                            return 'label label-success';
+                                                        }
+                                                    },
+                                                    hoverOnClear: false,
+                                                    clearCaption: 'Não avaliado'
+                                                });
+                                            });
+        </script>
+        <script>
         </script>
     </body>
 </html>

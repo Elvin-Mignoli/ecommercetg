@@ -27,6 +27,7 @@
                 <c:forEach var="list" items="${sessionScope.user.entrada.mensagens}">
                     <c:if test="${list.id == param.id}">
                         <!--Assunto da mensagem -->
+                        ${list.idPedido}
                         <tr>
                             <th class="segoe-ui-light-font" id="assunto">Re:&nbsp;${list.assunto}</th>
                         </tr>  
@@ -53,6 +54,7 @@
                                 <input type="hidden" name="txtDestinatario" value="${list.remetente}"/>
                                 <input type="hidden" name="txtRemetente_id" value="${list.id_caixa_remetente}"/>
                                 <input type="hidden" name="txtAssunto" value="${list.assunto}"/>
+                                 <input type="hidden" name="txtId" value="${list.idPedido}"/>
                                 <button type="submit" class="btn btn-success"   value="Responder">Responder</button>
                         </td
                     </c:if>

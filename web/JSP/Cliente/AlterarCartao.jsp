@@ -18,7 +18,7 @@
         <title>Alterar Cartão</title>
     </head>
     <body>
-        <form method="post" action="AtualizaCartao">
+        <form method="post" action="AtualizaCartao" id="formCartao">
             <!-- <div class="container"> -->
                 <div class="row">
                     <div class="col-lg-20">
