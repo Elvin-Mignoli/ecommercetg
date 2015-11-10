@@ -41,7 +41,7 @@ public class ExcluirPedidoVHWeb implements IViewHelper
         }
         else
         {
-            request.setAttribute("MsgAtualiza","Pedido alterado com sucesso!");
+            request.setAttribute("MsgAtualiza","Pedido cancelado com sucesso!");
         }
         request.getRequestDispatcher("ClienteDashboard.jsp").forward(request, response);
     }

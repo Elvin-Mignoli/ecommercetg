@@ -24,7 +24,17 @@ public class Mensagem extends EntidadeDominio
     private boolean flg_excluida_enviada;// flag para identificar se a mensagem enviada foi excluida
     private boolean flg_excluida_recebido;//flag para identificar se a mensagem recebida foi excluida
     private boolean flgAberto;
+    private int idPedido;
 
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
+    
+    
     public boolean isFlgAberto()
     {
         return flgAberto;

@@ -123,12 +123,6 @@
                                                 </a>
                                             </ul>
                                         </div>
-                                        <li>
-                                            <a href="ClienteAtualizar.jsp" id="editar_dados" data-titulo="Editar Dados">
-                                                <i class="glyphicon glyphicon-pencil"></i>
-                                                Editar meus dados 
-                                            </a>
-                                        </li>
                                         <li class="active" id="listMensagens">
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
@@ -255,11 +249,15 @@
             //AJAX para Caixa de entrada
            setInterval(function() 
            {
+               
                 if($('#panel-heading').html() === "Caixa de Entrada")//está napage da caixa de entrada?
                 {//sim
                     //$(this).load('ClienteDashboard.jsp')
                     $("#caixa_entrada_cliente").trigger("click");
-                }  
+                }else if($('#panel-heading').html() === "Mensagens Enviadas")//está na page da mensagens enviadas?
+                {//sim
+                     $("#mensagens_enviadas_cliente").trigger("click");
+                }
             },120000); //fim do ajax
         });
         </script>

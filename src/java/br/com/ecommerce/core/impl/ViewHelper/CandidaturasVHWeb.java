@@ -28,7 +28,7 @@ public class CandidaturasVHWeb implements IViewHelper{
        PrestadorServico session = (PrestadorServico) request.getSession().getAttribute("user");
        PrestadorServico prestador = new PrestadorServico();
        prestador.setId(session.getId());
-       pedido.setConsulta(Pedido.MURAL);
+       pedido.setConsulta(Pedido.CANDIDATURAS);
        pedido.setPrestadorFinalista(prestador);
         return pedido;
     }

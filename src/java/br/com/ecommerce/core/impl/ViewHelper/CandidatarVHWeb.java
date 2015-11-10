@@ -10,6 +10,7 @@ import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.Candidatar;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Pedido;
+import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -29,19 +30,20 @@ public class CandidatarVHWeb implements IViewHelper{
 
     @Override
     public void setView(Resultado resultado, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Usuario usuario = new Usuario();
+        PrestadorServico usuario = new PrestadorServico();
         usuario.setId(Integer.parseInt(request.getParameter("id_prestador")));
         usuario.setPedido(new Pedido());
         usuario.getPedido().setId(Integer.parseInt(request.getParameter("id_pedido")));
+        usuario.setValorConsultori(Integer.parseInt(request.getParameter("valor")));
         Candidatar candidar = new Candidatar();
         resultado = candidar.processar(usuario);
         
         if(resultado.getMensagens().isEmpty()){
-             request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
+             response.getWriter().write("");
         }else{
-            request.setAttribute("MsgAtualiza", "Houve algum problema no servidor, tente novamente mais tarde!");   //retorna lista de mensagens
+            response.getWriter().write(resultado.getMensagens().toString());
         }
-         request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
+        // request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
     }
     
 }
