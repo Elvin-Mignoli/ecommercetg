@@ -8,6 +8,7 @@ package br.com.ecommerce.core.impl.dao;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.Mensagem;
+import br.com.ecommerce.domain.Usuario;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,7 +50,8 @@ public class MensagemDAO extends AbstractDAO
             StringBuilder sql = new StringBuilder();
             
             sql.append("INSERT INTO MENSAGENS ");
-            sql.append("(id_caixa_destinatario,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente,flg_resposta,flg_excluida_enviada,flg_excluida_recebido) VALUES(?,?,NOW(),?,?,?,?,?,false,false)");
+            sql.append("(id_caixa_destinatario,mensagem,data_msg, assunto,remetente,destinatario,id_caixa_remetente,"
+                    + "flg_resposta,flg_excluida_enviada,flg_excluida_recebido,idPedido) VALUES(?,?,NOW(),?,?,?,?,?,false,false,?)");
             
             pst = conexao.prepareStatement(sql.toString(),Statement.RETURN_GENERATED_KEYS);
             
@@ -60,6 +62,7 @@ public class MensagemDAO extends AbstractDAO
             pst.setString(5, entrada.getMensagem().getDestinatario());
             pst.setInt(6, entrada.getId());
             pst.setBoolean(7, entrada.getMensagem().isFlg_resposta());
+            pst.setInt(8, entrada.getMensagem().getIdPedido());
             pst.executeUpdate();
             
             ResultSet rs = pst.getGeneratedKeys();
@@ -202,6 +205,7 @@ public class MensagemDAO extends AbstractDAO
                 msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
                 msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
                 msg.setFlgAberto(rs.getBoolean("flg_msg_aberta"));
+                msg.setIdPedido(rs.getInt("idPedido"));
                 mensagens.add(msg);
             }           
             return mensagens;
@@ -253,6 +257,7 @@ public class MensagemDAO extends AbstractDAO
             msg.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
             msg.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
             msg.setFlgAberto(rs.getBoolean("flg_msg_aberta"));
+            msg.setIdPedido(rs.getInt("idPedido"));
             entrada.setMensagem(msg);
         }
          return entrada;
@@ -363,6 +368,78 @@ public class MensagemDAO extends AbstractDAO
                  ex1.printStackTrace();
              }
              throw new SQLException("Erro ao altera mensagem");
+         }
+         finally
+         {
+             try
+             {
+                 if(transaction)
+                    conexao.close();
+             }
+             catch(SQLException ex)
+             {
+                 ex.printStackTrace();
+             }
+         }
+     }
+     
+     public List<EntidadeDominio> historico(EntidadeDominio entidade) throws SQLException{
+         Mensagem msg = (Mensagem) entidade;
+         List<EntidadeDominio> mensagens = new ArrayList<>();
+         try
+         {
+             if(conexao == null || conexao.isClosed())
+             {
+                 openConnection();  //abrindo conexao com o banco
+                 conexao.setAutoCommit(false);
+             }
+             
+             StringBuilder sql = new StringBuilder();
+             
+             sql.append("SELECT * FROM MENSAGENS ");
+             sql.append("WHERE id_caixa_destinatario = ? and id_caixa_remetente = ? and idPedido = ?\n" +
+                "or id_caixa_destinatario = ? and id_caixa_remetente = ? and idPedido = ?");
+             
+             pst = conexao.prepareStatement(sql.toString());
+             
+            pst.setInt(1, msg.getId_caixa_destinatario());
+            pst.setInt(2, msg.getId_caixa_remetente());
+             pst.setInt(3, msg.getIdPedido());
+            pst.setInt(4, msg.getId_caixa_remetente()); 
+            pst.setInt(5, msg.getId_caixa_destinatario());
+            pst.setInt(6, msg.getIdPedido());
+               
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next())
+            {
+                Mensagem mensagem = new Mensagem();
+                
+                mensagem.setDescricao(rs.getString("Mensagem"));
+                mensagem.setId(rs.getInt("id"));
+                mensagem.setData_msg(rs.getDate("data_msg"));
+                mensagem.setAssunto(rs.getString("assunto"));
+                mensagem.setRemetente(rs.getString("remetente"));
+                mensagem.setDestinatario(rs.getString("destinatario"));
+                mensagem.setId_caixa_remetente(rs.getInt("id_caixa_remetente"));
+                mensagem.setFlg_resposta(rs.getBoolean("flg_resposta"));
+                mensagem.setFlg_excluida_enviada(rs.getBoolean("flg_excluida_enviada"));
+                mensagem.setFlg_excluida_recebido(rs.getBoolean("flg_excluida_recebido"));
+                mensagens.add(mensagem);
+            } 
+            return mensagens;
+         }
+         catch(SQLException ex)
+         {
+             try
+             {
+                 conexao.rollback();
+             }
+             catch(SQLException ex1)
+             {
+                 ex1.printStackTrace();
+             }
+             throw new SQLException("Erro ao no servidor, tente novamente mais tarde?");
          }
          finally
          {

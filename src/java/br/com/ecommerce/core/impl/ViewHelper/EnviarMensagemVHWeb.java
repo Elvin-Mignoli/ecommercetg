@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Elvin
  */
-public class EnviarMensagemPrestadorVHWeb implements IViewHelper{
+public class EnviarMensagemVHWeb implements IViewHelper{
 
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
@@ -31,6 +31,7 @@ public class EnviarMensagemPrestadorVHWeb implements IViewHelper{
         msg.setRemetente(usuario.getEmail());//email do remetente
         msg.setDestinatario(request.getParameter("txtDestinatario"));//email do destinatario
         msg.setId_caixa_destinatario(Integer.parseInt(request.getParameter("txtCaixaEntrada")));//id da caixa de entrada do destinatario
+        msg.setIdPedido(Integer.parseInt(request.getParameter("txtId")));
         msg.setFlg_resposta(false);
         usuario.getEntrada().setMensagem(msg);
         return usuario.getEntrada();

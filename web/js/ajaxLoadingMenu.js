@@ -328,5 +328,21 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
     }); 
+    
+    
+    //Testar
+    /*$(document).on("click", '.att', function (e){
+        alert("oi");
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meu Perfil");
+        var path = "PrestadorPerfil.jsp"; //Pegamos o caminho
+        var titulo = "Meu Perfil"; //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+        return false;
+    }); */
 });
 

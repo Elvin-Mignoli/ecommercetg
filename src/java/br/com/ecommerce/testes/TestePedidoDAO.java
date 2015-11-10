@@ -44,7 +44,7 @@ public class TestePedidoDAO
         pedido.setDataFim(dataFim.getTime());
         
         pedido.setStatus(Status.ABERTO);
-        
+        pedido.getData().get(Calendar.MONTH);
         Cliente cliente = new Cliente();
         cliente.setId(4);
         pedido.setCliente(cliente);

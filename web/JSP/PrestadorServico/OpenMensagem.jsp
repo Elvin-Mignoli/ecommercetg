@@ -11,7 +11,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-     
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <!-- CSS das fontes -->
@@ -36,7 +37,7 @@
                         <!--para: -->
                         <tr>
                             <td class="segoe-ui-font" id="destinatario">
-                                &nbsp;Para:&nbsp;${sessionScope.user.email}
+                                &nbsp;Para:&nbsp;${list.destinatario}
                             </td>
                         </tr>
                         <!--body da mensagem -->
