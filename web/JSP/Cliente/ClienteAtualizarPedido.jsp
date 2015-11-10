@@ -25,9 +25,7 @@
                 <div class="row">
                     <div class="form-group col-lg-6">
                         <h4>Descrição do Problema:</h4>
-                        <textarea class="form-control" name="txtDescricao" required="required">
-                            ${requestScope.pedido.descricao}
-                        </textarea>
+                        <textarea class="form-control" name="txtDescricao" required="required">${requestScope.pedido.descricao}</textarea>
                     </div>
                 </div>
                 <!-- TERCEIRA LINHA -->

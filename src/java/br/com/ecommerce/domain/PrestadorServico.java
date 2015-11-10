@@ -18,6 +18,18 @@ public class PrestadorServico extends Usuario
     private ArrayList<Competencia> habilidades;
     private String cnpj;
     private Status candidatura;
+    private double valorConsultori;
+    
+    
+    
+    public double getValorConsultori() {
+        return valorConsultori;
+    }
+
+    public void setValorConsultori(double valorConsultori) {
+        this.valorConsultori = valorConsultori;
+    }
+    
     
     public PrestadorServico(String nome, String sobrenome, String data, String cpf, Endereco end, Contato cont, String sexo, String tipoConta,
             String email, String senha, int status, ArrayList habilidades)
@@ -84,6 +96,7 @@ public class PrestadorServico extends Usuario
     {
         this.habilidades = habilidades;
     }
+    
     
    @Override
     public boolean equals(Object o)

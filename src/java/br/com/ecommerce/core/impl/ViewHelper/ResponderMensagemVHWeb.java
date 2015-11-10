@@ -33,6 +33,7 @@ public class ResponderMensagemVHWeb implements IViewHelper{
         msg.setRemetente(usuario.getEmail());//email do remetente
         msg.setDestinatario(request.getParameter("txtDestinatario"));//email do destinatario
         msg.setId_caixa_destinatario(Integer.parseInt(request.getParameter("txtRemetente_id")));//id da caixa de entrada para que a mensagem vai ser mandada
+        msg.setIdPedido(Integer.parseInt(request.getParameter("txtId")));
         msg.setFlg_resposta(true);
         usuario.getEntrada().setMensagem(msg);
         return usuario.getEntrada();

@@ -15,6 +15,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
+        <!--css bootstrap table -->
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
         <title>Pedido</title>
     </head>
     <body>
@@ -300,6 +302,7 @@
                             <input type="hidden" name="operacao" value="Atualizar"/>
                             <input type="hidden" name="txtDestinatario" value="${requestScope.pedido.prestadorFinalista.email}"/>
                             <input type="hidden" name="txtCaixaEntrada" value="${requestScope.pedido.prestadorFinalista.entrada.id}"/>
+                             <input type="hidden" name="txtId" value="${requestScope.pedido.id}"/>
                             <!-- Assunto-->
                             <div class="form-group">
                                 <div class="input-group">
@@ -347,19 +350,81 @@
                 </div>
             </div>
         </div>
+         <div class="panel panel-info col-lg-12">
+            <div class="panel panel-heading text-center">Histórico de mensagens</div>
+            <div class="panel-body">
+            <div class=" col-lg-12">
+                <table data-toggle="table" data-show-columns="true" data-pagination="true" data-search="true" 
+                       data-select-item-name="toolbar1" data-sort-order="desc" data-page-size="5">
+                    <thead>
+                        <tr>
+                            <th id="rmt" data-sortable="true">Remetente</th> 
+                            <th id="asst" data-sortable="true">Assunto</th> 
+                            <th id="data" data-sortable="true" class="text-center">Data</th>
+                            
+                        </tr>
+                    </thead>
+                    <c:if test="${!requestScope.mensagens.isEmpty()}">
+                    <c:forEach var="list" items="${requestScope.mensagens}">
+                       
+                            <tr>
+                                <c:if test="${list.id_caixa_remetente == sessionScope.user.entrada.id}">
+                                    <td style="text-align: center">Enviada: ${list.remetente}</td>
+                                </c:if>
+                                <c:if test="${list.id_caixa_remetente != sessionScope.user.entrada.id}">
+                                    <td style="text-align: center">Recebida: ${list.remetente}</td>
+                                </c:if>
+                                <c:if test="${list.flg_resposta == true}">
+                                    <td style="text-align: center">Re:${list.assunto}</td>
+                                </c:if>
+                                <c:if test="${list.flg_resposta == false}">
+                                    <td style="text-align: center">${list.assunto}</td>                                
+                                </c:if>
+                                <td style="text-align: center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data_msg}"></f:formatDate></td>
+                                    
+                            </tr>
+                                
+                            </c:forEach>
+                        </c:if>
+                    </table>
+                </div>
+            </div>
+        </div>                            
         <script src="../../js/ajaxFuntions.js" type="text/javascript"></script>
         <script src="../../js/libs/validate/dist/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
         <script>
-                                //Mascaras dos campos!
-                                $(document).ready(function ()
-                                {
-                                    $('#txtValor').mask('000,000.00', {reverse: true});
-                                    $('#btnMensagem').on('click', function ()
-                                    {
-                                        $('#div_mensagem').attr("hidden", false);
-                                        $('#btnMensagem').attr('disabled', true);
-                                    });
-                                });
+            //Mascaras dos campos!
+            $(document).ready(function ()
+            {
+                $('#txtValor').mask('000,000.00', {reverse: true});
+                $('#btnMensagem').on('click', function ()
+                {
+                    $('#div_mensagem').attr("hidden", false);
+                    $('#btnMensagem').attr('disabled', true);
+                });
+                 $('#pesquisa').popover(
+                 {
+                animation: true,
+                content: 'Digite qualquer valor da tabela',
+                placement: 'top',
+                title: 'Pesquisa',
+                trigger: 'hover focus'
+                });
+
+                $('#colunas').popover(
+                    {
+                    animation: true,
+                    content: 'Selecionador de Colunas',
+                    placement: 'top',
+                    title: 'Colunas',
+                    trigger: 'hover focus'
+                });
+            });
+                                
         </script>
+         <script>
+            
+         </script>
     </body>
 </html>

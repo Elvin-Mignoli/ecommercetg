@@ -36,7 +36,7 @@
                         <!--para: -->
                         <tr>
                             <td class="segoe-ui-font" id="destinatario">
-                                &nbsp;Para:&nbsp;${sessionScope.user.email}
+                                &nbsp;Para:&nbsp;${list.destinatario}
                             </td>
                         </tr>
                         <!--body da mensagem -->
@@ -70,6 +70,7 @@
                         </Form>
                     </td>
                 </tr>
+                
             </table>
         </div>
                             

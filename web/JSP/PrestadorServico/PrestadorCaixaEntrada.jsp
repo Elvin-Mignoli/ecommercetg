@@ -11,6 +11,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <!-- implementando CSS do bootstrap -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
@@ -23,10 +25,14 @@
 
     <body>
         <div >
-            <table data-toggle="table" data-pagination="true" data-search="true">
+            <table data-toggle="table" data-show-columns="true" data-pagination="true" data-search="true" 
+                data-select-item-name="toolbar1" data-sort-order="desc" >
                 <thead>
                     <tr>
-                        <th id="rmt">Remetente</th> <th id="asst">Assunto</th> <th id="data">Data</th><th id="acao">Ação</th>
+                        <th id="rmt" data-sortable="true">Remetente</th> 
+                        <th id="asst" data-sortable="true">Assunto</th> 
+                        <th id="data" data-sortable="true">Data</th>
+                        <th id="acao" data-sortable="true">Ação <span class="glyphicon glyphicon-question-sign"></span></th>
                     </tr>
                 </thead>
                 <c:if test="${!requestScope.user.entrada.mensagens.isEmpty()}">
@@ -77,5 +83,32 @@
         </div>
         <!--Bootstrap table -->            
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script>
+         $('#pesquisa').popover(
+            {
+                animation: true,
+                content: 'Digite qualquer valor da tabela',
+                placement: 'top',
+                title: 'Pesquisa',
+                trigger: 'hover focus'
+            });
+
+        $('#colunas').popover(
+            {
+            animation: true,
+            content: 'Selecionador de Colunas',
+            placement: 'top',
+            title: 'Colunas',
+            trigger: 'hover focus'
+        });
+        $('.glyphicon-question-sign').popover(
+        {
+            animation: true,
+            content:'Selecione uma ação para essa mensagem',
+            placement: 'top',
+            title: 'Olá',
+            trigger: 'hover focus'
+        });
+    </script>
     </body>
 </html>

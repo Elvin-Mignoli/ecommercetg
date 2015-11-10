@@ -24,10 +24,14 @@
 
     <body>
         <div>
-            <table data-toggle="table" data-pagination="true" data-search="true">
+            <table data-toggle="table" data-show-columns="true" data-pagination="true" data-search="true" 
+                data-select-item-name="toolbar1" data-sort-order="desc">
                 <thead>
                 <tr>
-                    <th id="rmt">Destinatario</th> <th id="asst">Assunto</th> <th id="data">Data</th><th id="acao">Ação</th>
+                    <th id="rmt" data-sortable="true">Destinatario</th>
+                    <th id="asst" data-sortable="true">Assunto</th> 
+                    <th id="data" data-sortable="true">Data</th>
+                    <th id="acao" data-sortable="true">Ação<span class="glyphicon glyphicon-question-sign"></span></th>
                 </tr>
                 </thead>
                 <c:if test="${!requestScope.user.entrada.mensagens.isEmpty()}">
@@ -65,8 +69,34 @@
                    Ocorreu algum erro na exclusão da mensagem tente mais tarde!
                 </button>
         </div>
-                      
-        
+                       
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script>
+         $('#pesquisa').popover(
+            {
+                animation: true,
+                content: 'Digite qualquer valor da tabela',
+                placement: 'top',
+                title: 'Pesquisa',
+                trigger: 'hover focus'
+            });
+
+        $('#colunas').popover(
+            {
+            animation: true,
+            content: 'Selecionador de Colunas',
+            placement: 'top',
+            title: 'Colunas',
+            trigger: 'hover focus'
+        });
+        $('.glyphicon-question-sign').popover(
+        {
+            animation: true,
+            content:'Selecione uma ação para essa mensagem',
+            placement: 'top',
+            title: 'Olá',
+            trigger: 'hover focus'
+        });
+    </script>
     </body>
 </html>

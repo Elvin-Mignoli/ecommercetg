@@ -150,7 +150,7 @@ function confirmSenha()
         $("#span_senha_confirm").removeClass();
         $("#span_senha_confirm").addClass("glyphicon glyphicon-warning-sign form-control-feedback");
         $("#status_senha_confirm").addClass("text-warning");
-        $("#status_senha_confirm").text("Os dois novas  não conferem, tente novamente!");
+        $("#status_senha_confirm").text("Os dois novas senhas não conferem, tente novamente!");
     } else
     {
         $("#div_senha_confirm").removeClass();
@@ -808,6 +808,307 @@ function salvarTransacao()
             });
         }
     });
-    
-    
 }
+
+//método para liberar a edição de dados no meu perfil
+    function editarDados()
+    {
+        $(".form-control").removeAttr('readonly');
+        
+        $("#input_cpf").prop("readonly","readonly");
+        $("#input_cnpj").prop("readonly");
+         $("#skill_bar").prop("disabled",false);
+         
+        $("#div_button").toggle(true);
+        $("#span_ajuda_disabled").toggle(false);
+        $("#div_ajuda").toggle(true);
+        $("#sexo").toggle(false);
+        $("#div_sexo").toggle(true);
+        
+    }
+    
+    
+//função para atualizar dados do prestador
+function atualizarDadosPresatador()
+{
+    swal({
+        title: "Atualização",
+        text: "Você quer realmente atualizar seus dados?",
+        type: "info",
+        showCancelButton: true,  
+        closeOnConfirm: false,  
+        showLoaderOnConfirm: true
+    },
+    function () {
+    //requisão ajax para remoção do consultor
+    var nome = $('#input_nome').val();
+    var sobrenome = $('#input_sobrenome').val();
+    var sexo = $('#valueSexo').val();
+    var cpf = $('#input_cpf').val();
+    var cnpj = $('#input_cnpj').val();
+    var data = $('#input_data').val();
+    var telefone = $('#input_telefone').val();
+    var celular = $('#input_celular').val();
+    var cep = $('#cep').val();
+    var rua = $('#rua').val();
+    var numero = $('#numero').val();
+    var bairro = $('#bairro').val();
+    var cidade = $('#cidade').val();
+    var estado = $('#estado').val();
+    var complemento = $('#complemento').val();
+    var skills = $('#skill_bar').val();
+  
+        $.ajax({
+            type: 'POST',
+            url: "AtualizarPrestador",
+            data: {
+            operacao: 'Atualizar',
+            txtSkill:skills,
+            txtNome:nome,
+            txtSobrenome:sobrenome,
+            txtCpf:cpf,
+            txtCnpj:cnpj,
+            txtSexo:sexo,
+            txtDatanascimento:data,
+            txtLogradouro:rua,
+            txtNumero:numero,
+            txtCep:cep,
+            txtBairro:bairro,
+            txtCidade:cidade,
+            txtEstado:estado,
+            txtComplemento:complemento,
+            txtTelefone:telefone,
+            txtCelular:celular},
+            
+            success: function (json)
+            {
+                
+                if (json !== null && json !== "")
+                {
+                    swal({
+                        title: "Desculpe!",
+                        text: json,
+                        type: "error",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+                }
+                else
+                {
+                    swal({
+                        title: "Sucesso!",
+                        text: "Atualização realizada!",
+                        type: "success",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+
+
+                }
+            },
+            beforeSend: function (xhr) {
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+            },
+            complete: function (jqXHR, textStatus) {
+                 $('#meu_perfil').click();
+            }
+        });
+    });
+   
+}
+
+//função para atualizar dados do prestador
+function atualizarDadosCliente()
+{
+    swal({
+        title: "Atualização",
+        text: "Você quer realmente atualizar seus dados?",
+        type: "info",
+        showCancelButton: true,  
+        closeOnConfirm: false,  
+        showLoaderOnConfirm: true
+    },
+    function () {
+    //requisão ajax para remoção do consultor
+    var nome = $('#input_nome').val();
+    var sobrenome = $('#input_sobrenome').val();
+    var sexo = $('#valueSexo').val();
+    var cpf = $('#input_cpf').val();
+    var data = $('#input_data').val();
+    var telefone = $('#input_telefone').val();
+    var celular = $('#input_celular').val();
+    var cep = $('#cep').val();
+    var rua = $('#rua').val();
+    var numero = $('#numero').val();
+    var bairro = $('#bairro').val();
+    var cidade = $('#cidade').val();
+    var estado = $('#estado').val();
+    var complemento = $('#complemento').val();
+  
+        $.ajax({
+            type: 'POST',
+            url: "AtualizarCliente",
+            data: {
+            operacao: 'Atualizar',
+            txtNome:nome,
+            txtSobrenome:sobrenome,
+            txtCpf:cpf,
+            txtSexo:sexo,
+            txtDatanascimento:data,
+            txtLogradouro:rua,
+            txtNumero:numero,
+            txtCep:cep,
+            txtBairro:bairro,
+            txtCidade:cidade,
+            txtEstado:estado,
+            txtComplemento:complemento,
+            txtTelefone:telefone,
+            txtCelular:celular},
+            
+            success: function (json)
+            {
+                
+                if (json !== null && json !== "")
+                {
+                    swal({
+                        title: "Desculpe!",
+                        text: json,
+                        type: "error",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+                }
+                else
+                {
+                    swal({
+                        title: "Sucesso!",
+                        text: "Atualização realizada!",
+                        type: "success",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+
+
+                }
+            },
+            beforeSend: function (xhr) {
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+            },
+            complete: function (jqXHR, textStatus) {
+                 $('#meu_perfil').click();
+            }
+        });
+    });
+   
+}
+
+//função para o prestador se candidatar a um pedido
+function candidatar(id)
+{
+    swal({   
+        title: "Valor da consultoria!",
+        text: "Digite o valor da consultoria. Somente Números!",   
+        type: "input",
+        inputType:"number",
+        showCancelButton: true,   
+        closeOnConfirm: false,   animation: "slide-from-top",   
+        inputPlaceholder: "Exemplo: 1050"}, 
+    function(inputValue){   
+        if (inputValue === false) return false;      
+        if (inputValue === "") {     
+            swal.showInputError("Você precisa preencher esse campo!");     
+            return false;   }  
+        var testeCampo = "";
+        testeCampo = inputValue.toString() ; 
+   
+        if (testeCampo.indexOf('.') !== -1 ) {     
+            swal.showInputError("Digite somente números!");     
+            return false;   } 
+        if (testeCampo.indexOf('-') !== -1 ) {     
+            swal.showInputError("Não digite número negativo!");     
+            return false;   }
+        var valor = inputValue;
+       
+    swal({
+        title: "Candidatar",
+        text: "Você  realmente deseja candidatar-se?",
+        type: "info",
+        showCancelButton: true,  
+        closeOnConfirm: false,  
+        showLoaderOnConfirm: true
+    },
+    function () {
+    //requisão ajax para remoção do consultor
+    var id_prestador = $('#id_prestador').val();
+    var id_pedido = id;
+   
+        $.ajax({
+            type: 'POST',
+            url: "Candidatar",
+            data: {
+            id_prestador:id_prestador,
+            id_pedido:id_pedido,
+            valor:valor},
+            
+            success: function (json)
+            {
+                if (json !== null && json !== "")
+                {   
+                    $("#sub").trigger("click");
+                    swal({
+                        title: "Desculpe!",
+                        text: json,
+                        type: "error",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+                }
+                else
+                {
+                    $("#sub").trigger("click");
+                    swal({
+                        title: "Sucesso!",
+                        text: "Candidatura realizada!",
+                        type: "success",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK",
+                        confirmButtonClass: 'confirm-class',
+                        closeOnConfirm: false
+                    },
+                   
+                    function(isConfirm){
+                        
+                        if(isConfirm){
+                            swal({
+                            title:"Mural",
+                            text:"Carregando os pedidos para o mural",
+                            timer:10000,
+                            imageUrl: "http://oi61.tinypic.com/65r2wp.jpg",
+                            showConfirmButton:false
+                            });
+                           
+                        }
+                    });
+                    
+                }
+            },
+            beforeSend: function (xhr) {
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+            },
+            complete: function (jqXHR, textStatus) {        
+                 $("#sub").trigger("click");
+            }
+        });
+    });
+    });
+}
+

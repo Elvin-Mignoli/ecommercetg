@@ -7,15 +7,16 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>WebRTC Broadcasting ® Muaz Khan</title>
+        <title>Vídeo Chat</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        
         <link rel="author" type="text/html" href="https://plus.google.com/+MuazKhan">
         <meta name="author" content="Muaz Khan">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="//cdn.webrtc-experiment.com/style.css">
+        <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
         
         <style>
             audio, video {
@@ -27,43 +28,8 @@
                 transition: all 1s ease;
                 vertical-align: top;
                 width: 50%;
-            }
-
-           input {
-                border: 1px solid #d9d9d9;
-                border-radius: 1px;
-                font-size: 150%;
-                margin-top: 5px;
-                margin-bottom: 8px;
-                height: 55px;
-               
                 
             }
-
-            .setup {
-                border-bottom-left-radius: 0;
-                border-top-left-radius: 0;
-                font-size: 102%;
-                height: 55px;
-                margin-top: 5px;
-                margin-bottom: 8px;
-                position: absolute;
-                font-size: 150%;;
-            }
-            select {
-                border: 1px solid #d9d9d9;
-                border-radius: 1px;
-                height:55px;
-                margin-top: 5px;
-                margin-bottom: 8px;
-                padding: 1.1em;
-                vertical-align: 6px;
-                font-size: 130%;  
-            }   
-            li{
-                font-size: 120%;
-            }
-           
         </style>
         <script>
             document.createElement('article');
@@ -94,16 +60,7 @@
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
                 <li class="active"><a href="PrestadorDashboard.jsp">Home</a></li>
-                <li class="dropdown">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Page 1 <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#">Page 1-1</a></li>
-                    <li><a href="#">Page 1-2</a></li>
-                    <li><a href="#">Page 1-3</a></li>
-                  </ul>
-                </li>
-                <li><a href="#">Page 2</a></li>
-                <li><a href="#">Page 3</a></li>
+               
               </ul>
               <ul class="nav navbar-nav navbar-right">
                 <li><a href="logoff"><span class="glyphicon glyphicon-log-in" id='logoff'></span> Sair</a></li>
@@ -115,31 +72,35 @@
         <!-- Body Web Broadcasting-->
         <div class="container-fluid col-lg-12">
             <!-- copy this <section> and next <script> -->
-            <section class="experiment">                
-                <section>
-                    <select id="broadcasting-option" class="col-lg-2">
+            <div class="row">
+                <div class="form-group col-lg-2">
+                    <select id="broadcasting-option" class="form-control ">
                         <option>Audio + Video</option>
                         <option>Only Audio</option>
                     </select>
-                    <input  class="col-lg-7" type="text" placeholder="Digite seu nome" id="broadcast-name">
-                    <button id="setup-new-broadcast" class="setup col-lg-2">Criar a sala de videoconferência</button>
-                </section>
+                </div>
+                <div  class=" form-group col-lg-7">
+                    <input  class="form-control " type="text" placeholder="Digite seu nome" id="broadcast-name" value="${sessionScope.user.nome} ${sessionScope.user.sobrenome}">
+                </div>
+                <div  class=" form-group col-lg-2">
+                    <button id="setup-new-broadcast" class="btn  btn-info setup ">Criar a sala de videoconferência</button>
+                </div>
+                <br>
+            </div> 
+                   
+            <!-- list of all available broadcasting rooms -->
+            <table class="table-responsive"  id="rooms-list"></table>
 
-                <!-- list of all available broadcasting rooms -->
-                <table class="table-responsive" style="width: 100%; font-size: 130%;" id="rooms-list"></table>
-
-                <!-- local/remote videos container -->
-                <div id="videos-container"></div>
-
-            </section>
-            
+            <!-- local/remote videos container -->
+            <div id="videos-container"></div>   
         </div>
         
         <script>
             // Muaz Khan     - https://github.com/muaz-khan
             // MIT License   - https://www.webrtc-experiment.com/licence/
             // Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/webrtc-broadcasting
-
+           
+         
             var config = {
                 openSocket: function(config) {
                     // https://github.com/muaz-khan/WebRTC-Experiment/blob/master/Signaling.md
@@ -183,6 +144,7 @@
                     joinRoomButton.setAttribute('data-broadcaster', room.broadcaster);
                     joinRoomButton.setAttribute('data-roomToken', room.broadcaster);
                     joinRoomButton.disabled = true;
+                    joinRoomButton.setAttribute('class', 'btn btn-info');
                     $('#setup-new-broadcast').on("click",function (){
                         joinRoomButton.disabled = false;
                     });
@@ -219,7 +181,7 @@
                     }
 
                     broadcastUI.createRoom({
-                        roomName: (document.getElementById('broadcast-name') || { }).value || 'Anonymous',
+                        roomName: (document.getElementById('broadcast-name') || { }).value || 'Sala criada sem nome',
                         isAudio: shared === 'audio'
                     });
                 });
@@ -256,7 +218,7 @@
                     }
                 }
 
-                if (option != 'Only Audio' && option != 'Screen' && DetectRTC.hasWebcam !== true) {
+                if (option !== 'Only Audio' && option !== 'Screen' && DetectRTC.hasWebcam !== true) {
                     alert('DetectRTC library is unable to find webcam; maybe you denied webcam access once and it is still denied or maybe webcam device is not attached to your system or another app is using same webcam.');
                 }
 
@@ -312,7 +274,7 @@
                     video.style[navigator.mozGetUserMedia ? 'transform' : '-webkit-transform'] = 'rotate(360deg)';
                 }, 1000);
             }
-
+           
         </script>
        
         <!-- commits.js is useless for you! It is not part of this WebRTC Experiment. -->

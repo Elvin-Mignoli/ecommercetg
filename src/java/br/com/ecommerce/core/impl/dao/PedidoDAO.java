@@ -555,7 +555,7 @@ public class PedidoDAO extends AbstractDAO
         {
             StringBuilder sql = new StringBuilder();
             sql.append("SELECT * FROM PEDIDOS AS p ");
-            sql.append("WHERE p.status = ?");
+            sql.append("WHERE p.status = ? ORDER BY DATA_PEDIDO");
 
             pst = conexao.prepareStatement(sql.toString());
 
@@ -600,8 +600,52 @@ public class PedidoDAO extends AbstractDAO
                 pe.setQtdeInteressados(pe.getPrestadores().size());
                 entidades.add(pe);
             }
-        }
+        }else if(pedido.getConsulta().equals(Pedido.CANDIDATURAS)){
+           StringBuilder sql = new StringBuilder();
+            sql.append("SELECT * FROM PEDIDOS AS p ");
+            sql.append("ORDER BY DATA_PEDIDO");
 
+            pst = conexao.prepareStatement(sql.toString());
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next())    //pegando os dados da pesquisa
+            {
+                Pedido pe = new Pedido();
+                pe.setId(rs.getInt("id"));
+                //buscar dados do cliente
+                pe.setCliente(new Cliente());
+                pe.getCliente().setId(rs.getInt("id_cliente"));
+                ClienteDAO clientedao = new ClienteDAO(conexao);
+                pe.setCliente((Cliente) clientedao.consultarUm(pe.getCliente()));
+                //buscar dado do prestador
+                pe.setPrestadorFinalista(new PrestadorServico());
+                pe.getPrestadorFinalista().setId(rs.getInt("id_prestador"));
+                if (pe.getPrestadorFinalista().getId() != 0)
+                {
+                    PrestadorServicoDAO prestadordao = new PrestadorServicoDAO(conexao);
+                    pe.setPrestadorFinalista((PrestadorServico) prestadordao.consultarUm(pe.getPrestadorFinalista()));
+
+                }
+                pe.setDescricao(rs.getString("descricao"));
+                String habilidades[] = rs.getString("habilidades").split(",");
+                pe.addHabilidadeRequerida(habilidades);
+                String habilidadeCliente[] = rs.getString("habilidade_cliente").split(",");
+                pe.addHabilidadeCliente(habilidadeCliente);
+                pe.setDataInicio(rs.getDate("data_inicio"));
+                pe.setDataFim(rs.getDate("data_fim"));
+                pe.setData(Calendar.getInstance());
+                pe.getData().setTime(rs.getDate("data_pedido"));
+                pe.setStatus(Status.valueOf(rs.getString("status")));
+                pe.setHoraConsultoria(Calendar.getInstance());
+                pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
+                pe.setCanal(rs.getString("video_canal"));
+                //procurar interessados
+                InteressadoDAO dao = new InteressadoDAO(conexao);
+                pe.setPrestadores(dao.consultar(pe));
+                pe.setQtdeInteressados(pe.getPrestadores().size());
+                entidades.add(pe); 
+            }
+        }
         return entidades;
     }
     
