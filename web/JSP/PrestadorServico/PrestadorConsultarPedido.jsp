@@ -57,14 +57,12 @@
                         <br>
                         <c:if test="${param.local != 'candidaturas'}">
                             <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success 
-                               <c:if test="${requestScope.pedido.status == 'CANCELADO'}">disabled</c:if>
-                               <c:if test="${requestScope.pedido.status == 'FECHADO'}">disabled</c:if>"
+                               <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>"
                                >Video Chat 
                             <span class="glyphicon glyphicon-film"></span></a>
                         <br> <br>
                         <button type="button" id="btn_enviar" class="btn btn-success
-                                <c:if test="${requestScope.pedido.status == 'CANCELADO'}">disabled</c:if>
-                               <c:if test="${requestScope.pedido.status == 'FECHADO'}">disabled</c:if>" onclick="showButtonMsg()">Mensagem
+                               <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>" onclick="showButtonMsg()">Mensagem
                          <span class="glyphicon glyphicon-send"></span></button>
                         <br><br>
                         

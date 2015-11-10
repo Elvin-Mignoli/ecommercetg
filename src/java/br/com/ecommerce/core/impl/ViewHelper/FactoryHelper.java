@@ -71,6 +71,8 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/PrestadorServico/MensagemAberta", new AtualizarQtdeMensagemVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/AtualizarDataHora", new AtualizarDataHoraVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/SalvarTransacao", new SalvarTransacaoVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/RemoverConsultor", new RemoverConsultorVHWeb());
+        helpers.put("/Ecommerce/JSP/Cliente/AvaliarConsultor", new SalvarAvaliacaoVHWeb());
        
     }
     

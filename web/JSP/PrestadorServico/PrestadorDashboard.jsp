@@ -65,7 +65,7 @@
                             <div class="profile-sidebar">
                                 <!-- SIDEBAR USERPIC -->
                                 <div class="profile-userpic">
-                                    <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+                                    <img src="http://wallpaperus.org/wallpapers/09/256/black-people-1920x1080-wallpaper-2340332.jpg" class="img-responsive" alt="">
                                 </div>
                                 <!-- END SIDEBAR USERPIC -->
                                 <!-- SIDEBAR USER TITLE -->

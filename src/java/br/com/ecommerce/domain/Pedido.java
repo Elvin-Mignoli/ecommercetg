@@ -36,6 +36,17 @@ public class Pedido extends EntidadeDominio
     public static final String CANDIDATURAS = "CANDIDATURAS";
     private String consulta;
     private String canal;
+    private Avaliacao avaliacao;
+
+    public Avaliacao getAvaliacao()
+    {
+        return avaliacao;
+    }
+
+    public void setAvaliacao(Avaliacao avaliacao)
+    {
+        this.avaliacao = avaliacao;
+    }
     private String afinidadePercent;
     private String afinidade;
 

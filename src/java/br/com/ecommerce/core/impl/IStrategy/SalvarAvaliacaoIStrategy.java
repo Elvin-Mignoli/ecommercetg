@@ -10,31 +10,36 @@ import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.domain.EntidadeDominio;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Felipe Monteiro
  */
-public class AtualizarStatusPedidoStrategy implements IStrategy
+public class SalvarAvaliacaoIStrategy implements IStrategy
 {
-    private Resultado rs;
+
     @Override
     public Resultado processar(EntidadeDominio entidade)
     {
-        rs = new Resultado();
         
         PedidoDAO dao = new PedidoDAO();
         
         try
         {
-            dao.SelecionarPrestador(entidade);
+            dao.AvaliarPedido(entidade);
         } 
         catch (SQLException ex)
         {
             ex.printStackTrace();
-            rs.setMensagemSimples("Erro ao Status do Pedido");
+            Resultado rs = new Resultado();
+            rs.setMensagemSimples(ex.getMessage());
+            
+            return rs;
         }
-        return rs;
+        
+        return new Resultado();
     }
     
 }

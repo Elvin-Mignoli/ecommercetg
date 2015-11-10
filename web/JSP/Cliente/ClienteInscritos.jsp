@@ -38,11 +38,12 @@
                             <td>${prestador.nome} ${prestador.sobrenome}</td>
                             <td>4</td>
                             <td>
-                                <form method="post" action="SelecionarPrestador">
-                                    <input type="text" name="txtIdPrestador" value="${prestador.id}" hidden="true"/>
-                                    <input type="text" name="txtId" value="${pedido.id}" hidden="true"/>
-                                    <button class="btn btn-success">
+                                <form method="post" action="SelecionarPrestador" class="form-prestador">
+                                    <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${prestador.id}" hidden="true" class="id-prestador"/>
+                                    <input type="text" name="txtIdPedido" id="txtIdPedido" value="${pedido.id}" hidden="true"/>
+                                    <button type="button" class="btn btn-success btn-prestador" onclick="selecionarPrestador(${prestador.id})">
                                         <span class="glyphicon glyphicon-ok"></span>
+                                        Selecionar
                                     </button>
                                 </form>
                             </td>
@@ -51,7 +52,6 @@
                 </table>
             </div>
         </div>
-        <!-- <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script> -->
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
     </body>
 </html>
