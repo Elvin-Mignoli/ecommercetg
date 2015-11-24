@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="f"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,6 +31,7 @@
                 <tr>
                     <th id="desc" data-sortable="true">Descrição</th> 
                     <th id="cliente" data-sortable="true">Cliente</th> 
+                    <th id="data_consultoria"data-sortable="true" class="text-center">Data Canditatura</th>
                     <th id="status" data-sortable="true">Status</th>
                     <th>Acão  <span class="glyphicon glyphicon-question-sign"></span></th>
                 </tr>
@@ -43,7 +45,9 @@
                             <tr>
                                 <td style="text-align: center">${list.descricao}</td> 
                                 <td style="text-align: center">${list.cliente.nome}&nbsp;${list.cliente.sobrenome}</td>
+                                <td style="text-align: center"><f:formatDate pattern="dd/MM/yyyy"  value="${prestador.data.getTime()}"></f:formatDate></td>
                                 <td style="text-align: center">${prestador.candidatura}</td>
+                               
                                 <td style="text-align: center">
                                   <a href="ConsultarPedido?id_pedido=${list.id}&local=candidaturas" value="Ver" id="btn_Ver" class="btn btn-info ver" >Ver</a>
                                 </td>

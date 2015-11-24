@@ -56,10 +56,16 @@
                         <br>
                         <br>
                         <c:if test="${param.local != 'candidaturas'}">
-                            <a href="PrestadorVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-success 
+                            <form method="POST" action="Notify">
+                                <input type="hidden" name='idCliente' value="${requestScope.pedido.cliente.id}"/>
+                                <input type="hidden" name='idPrestador' value="${requestScope.pedido.prestadorFinalista.id}"/>
+                                <input type="hidden" name='idPedido' value="${requestScope.pedido.id}"/>
+                                <input type="hidden" name='Canal' value="${requestScope.pedido.canal}"/>
+                            <button  type='submit' class="btn btn-success 
                                <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>"
                                >Video Chat 
-                            <span class="glyphicon glyphicon-film"></span></a>
+                            <span class="glyphicon glyphicon-film"></span></button>
+                            </form>
                         <br> <br>
                         <button type="button" id="btn_enviar" class="btn btn-success
                                <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>" onclick="showButtonMsg()">Mensagem

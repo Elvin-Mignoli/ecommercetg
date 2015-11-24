@@ -8,6 +8,7 @@ package br.com.ecommerce.core.impl.IStrategy;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import java.util.InputMismatchException;
 
@@ -17,12 +18,22 @@ import java.util.InputMismatchException;
  */
 public class ValidaCNPJ implements IStrategy{
 
+    String documento;
     @Override
     public Resultado processar(EntidadeDominio entidade) {
         
-        PrestadorServico prestador = (PrestadorServico)entidade;
+        if(entidade instanceof PrestadorServico)
+        {
+            PrestadorServico usuario = (PrestadorServico)entidade;
+             documento = usuario.getCnpj();
+        }else 
+        {
+            HeadHunter usuario = (HeadHunter) entidade;
+            documento = usuario.getCnpj();
+        }
+        
         Resultado resultado = new Resultado();
-        String cnpj = prestador.getCnpj().replace(".", "").replace("-", "").replace("/", "");
+        String cnpj = documento.replace(".", "").replace("-", "").replace("/", "");
 // considera-se erro CNPJ's formados por uma sequencia de numeros iguais 
             if (cnpj.equals("00000000000000") || 
                    cnpj.equals("11111111111111") || 
@@ -75,7 +86,16 @@ public class ValidaCNPJ implements IStrategy{
             // Verifica se os dígitos calculados conferem com os dígitos informados. 
                 if ((dig13 == cnpj.charAt(12)) && (dig14 == cnpj.charAt(13))) 
                 {
-                    prestador.setCnpj(cnpj);
+                     if(entidade instanceof PrestadorServico)
+                    {
+                        PrestadorServico prestador = (PrestadorServico) entidade;
+                        prestador.setCnpj(cnpj);
+                    }else 
+                    {
+                        HeadHunter head = (HeadHunter) entidade;
+                        head.setCnpj(cnpj);
+                    }
+                    
                     return resultado; 
                 }
                 else {

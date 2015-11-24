@@ -56,6 +56,7 @@
                         <a href="JSP/Cliente/ClienteSalvar.jsp" class="btn btn-link">Não possui cadastro?</a>
                         <!-- <input type="button" class="btn btn-link" value="Não possui cadastro?"/> -->
                         <a href="JSP/PrestadorServico/PrestadorSalvar.jsp" class="btn btn-link">Quero prestar Serviço</a>
+                        <a href="JSP/HeadHunter/HeadHunterSalvar.jsp" class="btn btn-link">Você é um HeadHunter?</a>
                     </form>
                 </div><!--/.navbar-collapse -->
             </div>
@@ -136,6 +137,7 @@
             <c:forEach var="hb" items="${requestScope.donnutHabilidade}">
                     {
                     value: '${hb.value}',
+                    scaleShowLabels: true,
                             color: this.dar_cor_aleatoria(),
                             highlight: "#D3D3D3",
                             label: '${hb.label}'

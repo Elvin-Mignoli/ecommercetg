@@ -380,7 +380,7 @@ function validaCNPJ()
         {
 
             var resposta = responseJson;
-            alert(resposta);
+           
             if (resposta === "CNPJ Inválido!")
             {
                 $("#div_cnpj").addClass("form-group has-error has-feedback");
@@ -1326,3 +1326,125 @@ function candidatar(id)
     });
 }
 
+function buscarNotificationCliente(){
+    //buscar notificações
+   
+    $.ajax({
+        type: 'POST',
+        url: "NotifyConsultar",
+        data: {
+        operacao: 'Consultar'
+        },
+    success: function (json)
+    {
+        if (json !== null && json !=="Vazio")
+        { 
+           // canal.replace(",", " ").trim().toUpperCase();
+            var notify = jQuery.parseJSON(json);
+            PNotify.prototype.options.styling = "bootstrap3";
+            var animate_in = $('#animate_in').val(),
+            animate_out = $('#animate_out').val();
+            new PNotify({
+                title: 'Noticifação de Vídeo Chat!',
+                text: 'Foi iniciado uma sala de Vídeo Chat' + '\n' +
+                'Pedido:' + '\n'+
+                '" ' +notify.pedido + '"\n' +
+                " Consultor: "+ notify.prestador + '\n' +
+                "Aguardando a sua entrada!",
+                icon: 'glyphicon glyphicon-pushpin',
+                animate: {
+                    animate: true,
+                    in_class: animate_in,
+                    out_class: animate_out
+                }
+            });
+            //notify desktop
+             PNotify.desktop.permission();
+            (new PNotify({
+                title: 'Noticifação de Vídeo Chat!',
+                text: 'Foi iniciado uma sala de Vídeo Chat' +'\n'+
+               'Pedido:'+ '\n'+
+                 '"' + notify.pedido + '"\n' +
+                " Consultor: "+ notify.prestador+ '"\n' +
+                "Aguardando a sua entrada!",
+                desktop: {
+                    desktop: true
+                }
+            }));
+        }
+        
+    },
+    beforeSend: function (xhr) {
+
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        
+    },
+    complete: function (jqXHR, textStatus) { 
+        
+    }
+   });
+
+}
+
+function buscarNotificationPrestador(){
+    //buscar notificações
+   
+    $.ajax({
+        type: 'POST',
+        url: "NotifyConsultar",
+        data: {
+        operacao: 'Consultar'
+        },
+    success: function (json)
+    {
+        if (json !== null && json !=="Vazio")
+        {   
+            
+           // canal.replace(",", " ").trim().toUpperCase();
+            var notify = jQuery.parseJSON(json);
+            PNotify.prototype.options.styling = "bootstrap3";
+            var animate_in = $('#animate_in').val(),
+            animate_out = $('#animate_out').val();
+            new PNotify({
+                title: 'Noticifação de Vídeo Chat!',
+                text: 'Foi iniciado uma sala de Vídeo Chat! \n\
+                Pedido:' +'\n'+ 
+                '"' + notify.pedido +'"\n' +
+                " Cliente: "+ notify.cliente+ '\n' +
+                "Aguardando a sua entrada!",
+                icon: 'glyphicon glyphicon-pushpin',
+                animate: {
+                    animate: true,
+                    in_class: animate_in,
+                    out_class: animate_out
+                }
+            });
+            //notify desktop
+             PNotify.desktop.permission();
+            (new PNotify({
+                title: 'Noticifação de Vídeo Chat!',
+                text: 'Foi iniciado uma sala de Vídeo Chat!' +'\n'+ 
+                'Pedido:' +'\n'+ 
+                '"' + notify.pedido +'"\n' +
+                " Cliente: "+ notify.cliente+ '\n' +
+                "Aguardando a sua entrada!",
+                desktop: {
+                    desktop: true
+                }
+            }))
+        }
+        
+    },
+    beforeSend: function (xhr) {
+
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        
+    },
+    complete: function (jqXHR, textStatus) { 
+        
+    }
+   });
+
+}

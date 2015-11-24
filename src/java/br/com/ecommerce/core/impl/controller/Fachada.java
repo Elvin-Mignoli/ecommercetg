@@ -7,7 +7,9 @@ import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.impl.IStrategy.ConsultaSaldo;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
+import br.com.ecommerce.core.impl.IStrategy.ExisteHeadHunter;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
+import br.com.ecommerce.core.impl.IStrategy.IdentificarDocHeadHunter;
 import br.com.ecommerce.core.impl.IStrategy.IdentificarDocumento;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCartaoCredito;
@@ -15,14 +17,18 @@ import br.com.ecommerce.core.impl.IStrategy.ValidaHabilidadePedido;
 import br.com.ecommerce.core.impl.dao.CaixaEntradaDAO;
 import br.com.ecommerce.core.impl.dao.CartaoCreditoDAO;
 import br.com.ecommerce.core.impl.dao.ClienteDAO;
+import br.com.ecommerce.core.impl.dao.HeadHunterDAO;
 import br.com.ecommerce.core.impl.dao.InteressadoDAO;
+import br.com.ecommerce.core.impl.dao.NotifyDAO;
 import br.com.ecommerce.core.impl.dao.PedidoDAO;
 import br.com.ecommerce.core.impl.dao.PrestadorServicoDAO;
 import br.com.ecommerce.core.impl.dao.TransacaoDAO;
 import br.com.ecommerce.domain.CaixaEntrada;
 import br.com.ecommerce.domain.CartaoCredito;
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.Interessado;
+import br.com.ecommerce.domain.Notify;
 import br.com.ecommerce.domain.Pedido;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Transacao;
@@ -59,6 +65,8 @@ public class Fachada implements IFachada
         daos.put(Pedido.class.getName(), new PedidoDAO()); 
         daos.put(Interessado.class.getName(), new InteressadoDAO());
         daos.put(Transacao.class.getName(), new TransacaoDAO());
+        daos.put(Notify.class.getName(), new NotifyDAO());
+        daos.put(HeadHunter.class.getName(), new HeadHunterDAO());
         /* 
          Lista de Regras de negocio! 
          */
@@ -83,10 +91,18 @@ public class Fachada implements IFachada
         List<IStrategy> rnsSalvarPrestador = new ArrayList<>();
         rnsSalvarPrestador.add(new IdentificarDocumento());  // verificar depois
         rnsSalvarPrestador.add(new ExistePrestador());
-        
+       
         Map<String, List<IStrategy>> rnsPrestador = new HashMap<>();   //Mapa de regras!
         rnsPrestador.put("Salvar", rnsSalvarPrestador);
         //Fim das regras do Prestador de serviço
+        
+         // --. Regras de Negócio para Salvar HeadHunter
+        List<IStrategy> rnsSalvarHeadHunter = new ArrayList<>();
+        rnsSalvarHeadHunter.add(new IdentificarDocHeadHunter());  // verificar depois
+        rnsSalvarHeadHunter.add(new ExisteHeadHunter());
+        
+        Map<String, List<IStrategy>> rnsHeadHunter = new HashMap<>();   //Mapa de regras!
+        rnsHeadHunter.put("Salvar", rnsSalvarHeadHunter);
         
         // --> Regras de Negócio SalvarPedido
         List<IStrategy> rnsSalvarPedido = new ArrayList<>();
@@ -110,6 +126,7 @@ public class Fachada implements IFachada
         rns.put(CartaoCredito.class.getName(), rnsCartao);
         rns.put(Pedido.class.getName(), rnsPedido);
         rns.put(Transacao.class.getName(), rnsTransacao);
+        rns.put(HeadHunter.class.getName(), rnsHeadHunter);
     }
 
     @Override
