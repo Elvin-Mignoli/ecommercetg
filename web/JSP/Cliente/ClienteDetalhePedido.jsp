@@ -206,7 +206,7 @@
                     <div class="modal-body">
                         <div class="row-fluid">
                             <h3>Como foi o serviço de consultoria?</h3>
-                            <input id="inputAvalicao" value="0" type="number" min=0 max=5 step=0.1 data-size="md" >
+                            <input id="inputAvalicao" value="0" type="number" min="0" max="5"step="1" data-size="md" >
                         </div>
                         <div class="row-fluid">
                             <h3>Deixe um breve comentário:</h3>
@@ -378,10 +378,16 @@
                         <div class="col-md-2">
                             <c:choose>
                                 <c:when test="${requestScope.pedido.status eq 'FECHADO'}">
-                                    <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary" id="btnChat">
-                                        Video Chat
-                                        <span class="glyphicon glyphicon-facetime-video"></span>
-                                    </a>
+                                    <form method="POST" action="Notify">
+                                        <input type="hidden" name='idCliente' value="${requestScope.pedido.cliente.id}"/>
+                                        <input type="hidden" name='idPrestador' value="${requestScope.pedido.prestadorFinalista.id}"/>
+                                        <input type="hidden" name='idPedido' value="${requestScope.pedido.id}"/>
+                                        <input type="hidden" name='Canal' value="${requestScope.pedido.canal}"/>
+                                         <button  type='submit' class="btn btn-success 
+                                       <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>"
+                                       >Video Chat 
+                                        <span class="glyphicon glyphicon-film"></span></button>
+                                    </form>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="ClienteVideoConferencia.jsp?canal=${requestScope.pedido.canal}" class="btn btn-primary disabled" id="btnChat">

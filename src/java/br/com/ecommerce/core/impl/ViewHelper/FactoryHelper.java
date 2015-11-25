@@ -73,7 +73,19 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/Cliente/SalvarTransacao", new SalvarTransacaoVHWeb()); 
         helpers.put("/Ecommerce/JSP/Cliente/RemoverConsultor", new RemoverConsultorVHWeb());
         helpers.put("/Ecommerce/JSP/Cliente/AvaliarConsultor", new SalvarAvaliacaoVHWeb());
-       
+        helpers.put("/Ecommerce/JSP/PrestadorServico/Notify", new VideoChatVHWeb()); 
+        helpers.put("/Ecommerce/JSP/PrestadorServico/NotifySalvar", new NotifySalvarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/Notify", new VideoChatVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/NotifySalvar", new NotifySalvarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/NotifyAtualizar", new NotifyAtualizarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/PrestadorServico/NotifyAtualizar", new NotifyAtualizarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/PrestadorServico/NotifyConsultar", new NotifyConsultarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/Cliente/NotifyConsultar", new NotifyConsultarVHWeb()); 
+        helpers.put("/Ecommerce/JSP/HeadHunter/SalvarHeadHunter", new SalvarHeadHunterVHWeb()); 
+        helpers.put("/Ecommerce/JSP/HeadHunter/CPF", new ConsultaCPFVHWeb());
+        helpers.put("/Ecommerce/JSP/HeadHunter/Email", new ConsultaEmailVHWeb());
+        helpers.put("/Ecommerce/JSP/HeadHunter/CEP", new ConsultaCEPVHWeb());
+        helpers.put("/Ecommerce/JSP/HeadHunter/CNPJ", new ConsultaCNPJVHWeb());
     }
     
     /**

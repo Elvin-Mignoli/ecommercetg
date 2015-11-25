@@ -26,7 +26,15 @@
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
         <!-- CSS icons-->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-        
+         <!--CSS notify -->
+         <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
+         <link href="../../js/libs/Notify/src/pnotify.core.css" rel="stylesheet" type="text/css"/>
+         <link href="../../js/libs/Notify/src/pnotify.buttons.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.mobile.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.nonblock.css" rel="stylesheet" type="text/css"/>   
+        <link href="../../js/libs/Notify/src/pnotify.history.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.material.css" rel="stylesheet" type="text/css"/>
         <style>
             .afinidade{
                 color: black;
@@ -251,24 +259,24 @@
                                                         <td class="text-center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data.getTime()}"></f:formatDate></td>
                                                         <td class="text-center">
                                                         <c:if test="${list.afinidade.equals('Nenhuma afinidade')}">
-                                                            <h4 class="btn-danger"> <i class="glyphicon glyphicon-star-empty btn-danger  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
-                                                            <h4 class="btn-danger afinidade">${list.afinidade}</h4>
+                                                            <h4><span class=" label label-danger"> <i class="glyphicon glyphicon-star-empty btn-danger afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                            <h4><span class="label label-danger btn-danger afinidade">${list.afinidade}</span></h4>
                                                         </c:if>
                                                         <c:if test="${list.afinidade.equals('Pouco afinidade')}">
-                                                            <h4 class="btn-warning"> <i class="glyphicon glyphicon-star-empty btn-warning  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
-                                                            <h4 class="btn-warning afinidade">${list.afinidade}</h4>
+                                                        <h4 ><span class="label label-warning" ><i class="glyphicon glyphicon-star-empty btn-warning  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                        <h4> <span class="label label-waring btn-warning afinidade">${list.afinidade}</span></h4>
                                                         </c:if>
                                                         <c:if test="${list.afinidade.equals('Afinidade regular')}">
-                                                            <h4 class="btn-info"> <i class="glyphicon glyphicon-star-empty btn-info afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
-                                                            <h4 class="btn-info afinidade">${list.afinidade}</h4>
+                                                            <h4 ><span class="label label-info"> <i class="glyphicon glyphicon-star-empty btn-info afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                            <h4 ><span class="label label-info btn-info afinidade">${list.afinidade}</span></h4>
                                                         </c:if>
                                                         <c:if test="${list.afinidade.equals('Boa afinidade')}">
-                                                            <h4 class="btn-primary"> <i class="glyphicon glyphicon-star-empty btn-primary  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
-                                                            <h4 class="btn-primary afinidade">${list.afinidade}</h4>
+                                                            <h4> <span class="label label-primary" > <i class="glyphicon glyphicon-star-empty btn-primary  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                            <h4><span class="label label-primary btn-primary  afinidade">${list.afinidade}</span></h4>
                                                         </c:if>
                                                         <c:if test="${list.afinidade.equals('Ótima afinidade')}">
-                                                            <h4 class="btn-success"> <i class="glyphicon glyphicon-star-empty btn-success  afinidade" id="star_perc">${list.afinidadePercent}%</i></h4>
-                                                            <h4 class="btn-success afinidade">${list.afinidade}</h4>
+                                                        <h4><span class="label label-success"> <i class="glyphicon glyphicon-star-empty btn-success  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                            <h4><span class="label label-success btn-success afinidade"> ${list.afinidade}</span></h4>
                                                         </c:if>
                                                         </td>
                                                     </tr>
@@ -313,7 +321,8 @@
        <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>  
        <!--sweet alert-->
        <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
-      
+      <!--Notify js -->
+        <script src="../../js/libs/Notify/pnotify.custom.min.js" type="text/javascript"></script>
    
         <script>
         $(document).ready(
@@ -346,9 +355,11 @@
                         showConfirmButton:false
                 });
                 }
-                    
+            //método para buscar notificações de video chat
+            buscarNotificationPrestador();    
             }, 120000); //fim do ajax
-            
+            //método para buscar notificações de video chat
+            buscarNotificationPrestador();
             if(${requestScope.MsgAtualiza == null})//existe mensagem de alerta?
             {//não
                if(${requestScope.ListaPedido == null})//já realizou alguma requeisição para o mural?

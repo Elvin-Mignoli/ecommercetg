@@ -16,6 +16,7 @@
         <!-- Implementacao de CSS para Bootstrap tag input  -->
         <link rel="stylesheet" href="../../bootstrap/dist/css/bootstrap.min.css" />
         <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body>
@@ -35,8 +36,8 @@
                     <!-- Linhas da tabela -->
                     <c:forEach var="prestador" items="${requestScope.pedido.prestadores}">
                         <tr>
-                            <td>${prestador.nome} ${prestador.sobrenome}</td>
-                            <td>4</td>
+                            <td class="btn btn-link" onclick="alert('ola');">${prestador.nome} ${prestador.sobrenome}</td>
+                            <td><input type="number" class="rating" min="0" max="5" value="4" data-size="xs" disabled="true"/></td>
                             <td>
                                 <form method="post" action="SelecionarPrestador" class="form-prestador">
                                     <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${prestador.id}" hidden="true" class="id-prestador"/>
@@ -53,5 +54,6 @@
             </div>
         </div>
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+        <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
     </body>
 </html>

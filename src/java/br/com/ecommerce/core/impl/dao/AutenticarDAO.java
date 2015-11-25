@@ -7,6 +7,7 @@ package br.com.ecommerce.core.impl.dao;
 import br.com.ecommerce.core.IDAO;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.sql.Connection;
@@ -44,13 +45,16 @@ public class AutenticarDAO extends AbstractDAO
     {
         int idCliente = 0;
         int idPrestador = 0;
+        int idHeadHunter = 0;
 
         if (entidade instanceof Cliente)
         {
             idCliente = entidade.getId();
-        } else
+        } else if(entidade instanceof PrestadorServico)
         {
             idPrestador = entidade.getId();
+        }else if(entidade instanceof HeadHunter) {
+            idHeadHunter = entidade.getId();
         }
 
         try
@@ -71,9 +75,12 @@ public class AutenticarDAO extends AbstractDAO
             if (usuario.getTipoConta().equalsIgnoreCase("Cliente"))
             {
                 sql.append(",ID_CLIENTE) ");
-            } else
+            } else if(usuario.getTipoConta().equalsIgnoreCase("Prestador"))
             {
                 sql.append(",ID_PRESTADOR) ");
+            }else if(usuario.getTipoConta().equalsIgnoreCase("HeadHunter"))
+            {
+                sql.append(", ID_HEADHUNTER) ");
             }
 
             sql.append("VALUES(?,?,?,?,?)");
@@ -258,6 +265,20 @@ public class AutenticarDAO extends AbstractDAO
                     dao.consultarUm(cliente);
 
                     return cliente;
+                }else if(rs.getInt("id_headhunter") != 0)
+                {
+                    HeadHunter head = new HeadHunter();
+                    head.setId(rs.getInt("id_cliente"));
+                    head.setEmail(rs.getString("email"));
+                    head.setStatus(rs.getInt("status"));
+                    head.setTipoConta(rs.getString("tipo_conta"));
+                    head.setUsuarioID(rs.getInt("id"));
+                    head.setImagem(rs.getString("imagem"));
+                    
+                    dao = new HeadHunterDAO(conexao);
+                    dao.consultarUm(head);
+                    
+                    return head;
                 }
             } else    //não existe ninguem com esse email e senha =/
             {
@@ -593,6 +614,9 @@ public class AutenticarDAO extends AbstractDAO
             } else if (entidade instanceof PrestadorServico)
             {
                 sql.append(" WHERE ID_PRESTADOR = ?");
+            }else if(entidade instanceof  HeadHunter)
+            {
+                sql.append(" WHERE ID_HEADHUNTER = ?");
             }
 
             pst = conexao.prepareStatement(sql.toString());
@@ -622,6 +646,16 @@ public class AutenticarDAO extends AbstractDAO
                     cliente.setImagem(rs.getString("imagem"));
 
                     return cliente;
+                }else if(rs.getInt("id_headhunter") != 0)
+                {
+                    HeadHunter head = new HeadHunter();
+                    head.setId(rs.getInt("id_cliente"));
+                    head.setEmail(rs.getString("email"));
+                    head.setStatus(rs.getInt("status"));
+                    head.setTipoConta(rs.getString("tipo_conta"));
+                    head.setUsuarioID(rs.getInt("id"));
+                    head.setImagem(rs.getString("imagem"));
+                    return  head;
                 }
             }
             return entidade;
