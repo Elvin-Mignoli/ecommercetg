@@ -7,6 +7,7 @@ package br.com.ecommerce.domain;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -14,13 +15,26 @@ import java.util.Date;
  */
 public class PrestadorServico extends Usuario
 {
-
     private ArrayList<Competencia> habilidades;
     private String cnpj;
     private Status candidatura;
     private double valorConsultori;
+    private List<Avaliacao> avaliacoes;
     
+    public PrestadorServico()
+    {
+        avaliacoes = new ArrayList<>();
+    }//default
     
+    public void addAvaliacao(Avaliacao avaliacao)
+    {
+        avaliacoes.add(avaliacao);
+    }
+    
+    public List<Avaliacao> getAvaliacoes()
+    {
+        return avaliacoes;
+    }
     
     public double getValorConsultori() {
         return valorConsultori;
@@ -57,11 +71,6 @@ public class PrestadorServico extends Usuario
         this.habilidades = habilidades;
         this.cnpj = cnpj;
     }
-
-    public PrestadorServico()
-    {
-        super();
-    }//default
 
     public String getCnpj()
     {

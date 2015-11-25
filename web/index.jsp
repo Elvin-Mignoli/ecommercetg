@@ -40,7 +40,7 @@
                     <form class="navbar-form navbar-right" method="post" action="ValidarUsuario">
                         <c:if test="${requestScope.loginError ne null}">
                             <div class="form-group">
-                                <span class="alert alert-info">
+                                <span class="alert alert-warning">
                                     ${requestScope.loginError}
                                     <% request.setAttribute("loginError", null);%>
                                 </span>
@@ -63,10 +63,44 @@
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
-            <div class="container">
-                <h1>Bem vindo!</h1>
+            <div class="container center-block">
+                <div id="indexCarousel" class="carousel slide col-md-5" data-ride="carousel">
+                    <!-- Indicadores -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#image-carousel" data-slide="0" class="active"></li>
+                        <li data-target="#image-carousel" data-slide="1"></li>
+                        <li data-target="#image-carousel" data-slide="2"></li>
+                    </ol>
+                    <!-- Wrapper  for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <!-- primeiro item -->
+                        <div class="item active">
+                            <img src="http://www.webmarketingpros.com/blog/wp-content/uploads/2014/02/business-discovery.jpg" alt="">
+                            <div class="carousel-caption">
+                                <h3>Primeira imagem</h3>
+                            </div>
+                        </div>
+                        <!-- Segundo item -->
+                        <div class="item">
+                            <img src="http://www.webmarketingpros.com/blog/wp-content/uploads/2014/02/business-discovery.jpg" alt="">
+                            <div class="carousel-caption">
+                                <h3>Segunda imagem</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#indexCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="right carousel-control" href="#indexCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Próximo</span>
+                    </a>
+                </div>
+                <!-- <h1>Bem vindo!</h1>
                 <p>Está página vai ser destinada para apresentar diversas informações sobre os serviços</p>
-                <p><a class="btn btn-primary btn-lg" href="#" role="button">Saiba mais sobre nós!</a></p>
+                <p><a class="btn btn-primary btn-lg" href="#" role="button">Saiba mais sobre nós!</a></p> --> 
             </div>
         </div>
 

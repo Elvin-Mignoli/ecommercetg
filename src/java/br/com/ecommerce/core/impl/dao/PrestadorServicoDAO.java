@@ -331,7 +331,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                 prestador.setId(resultado.getInt("id"));
                
                 //pegar os dados do contato
-                Contato contato = new Contato(resultado.getString("telefone"), resultado.getString("celular"));
+                Contato contato = new Contato(resultado.getString("telefone"),resultado.getString("celular"));
                 prestador.setContato(contato);
                 //
                 prestador.setNome(resultado.getString("nome"));

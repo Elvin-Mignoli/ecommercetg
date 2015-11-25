@@ -64,7 +64,7 @@
                                         <div class="media">
                                             <div class="media-left media-middle">
                                                 <a href="#" id="file">
-                                                    <img src="http://static2.businessinsider.com/image/51fbc0cf6bb3f7333600001a/us-album-sales-hit-record-low-but-people-are-still-downloading-new-music.jpg" class="img-responsive">
+                                                    <img src="http://www.tvchoicemagazine.co.uk/sites/default/files/imagecache/interview_image/intex/michael_emerson.png" class="img-responsive">
                                                     <!-- <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil"> -->
                                                 </a>
                                             </div>

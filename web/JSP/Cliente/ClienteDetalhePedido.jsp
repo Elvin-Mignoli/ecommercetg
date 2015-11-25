@@ -206,7 +206,7 @@
                     <div class="modal-body">
                         <div class="row-fluid">
                             <h3>Como foi o serviço de consultoria?</h3>
-                            <input id="inputAvalicao" value="0" type="number" min=0 max=5 step=0.1 data-size="md" >
+                            <input id="inputAvalicao" value="0" type="number" min="0" max="5"step="1" data-size="md" >
                         </div>
                         <div class="row-fluid">
                             <h3>Deixe um breve comentário:</h3>

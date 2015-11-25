@@ -49,6 +49,13 @@
         </c:if> 
         <form method="POST" action="AtualizarCliente">
             <input type="text" name="operacao" value="Atualizar" hidden="true"/>
+            <div class="row-fluid">
+                <button type="button" id="btn_editar" class="btn btn-success" onclick="editarDados()">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    Editar
+                </button>
+            </div>
+            <br>
             <!-- Dados pessoais -->
             <div class="panel panel-success col-md-6"><!-- Panel -->
                 <div class="panel panel-heading text-center">
@@ -232,6 +239,14 @@
                     </div>
                 </div><!-- panel-body -->
             </div> <!-- Panel -->
+            <div class="row-fluid">                
+                <div class="col-md-6" hidden="true" id="div_button">
+                    <button type="button" id="btn_atualizar" value="Atualizar" class="btn btn-primary " onclick="atualizarDadosCliente()">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                        Atualizar
+                    </button>
+                </div>
+            </div>
         </form>   
         <!-- Scripts da Pagina -->
         <!-- JavaScript Bootstrap tag-input -->
@@ -242,45 +257,45 @@
 
         <!-- Mask -->
         <script>
-                                    $(document).ready(function () {
-                                        $("#input_cpf").mask("999.999.999-99");
-                                        $("#input_cnpj").mask("99.999.999/9999-99");
-                                        $("#input_telefone").mask("(99)9999-9999");
-                                        $("#input_celular").mask("(99)99999-9999");
-                                        $("#cep").mask("99999-999");
+                        $(document).ready(function () {
+                            $("#input_cpf").mask("999.999.999-99");
+                            $("#input_cnpj").mask("99.999.999/9999-99");
+                            $("#input_telefone").mask("(99)9999-9999");
+                            $("#input_celular").mask("(99)99999-9999");
+                            $("#cep").mask("99999-999");
 
-                                        $(".form-control").prop('readonly', 'readonly');
-                                        //Aumentar o tamanho do skillbar
-                                        $('#skill_bar').tagsinput({
-                                            tagClass: 'big'
-                                        });
-                                        //caption do botão
-                                        $('#btn_editar').tooltip(
-                                                {
-                                                    animation: true,
-                                                    placement: 'top',
-                                                    title: 'Clique no botão para editar seus dados',
-                                                    trigger: 'hover focus'
-                                                });
-                                        //caption do input de competencia esta desativado
-                                        $('#span_ajuda_disabled').popover(
-                                                {
-                                                    animation: true,
-                                                    content: 'Essa opção está indisponível, para utilizar-la apertado o botão Editar Dados no topo da página.',
-                                                    placement: 'top',
-                                                    title: 'Habilidades',
-                                                    trigger: 'hover focus'
-                                                });
-                                        //caption do input de competencia
-                                        $('#span_ajuda').popover(
-                                                {
-                                                    animation: true,
-                                                    content: 'Após escrever uma habilidade, pressione o ENTER.',
-                                                    placement: 'top',
-                                                    title: 'Habilidades',
-                                                    trigger: 'hover focus'
-                                                });
+                            $(".form-control").prop('readonly', 'readonly');
+                            //Aumentar o tamanho do skillbar
+                            $('#skill_bar').tagsinput({
+                                tagClass: 'big'
+                            });
+                            //caption do botão
+                            $('#btn_editar').tooltip(
+                                    {
+                                        animation: true,
+                                        placement: 'top',
+                                        title: 'Clique no botão para editar seus dados',
+                                        trigger: 'hover focus'
                                     });
+                            //caption do input de competencia esta desativado
+                            $('#span_ajuda_disabled').popover(
+                                    {
+                                        animation: true,
+                                        content: 'Essa opção está indisponível, para utilizar-la apertado o botão Editar Dados no topo da página.',
+                                        placement: 'top',
+                                        title: 'Habilidades',
+                                        trigger: 'hover focus'
+                                    });
+                            //caption do input de competencia
+                            $('#span_ajuda').popover(
+                                    {
+                                        animation: true,
+                                        content: 'Após escrever uma habilidade, pressione o ENTER.',
+                                        placement: 'top',
+                                        title: 'Habilidades',
+                                        trigger: 'hover focus'
+                                    });
+                        });
         </script> 
     </body>
 </html>
