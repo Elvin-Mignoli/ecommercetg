@@ -35,7 +35,9 @@ import javax.servlet.http.HttpServletResponse;
     "/JSP/Cliente/ConsultaPedido","/JSP/PrestadorServico/CaixaEntrada","/JSP/PrestadorServico/Candidatar","/JSP/PrestadorServico/ConsultarPedido",
     "/JSP/PrestadorServico/MensagemEnviada","/index.jsp",
     "/JSP/PrestadorServico/MensagemEnviada","/JSP/Cliente/CaixaEntrada","/JSP/Cliente/MensagemEnviada", "/JSP/Cliente/MensagemAberta",
-    "/JSP/PrestadorServico/MensagemAberta","/JSP/Cliente/AtualizarDataHora","/JSP/Cliente/RemoverConsultor","/JSP/Cliente/AvaliarConsultor"
+    "/JSP/PrestadorServico/MensagemAberta","/JSP/Cliente/AtualizarDataHora","/JSP/Cliente/RemoverConsultor","/JSP/Cliente/AvaliarConsultor",
+    "/JSP/PrestadorServico/Notify","/JSP/Cliente/Notify","/JSP/HeadHunter/CPF","/JSP/HeadHunter/Email","/JSP/HeadHunter/CEP",
+    "/JSP/HeadHunter/CNPJ"
         
 })
 public class FilterBusiness implements Filter

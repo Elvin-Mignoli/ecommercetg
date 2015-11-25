@@ -27,6 +27,13 @@
         <url-pattern>/JSP/PrestadorServico/SalvarPrestador</url-pattern>
         <url-pattern>/JSP/Cliente/SalvarTransacao</url-pattern>
         <url-pattern>/JSP/Cliente/ExcluirMensagem</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/NotifySalvar</url-pattern>
+        <url-pattern>/JSP/Cliente/NotifySalvar</url-pattern>
+        <url-pattern>/JSP/Cliente/NotifyAtualizar</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/NotifyAtualizar</url-pattern>
+        <url-pattern>/JSP/Cliente/NotifyConsultar</url-pattern>
+        <url-pattern>/JSP/PrestadorServico/NotifyConsultar</url-pattern>
+        <url-pattern>/JSP/HeadHunter/SalvarHeadHunter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>

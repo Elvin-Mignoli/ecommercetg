@@ -16,6 +16,7 @@ public class CaixaEntrada extends EntidadeDominio
 {
     private Cliente cliente;
     private PrestadorServico prestador;
+    private HeadHunter headHunter;
     private List<EntidadeDominio> mensagens = new ArrayList<>();
     private Mensagem mensagem;
     
@@ -28,6 +29,12 @@ public class CaixaEntrada extends EntidadeDominio
         this.cliente = cliente;
         this.prestador = servico;
     }
+    public CaixaEntrada(Cliente cliente, PrestadorServico servico, HeadHunter head)
+    {
+        this.cliente = cliente;
+        this.prestador = servico;
+        this.headHunter = head;
+    }
 
     public Mensagem getMensagem()
     {
@@ -37,6 +44,14 @@ public class CaixaEntrada extends EntidadeDominio
     public void setMensagem(Mensagem mensagem)
     {
         this.mensagem = mensagem;
+    }
+
+    public HeadHunter getHeadHunter() {
+        return headHunter;
+    }
+
+    public void setHeadHunter(HeadHunter headHunter) {
+        this.headHunter = headHunter;
     }
     
     public Cliente getCliente()

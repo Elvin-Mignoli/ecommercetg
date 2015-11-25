@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -242,6 +243,8 @@ public class InteressadoDAO extends AbstractDAO
                  prestador.setCandidatura(Status.SELECIONADO);
                  }*/
                 prestador.setCandidatura(Status.valueOf(resultado.getString("status")));
+                prestador.setData(Calendar.getInstance());
+                prestador.getData().setTime(resultado.getDate("date_inscricao"));
 
                 //pedido.setId(resultado.getInt("id_pedidos")); nao faz sentido essa linha!
                 lista.add(prestador);

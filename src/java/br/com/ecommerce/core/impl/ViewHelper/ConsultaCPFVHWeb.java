@@ -9,10 +9,12 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.ExisteCliente;
+import br.com.ecommerce.core.impl.IStrategy.ExisteHeadHunter;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCPF;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
@@ -72,6 +74,22 @@ public class ConsultaCPFVHWeb implements IViewHelper
                 bussines = new ExistePrestador();
 
                 rs = bussines.processar(new PrestadorServico(cpf));
+
+                if (!rs.getMensagens().isEmpty()) //O CPF já existe?
+                {
+                    out.print("Já existe um usuário com esse CPF!");
+                }
+            } else
+            {
+                out.print("CPF Inválido!");
+            }
+        }else if (request.getRequestURI().contains("HeadHunter"))
+        {
+            if (rs.getMensagens().isEmpty()) //Não existe um CPF cadastrado?
+            {
+                bussines = new ExisteHeadHunter();
+
+                rs = bussines.processar(new HeadHunter(cpf));
 
                 if (!rs.getMensagens().isEmpty()) //O CPF já existe?
                 {

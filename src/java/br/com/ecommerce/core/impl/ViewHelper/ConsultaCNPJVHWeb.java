@@ -8,9 +8,11 @@ package br.com.ecommerce.core.impl.ViewHelper;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
+import br.com.ecommerce.core.impl.IStrategy.ExisteHeadHunter;
 import br.com.ecommerce.core.impl.IStrategy.ExistePrestador;
 import br.com.ecommerce.core.impl.IStrategy.ValidaCNPJ;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
@@ -43,21 +45,42 @@ public class ConsultaCNPJVHWeb implements IViewHelper{
         PrestadorServico prestador = new PrestadorServico();
         prestador.setCnpj(cnpj);
         
+        HeadHunter head = new HeadHunter();
+        head.setCnpj(cnpj);
         Resultado rs = bussines.processar(prestador);//processar validação
 
-        if (rs.getMensagemSimples()== null) //houve algum erro na validação?
-        {//não
-                bussines = new ExistePrestador();
-                
-                rs = bussines.processar(prestador);
+        if(request.getRequestURI().contains("HeadHunter"))
+        {
+            if (rs.getMensagemSimples()== null) //houve algum erro na validação?
+            {//não
+                    bussines = new ExisteHeadHunter();
 
-                if (!rs.getMensagens().isEmpty()) //Já existe um prestador com esse cnpj?
-                {
-                    out.print("Já existe um usuário com esse CNPJ!");
-                }
-        } else
-        {//sim
-                out.print("CNPJ Inválido!");
+                    rs = bussines.processar(head);
+
+                    if (!rs.getMensagens().isEmpty()) //Já existe um prestador com esse cnpj?
+                    {
+                        out.print("Já existe um usuário com esse CNPJ!");
+                    }
+            } else
+            {//sim
+                    out.print("CNPJ Inválido!");
+            }
+        }else if(request.getRequestURI().contains("Prestador"))
+        {
+            if (rs.getMensagemSimples()== null) //houve algum erro na validação?
+            {//não
+                    bussines = new ExistePrestador();
+
+                    rs = bussines.processar(prestador);
+
+                    if (!rs.getMensagens().isEmpty()) //Já existe um prestador com esse cnpj?
+                    {
+                        out.print("Já existe um usuário com esse CNPJ!");
+                    }
+            } else
+            {//sim
+                    out.print("CNPJ Inválido!");
+            }
         }
     }  
 }

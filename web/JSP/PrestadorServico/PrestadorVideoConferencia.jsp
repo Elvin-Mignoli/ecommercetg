@@ -17,7 +17,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <link href="../../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/style.css" rel="stylesheet" type="text/css"/>
-        
+        <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/>
         <style>
             audio, video {
                 -moz-transition: all 1s ease;
@@ -59,16 +59,16 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="PrestadorDashboard.jsp">Home</a></li>
+                  <li class="active"><a href="#" onclick="homechat('prestador')">Home</a></li>
                
               </ul>
               <ul class="nav navbar-nav navbar-right">
-                <li><a href="logoff"><span class="glyphicon glyphicon-log-in" id='logoff'></span> Sair</a></li>
+                  <li><a href="#" onclick="logoffchat()"><span class="glyphicon glyphicon-log-in" id='logoff'></span> Sair</a></li>
               </ul>
             </div>
           </div>
         </nav><!--fim Navbar -->
-        
+       
         <!-- Body Web Broadcasting-->
         <div class="container-fluid col-lg-12">
             <!-- copy this <section> and next <script> -->
@@ -93,15 +93,20 @@
 
             <!-- local/remote videos container -->
             <div id="videos-container"></div>   
-        </div>
-        
+        </div> 
+        <input type="hidden" name='idCliente' id="idCliente" value="${requestScope.notify.idCliente}"/>
+        <input type="hidden" name='idPrestador'id="idPrestador" value="${requestScope.notify.idPrestador}"/>
+        <input type="hidden" name='idPedido' id="idPedido" value="${requestScope.notify.pedido.id}"/>
+        <input type="hidden" name='Canal' id="canal" value="${requestScope.notify.channelChat}"/>
         <script>
             // Muaz Khan     - https://github.com/muaz-khan
             // MIT License   - https://www.webrtc-experiment.com/licence/
             // Documentation - https://github.com/muaz-khan/WebRTC-Experiment/tree/master/webrtc-broadcasting
+           //salvar notify
            
-         
-            var config = {
+       
+           //config socket
+           var config = {
                 openSocket: function(config) {
                     // https://github.com/muaz-khan/WebRTC-Experiment/blob/master/Signaling.md
                     // This method "openSocket" can be defined in HTML page
@@ -186,6 +191,39 @@
                     });
                 });
                 hideUnnecessaryStuff();
+                //gravar notify
+                var  idCliente = $('#idCliente').val();
+                var  idPrestador = $('#idPrestador').val();
+                var idPedido = $('#idPedido').val();
+                var Canal = $('#canal').val();
+
+                $.ajax({
+                     type: 'POST',
+                     url: "NotifySalvar",
+                     data: {
+                     operacao: 'Salvar',
+                     idCliente:idCliente,
+                     idPedido:idPedido,
+                     idPrestador: idPrestador,
+                     Canal: Canal},
+                 success: function (json)
+                 {
+                     if (json !== null && json === "")
+                     {   
+                        swal("Notificação enviada","O cliente foi avisado que você esta no vídeo chat.");
+                     }
+                     
+                 },
+                 beforeSend: function (xhr) {
+
+                 },
+                 error: function (jqXHR, textStatus, errorThrown) {
+                     swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+                 },
+                 complete: function (jqXHR, textStatus) {        
+
+                 }
+                });
             }
 
             function captureUserMedia(callback) {
@@ -282,5 +320,7 @@
         <!--Bootstrap -->
         <script src="../../js/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
         <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="../../js/notifyFunctions.js" type="text/javascript"></script>
+        <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
     </body>
 </html>
