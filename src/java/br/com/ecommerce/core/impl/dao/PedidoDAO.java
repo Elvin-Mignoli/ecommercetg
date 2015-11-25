@@ -323,7 +323,11 @@ public class PedidoDAO extends AbstractDAO
         try
         {
             Pedido pe = (Pedido) entidade;
-            openConnection();
+            if(conexao == null || conexao.isClosed())
+            { 
+                openConnection();
+                conexao.setAutoCommit(false);
+            }
 
             String sql = "SELECT * FROM PEDIDOS WHERE ID = ?";
 
@@ -384,10 +388,12 @@ public class PedidoDAO extends AbstractDAO
         {
             try
             {
-                conexao.close();
-            } catch (SQLException ex)
+                if(transaction)
+                    conexao.close();
+            }catch (SQLException ex)
             {
                 ex.printStackTrace();
+                throw new SQLException("Algum problema ao consultar um notify!");
             }
         }
 

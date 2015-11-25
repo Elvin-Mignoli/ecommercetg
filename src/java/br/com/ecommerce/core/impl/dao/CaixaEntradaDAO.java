@@ -54,10 +54,14 @@ public class CaixaEntradaDAO extends AbstractDAO
                 sql.append("(ID_CLIENTE) ");
                 id = entrada.getCliente().getId();
             }
-            else
+            else if(entrada.getPrestador() != null)
             {
                 sql.append("(ID_PRESTADOR) ");
                 id = entrada.getPrestador().getId();
+            }else
+            {
+                sql.append("(ID_HEADHUNTER) ");
+                id = entrada.getHeadHunter().getId();
             }
             
             sql.append("VALUES (?)");
@@ -140,10 +144,14 @@ public class CaixaEntradaDAO extends AbstractDAO
                 sql.append("WHERE ID_CLIENTE = ?");
                 id = entrada.getCliente().getId();
             }
-            else
+            else if(entrada.getPrestador() != null)
             {
                 sql.append("WHERE ID_PRESTADOR = ?");
                 id = entrada.getPrestador().getId();
+            }else
+            {
+                sql.append("WHERE ID_HEADHUNTER= ?");
+                id = entrada.getHeadHunter().getId();
             }
             
             pst = conexao.prepareStatement(sql.toString());

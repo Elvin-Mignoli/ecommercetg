@@ -20,6 +20,7 @@ public class Contato
         this.celular = celular;
     }
 
+    public Contato(){}
     /**
      * @return the telefone
      */

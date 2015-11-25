@@ -19,6 +19,17 @@
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/> 
         <link href="../../js/libs/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" type="text/css"/>
+        <!--CSS notify -->
+         <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
+         <link href="../../js/libs/Notify/src/pnotify.core.css" rel="stylesheet" type="text/css"/>
+         <link href="../../js/libs/Notify/src/pnotify.buttons.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.mobile.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.nonblock.css" rel="stylesheet" type="text/css"/>   
+        <link href="../../js/libs/Notify/src/pnotify.history.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.material.css" rel="stylesheet" type="text/css"/>
+        
+        
    </head>
     <body id="dashBoard">
         <nav class="navbar navbar-inverse">
@@ -215,6 +226,7 @@
                 </div>
             </div>
         </div>
+                                                
         <!-- Scripts da Pagina -->
         <!-- Arquivos bootstrap da página -->
         <script src="../../bootstrap/js/dropdown.js"></script>
@@ -241,6 +253,8 @@
         <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
         <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
         <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+        <!--Notify js -->
+        <script src="../../js/libs/Notify/pnotify.custom.min.js" type="text/javascript"></script>
         <script>
         $(document).ready
         (
@@ -258,8 +272,14 @@
                 {//sim
                      $("#mensagens_enviadas_cliente").trigger("click");
                 }
+                //método para buscar notificações de video chat
+                buscarNotificationCliente();
             },120000); //fim do ajax
+           //método para buscar notificações de video chat
+           buscarNotificationCliente();
+            
         });
+        
         </script>
     </body>
 </html>
