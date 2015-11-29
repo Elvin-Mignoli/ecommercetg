@@ -12,6 +12,7 @@ import br.com.ecommerce.domain.Endereco;
 import br.com.ecommerce.domain.EntidadeDominio;
 import br.com.ecommerce.domain.HeadHunter;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -77,7 +78,8 @@ public class HeadHunterDAO extends AbstractDAO{
             dao = new CaixaEntradaDAO(conexao);
             
             dao.salvar(new CaixaEntrada(null, null,head));
-           conexao.commit();
+           if(transaction)
+            conexao.commit();
            
        }catch(Exception e){
            
@@ -125,6 +127,7 @@ public class HeadHunterDAO extends AbstractDAO{
             sql.append("NOME_EMPRESA = ?, ");
             sql.append("TELEFONE = ?, ");
             sql.append("CELULAR = ? , ");
+            sql.append("DATA_NASCIMENTO = ?, ");
             sql.append("SEXO = ? ");
             sql.append("WHERE ID = ?");
             
@@ -134,12 +137,16 @@ public class HeadHunterDAO extends AbstractDAO{
             pst.setString(3, head.getNome_empresa());
             pst.setString(4,head.getContato().getTelefone() );
             pst.setString(5, head.getContato().getCelular());
-            pst.setString(6, head.getSexo());
-            pst.setInt(7,head.getId() );
+             if(head.getDataNascimento()!= null)
+                    pst.setDate(6, new Date(head.getDataNascimento().getTime()));
+                else
+                    pst.setDate(6, null);
+            pst.setString(7, head.getSexo());
+            pst.setInt(8,head.getId() );
             
             pst.executeUpdate();
-            
-            conexao.commit();
+            if(transaction)
+                conexao.commit();
        }catch(Exception e){
            
             try
@@ -206,6 +213,7 @@ public class HeadHunterDAO extends AbstractDAO{
                 head.setNome_empresa(rs.getString("nome_empresa"));
                 head.setSexo(rs.getString("sexo"));
                 head.setId(rs.getInt("id"));
+                head.setDataNascimento(rs.getDate("data_nascimento"));
                 
                 
                 lista.add(head);
@@ -230,7 +238,7 @@ public class HeadHunterDAO extends AbstractDAO{
     @Override
     public EntidadeDominio consultarUm(EntidadeDominio entidade) throws SQLException {
    
-        HeadHunter hh = (HeadHunter) entidade;
+        HeadHunter head = (HeadHunter) entidade;
         try{
             if(conexao == null || conexao.isClosed())
             {
@@ -243,7 +251,7 @@ public class HeadHunterDAO extends AbstractDAO{
             sql.append(" WHERE ID = ? ");
             
             pst = conexao.prepareStatement(sql.toString());
-            pst.setInt(1, hh.getId());
+            pst.setInt(1, head.getId());
             ResultSet rs = pst.executeQuery();
             rs.next();
             if (rs.getRow() == 0)
@@ -251,7 +259,7 @@ public class HeadHunterDAO extends AbstractDAO{
                 return null;
             }else
             {
-                HeadHunter head = new HeadHunter();
+                
                 head.setCnpj(rs.getString("cnpj"));
                 head.setContato(new Contato());
                 head.getContato().setTelefone(rs.getString("telefone"));
@@ -268,7 +276,14 @@ public class HeadHunterDAO extends AbstractDAO{
                 head.setNome_empresa(rs.getString("nome_empresa"));
                 head.setSexo(rs.getString("sexo"));
                 head.setId(rs.getInt("id"));
+                head.setDataNascimento(rs.getDate("data_nascimento"));
             
+                //recuperar caixa d entrada
+                 //recuperar a caixa de caixa
+                CaixaEntradaDAO entradaDAO = new CaixaEntradaDAO(conexao);
+                CaixaEntrada caixa = new CaixaEntrada(null,null,head);
+                caixa = (CaixaEntrada)entradaDAO.consultarUm(caixa);
+                head.setEntrada(caixa);
                 
                return head;
             }

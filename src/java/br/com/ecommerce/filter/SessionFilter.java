@@ -6,6 +6,7 @@
 package br.com.ecommerce.filter;
 
 import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
@@ -74,7 +75,7 @@ public class SessionFilter implements Filter
                 resp.sendRedirect("../../index.jsp");
             else if(usuario instanceof PrestadorServico)
                 resp.sendRedirect("../../index.jsp");  //Mudar quanto tiver a tela de login do prestador!
-            else
+            else if(usuario instanceof HeadHunter)
                 resp.sendRedirect("../../index.jsp");
         } else
         {

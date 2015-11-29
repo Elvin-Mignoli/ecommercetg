@@ -57,6 +57,10 @@ public class NotifyConsultarVHWeb implements IViewHelper{
                  js.put("pedido",notify.getPedido().getDescricao());
                  js.put("cliente", notify.getPedido().getCliente().getNome() +" " + notify.getPedido().getCliente().getSobrenome());
                  js.put("prestador",notify.getPedido().getPrestadorFinalista().getNome() +" " + notify.getPedido().getPrestadorFinalista().getSobrenome());
+                 js.put("canal", notify.getChannelChat());
+                 js.put("idCliente", notify.getPedido().getCliente().getId());
+                 js.put("idPrestador", notify.getPedido().getPrestadorFinalista().getId());
+                 js.put("idPedido", notify.getPedido().getId());
              }
             
              response.getWriter().write(js.toString());
