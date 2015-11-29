@@ -1,6 +1,6 @@
 <%-- 
-    Document   : PrestadorPerfil
-    Created on : 14/08/2015, 16:06:49
+    Document   : HeadHunterPerfil
+    Created on : 26/11/2015, 10:30:27
     Author     : Elvin
 --%>
 
@@ -26,7 +26,7 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
 
-    <body>    
+    <body>   
         <!--Verificar se há algum dado pendente-->
         <c:if test="${sessionScope.user.dataNascimento == null || 
                       sessionScope.user.contato.telefone == ''||
@@ -48,7 +48,6 @@
               </div>
         </c:if> 
         
-            <input type="text" name="operacao" value="Atualizar" hidden="true"/>
             <div class="row-fluid">
                 <button type="button" id="btn_editar" class="btn btn-success" onclick="editarDados()">
                     <span class="glyphicon glyphicon-pencil"></span>
@@ -72,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <!--Nome   -->
+                    <!--SobreNome   -->
                     <div class="row">
                         <div class="form-group  ">
                             <h4>Sobrenome </h4>
@@ -83,6 +82,17 @@
                             </div>
                         </div>
                     </div>
+                    <!--Nome da Empresa   -->
+                    <div class="row">
+                        <div class="form-group  ">
+                            <h4>Empresa</h4>
+                            <div class="input-group col-lg-5">
+                                <span class="input-group-addon" id="span_empresa"><span class="glyphicon glyphicon-user"></span></span>
+                                <input type="text"  name="txtEmpresa" class="form-control"  value="${sessionScope.user.nome_empresa}" 
+                                       id="input_empresa" />
+                            </div>
+                        </div>
+                    </div>        
                     <!--Sexo -->
                     <div class="row" id="sexo">
                         <div class="form-group ">
@@ -117,16 +127,32 @@
                         </div>
                     </div>
 
-                    <!--CPF-->
-                    <div class="row">
-                        <div class="form-group ">
-                            <h4>CPF</h4>
-                            <div class="input-group col-lg-5">
-                                <span class="input-group-addon"  id="span_cpf"><span class="glyphicon glyphicon-asterisk"></span></span>
-                                <input type="text" name="txtCpf" id="input_cpf" value="${sessionScope.user.cpf}"   class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
+                     <c:choose>
+                                <c:when test="${sessionScope.user.cpf != null}">
+                                    <!--CPF-->
+                                    <div class="row">
+                                        <div class="form-group ">
+                                            <h4>CPF</h4>
+                                            <div class="input-group col-lg-5">
+                                                <span class="input-group-addon"  id="span_cpf"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                                <input type="text" name="txtCpf" id="input_cpf" value="${sessionScope.user.cpf}"   class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${sessionScope.user.cnpj != null}">
+                                    <!--CNPJ-->
+                                    <div class="row">
+                                        <div class="form-group ">
+                                            <h4>CNPJ</h4>
+                                            <div class="input-group col-lg-5">
+                                                <span class="input-group-addon"  id="span_cnpj"><span class="glyphicon glyphicon-asterisk"></span></span>
+                                                <input type="text"   name="txtCnpj"  id="input_cnpj" value="${sessionScope.user.cnpj}"   class="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
 
                     <!--Data de nascimento-->
                     <div class="row">
@@ -171,7 +197,7 @@
                     <div class="row">
                         <div class="form-group " id="div_cep">
                             <h4>CEP</h4>
-                             <div id="statusCEP"></div>
+                            <div id="statusCEP"></div>
                             <div class="input-group col-lg-5">
                                 <span class="input-group-addon" id="span_cep"><b><i class="fa fa-street-view fa-lg"></i></b></span> 
                                 <input type="text" id="cep" name="txtCep" placeholder="0800-000" value="${sessionScope.user.endereco.cep}" class="form-control" onchange="loadEndereco()"/>
@@ -242,13 +268,13 @@
             </div> <!-- Panel -->
             <div class="row-fluid">                
                 <div class="col-md-6" hidden="true" id="div_button">
-                    <button type="button" id="btn_atualizar" value="Atualizar" class="btn btn-primary " onclick="atualizarDadosCliente()">
+                    <button type="button" id="btn_atualizar" value="Atualizar"  class="btn btn-primary " onclick="atualizarDadosHeadHunter()">
                         <span class="glyphicon glyphicon-refresh"></span>
                         Atualizar
                     </button>
                 </div>
             </div>
-        
+       
         <!-- Scripts da Pagina -->
         <!-- JavaScript Bootstrap tag-input -->
         <script src="../../bootstrap/js/tooltip.js" type="text/javascript"></script>
@@ -264,8 +290,8 @@
                             $("#input_telefone").mask("(99)9999-9999");
                             $("#input_celular").mask("(99)99999-9999");
                             $("#cep").mask("99999-999");
-
-                           $(".form-control").prop('disabled', 'true');
+ 
+                            $(".form-control").prop('disabled', 'true');
                             //Aumentar o tamanho do skillbar
                             $('#skill_bar').tagsinput({
                                 tagClass: 'big'
@@ -300,3 +326,4 @@
         </script> 
     </body>
 </html>
+

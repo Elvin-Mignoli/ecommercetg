@@ -176,7 +176,7 @@ function confirmSenha()
 function loadEndereco()
 {
     var cep = $('#cep').val();
-
+    $("#statusCEP").text("");
     $.ajax({
         type: 'POST',
         url: "CEP",
@@ -184,7 +184,7 @@ function loadEndereco()
         success: function (data, textStatus, jqXHR) {
 
             var endereco = jQuery.parseJSON(data);
-
+           
             if (endereco.resultado === '1') //cep encontrado com sucesso!
             {
                 $('#div_cep').removeClass();
@@ -197,14 +197,25 @@ function loadEndereco()
 
             } else {
                 $('#div_cep').removeClass();
-                $("#div_cep").addClass("form-group has-success has-feedback");
-                
+                $("#div_cep").addClass("form-group has-warning has-feedback");
+                $('#statusCEP').addClass("text-warning");
+                $('#statusCEP').text("CEP incorreto!");
                 $('#rua').val('');
                 $('#bairro').val('');
                 $('#cidade').val('');
                 $('#estado').val('');
             }
-        }
+             //Modificou a senha novamente
+            $("#cep").on("click", function (e)
+            {
+                $("#statusCEP").text("");
+                $("#div_cep").removeClass();
+                $("#div_cep").addClass("form-group");
+                $("#statusCEP").removeClass();
+                $("#statusCEP").text("");
+                $("#cep").val("");
+            });
+        } 
     }); 
 }
 
@@ -938,10 +949,9 @@ function removerConsultor()
 }
 
 //envia requisão ajax (Selecionar Prestador)
-function selecionarPrestador(prestador)
+function selecionarPrestador(prestador,valor)
 {
     var txtIdPedido = $('#txtIdPedido').val();
-
     swal({
         title: "Selecionar Prestador?",
         text: "",
@@ -954,7 +964,7 @@ function selecionarPrestador(prestador)
         $.ajax({
             type: 'POST',
             url: "SelecionarPrestador",
-            data: {txtIdPrestador: prestador, txtIdPedido: txtIdPedido},
+            data: {txtIdPrestador: prestador, txtIdPedido: txtIdPedido, txtValor:valor},
             success: function (data, textStatus, jqXHR) {
 
                 if (data !== null && data !== "")
@@ -1034,7 +1044,7 @@ function avaliarPrestador() {
 //método para liberar a edição de dados no meu perfil
 function editarDados()
 {
-    $(".form-control").removeAttr('readonly');
+    $(".form-control").removeAttr('disabled');
 
     $("#input_cpf").prop("readonly", "readonly");
     $("#input_cnpj").prop("readonly");
@@ -1220,7 +1230,7 @@ function atualizarDadosCliente()
                 swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
             },
             complete: function (jqXHR, textStatus) {
-                $('#meu_perfil').click();
+                $('#meu_perfil_cliente').click();
             }
         });
     });
@@ -1363,6 +1373,19 @@ function buscarNotificationCliente(){
                     animate: true,
                     in_class: animate_in,
                     out_class: animate_out
+                },
+                confirm: {  
+                confirm: true,
+                buttons: [{
+                    text: 'Ir para o vídeo chat',
+                    addClass: 'btn-success',
+                    click: function() {
+                      window.location.replace("Notify?idCliente="+notify.idCliente +
+                            "&idPrestador="+ notify.idPrestador +
+                            "&idPedido="+ notify.idPedido +
+                            "&Canal="+ notify.canal);
+                    }
+                }]
                 }
             });
             //notify desktop
@@ -1377,7 +1400,12 @@ function buscarNotificationCliente(){
                 desktop: {
                     desktop: true
                 }
-            }));
+            })).get().click(function(e) {
+              window.location.replace("Notify?idCliente="+notify.idCliente +
+                            "&idPrestador="+ notify.idPrestador +
+                            "&idPedido="+ notify.idPedido +
+                            "&Canal="+ notify.canal);
+            });
         }
         
     },
@@ -1425,6 +1453,20 @@ function buscarNotificationPrestador(){
                     animate: true,
                     in_class: animate_in,
                     out_class: animate_out
+                } ,
+                confirm: {  
+                confirm: true,
+                buttons: [{
+                    text: 'Ir para o vídeo chat',
+                    addClass: 'btn-success',
+                    click: function() {
+                    // window.location.replace("PrestadorVideoConferencia.jsp?canal="+notify.canal); 
+                    window.location.replace("Notify?idCliente="+notify.idCliente +
+                            "&idPrestador="+ notify.idPrestador +
+                            "&idPedido="+ notify.idPedido +
+                            "&Canal="+ notify.canal);
+                    }
+                }]
                 }
             });
             //notify desktop
@@ -1439,7 +1481,12 @@ function buscarNotificationPrestador(){
                 desktop: {
                     desktop: true
                 }
-            }))
+            })).get().click(function(e) {
+             window.location.replace("Notify?idCliente="+notify.idCliente +
+                            "&idPrestador="+ notify.idPrestador +
+                            "&idPedido="+ notify.idPedido +
+                            "&Canal="+ notify.canal);
+            });
         }
         
     },
@@ -1454,4 +1501,422 @@ function buscarNotificationPrestador(){
     }
    });
 
+}
+
+//função para atualizar dados do headhunter
+function atualizarDadosHeadHunter()
+{
+    swal({
+        title: "Atualização",
+        text: "Você quer realmente atualizar seus dados?",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+    },
+    function () {
+        //requisão ajax para remoção do consultor
+        var nome = $('#input_nome').val();
+        var sobrenome = $('#input_sobrenome').val();
+        var sexo = $('#valueSexo').val();
+        var cpf = $('#input_cpf').val();
+        var cnpj = $('#input_cnpj').val();
+        var data = $('#input_data').val();
+        var telefone = $('#input_telefone').val();
+        var celular = $('#input_celular').val();
+        var cep = $('#cep').val();
+        var rua = $('#rua').val();
+        var numero = $('#numero').val();
+        var bairro = $('#bairro').val();
+        var cidade = $('#cidade').val();
+        var estado = $('#estado').val();
+        var complemento = $('#complemento').val();
+        var txtEmpresa = $('#input_empresa').val();
+     
+        $.ajax({
+            type: 'POST',
+            url: "AtualizarHeadHunter",
+            data: {
+                operacao: 'Atualizar',
+                txtNome: nome,
+                txtSobrenome: sobrenome,
+                txtCpf: cpf,
+                txtCnpj: cnpj,
+                txtSexo: sexo,
+                txtDatanascimento: data,
+                txtLogradouro: rua,
+                txtNumero: numero,
+                txtCep: cep,
+                txtBairro: bairro,
+                txtCidade: cidade,
+                txtEstado: estado,
+                txtComplemento: complemento,
+                txtTelefone: telefone,
+                txtCelular: celular,
+                txtEmpresa:txtEmpresa},
+            success: function (json)
+            {
+
+                if (json !== null && json !== "")
+                {
+                    swal({
+                        title: "Desculpe!",
+                        text: json,
+                        type: "error",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+                }
+                else
+                {
+                    swal({
+                        title: "Sucesso!",
+                        text: "Atualização realizada!",
+                        type: "success",
+                        showConfirmButton: true,
+                        confirmButtonText: "OK"
+                    });
+
+
+                }
+            },
+            beforeSend: function (xhr) {
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+            },
+            complete: function (jqXHR, textStatus) {
+                $('#meu_perfil_head').click();
+            }
+        });
+    });
+
+}
+//função para atualizar o email do prestador de servico
+function atualizarEmailPrestador()
+{
+    var email = $('#statusEmail').text();
+    var confirm = $('#status_confirm').text();
+   if(email === "" && confirm === "")
+   {
+        swal({
+            title: "Atualização",
+            text: "Você quer realmente atualizar seu E-mail?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        },
+        function () {
+            //requisão ajax para remoção do consultor
+            var txtNovoEmail = $('#input_email').val();
+
+
+            $.ajax({
+                type: 'POST',
+                url: "AlterarEmail",
+                data: {
+                    txtNovoEmail:txtNovoEmail},
+                success: function (json)
+                {
+
+                    if (json !== null && json !== "")
+                    {
+                        swal({
+                            title: "Desculpe!",
+                            text: json,
+                            type: "error",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        });
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Atualização realizada!\n\
+                            Será realizado o logoff, autentique-se novamente!",
+                            type: "success",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) {    
+                                window.location.replace("logoff");
+                        }}
+                        );
+
+
+
+                    }
+                },
+                beforeSend: function (xhr) {
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+                },
+                complete: function (jqXHR, textStatus) {
+                  
+                }
+            });
+        });
+    }//if
+    else
+    {
+        swal({
+            title: "Erro!",
+            text: "E-mail digitado já existe ou os E-mails não correspondem !",
+            type: "warning",
+            showCancelButton: false,
+            closeOnConfirm: true
+        });
+    }
+}
+
+//função para atualizar a senha do prestador de servico
+function atualizarSenhaPrestador()
+{
+    var senha= $('#statusEmail').text();
+    var confirm = $('#status_senha_confirm').text();
+   if(senha === "" && confirm === "")
+   {
+        swal({
+            title: "Atualização",
+            text: "Você quer realmente atualizar sua senha?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        },
+        function () {
+            //requisão ajax para remoção do consultor
+            var txtNovaSenha = $('#input_senha').val();
+
+
+            $.ajax({
+                type: 'POST',
+                url: "AlterarSenha",
+                data: {
+                   txtNovaSenha:txtNovaSenha},
+                success: function (json)
+                {
+
+                    if (json !== null && json !== "")
+                    {
+                        swal({
+                            title: "Desculpe!",
+                            text: json,
+                            type: "error",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        });
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Atualização realizada!\n\
+                            Será realizado o logoff, autentique-se novamente!",
+                            type: "success",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) {    
+                                window.location.replace("logoff");
+                        }}
+                        );
+
+
+
+                    }
+                },
+                beforeSend: function (xhr) {
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+                },
+                complete: function (jqXHR, textStatus) {
+                   
+                }
+            });
+        });
+    }//if
+    else
+    {
+        swal({
+            title: "Erro!",
+            text: "Senha digitado já existe ou as senhas não correspondem !",
+            type: "warning",
+            showCancelButton: false,
+            closeOnConfirm: true
+        });
+    }
+}
+
+//função para atualizar o email do prestador de servico
+function atualizarEmailHeadHunter()
+{
+    var email = $('#statusEmail').text();
+    var confirm = $('#status_confirm').text();
+   if(email === "" && confirm === "")
+   {
+        swal({
+            title: "Atualização",
+            text: "Você quer realmente atualizar seu E-mail?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        },
+        function () {
+            //requisão ajax para remoção do consultor
+            var txtNovoEmail = $('#input_email').val();
+
+
+            $.ajax({
+                type: 'POST',
+                url: "AlterarEmail",
+                data: {
+                    txtNovoEmail:txtNovoEmail},
+                success: function (json)
+                {
+
+                    if (json !== null && json !== "")
+                    {
+                        swal({
+                            title: "Desculpe!",
+                            text: json,
+                            type: "error",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        });
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Atualização realizada!\n\
+                            Será realizado o logoff, autentique-se novamente!",
+                            type: "success",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) {    
+                                window.location.replace("logoff");
+                        }}
+                        );
+
+
+
+                    }
+                },
+                beforeSend: function (xhr) {
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+                },
+                complete: function (jqXHR, textStatus) {
+                   
+                }
+            });
+        });
+    }//if
+    else
+    {
+        swal({
+            title: "Erro!",
+            text: "E-mail digitado já existe ou os E-mails não correspondem !",
+            type: "warning",
+            showCancelButton: false,
+            closeOnConfirm: true
+        });
+    }
+}
+
+//função para atualizar a senha do prestador de servico
+function atualizarSenhaHeadHunter()
+{
+    var senha= $('#statusEmail').text();
+    var confirm = $('#status_senha_confirm').text();
+   if(senha === "" && confirm === "")
+   {
+        swal({
+            title: "Atualização",
+            text: "Você quer realmente atualizar sua senha?",
+            type: "info",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+        },
+        function () {
+            //requisão ajax para remoção do consultor
+            var txtNovaSenha = $('#input_senha').val();
+
+
+            $.ajax({
+                type: 'POST',
+                url: "AlterarSenha",
+                data: {
+                   txtNovaSenha:txtNovaSenha},
+                success: function (json)
+                {
+
+                    if (json !== null && json !== "")
+                    {
+                        swal({
+                            title: "Desculpe!",
+                            text: json,
+                            type: "error",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        });
+                    }
+                    else
+                    {
+                        swal({
+                            title: "Sucesso!",
+                            text: "Atualização realizada!\n\
+                            Será realizado o logoff, autentique-se novamente!",
+                            type: "success",
+                            showConfirmButton: true,
+                            confirmButtonText: "OK"
+                        }, 
+                        function(isConfirm){   
+                            if (isConfirm) {    
+                                window.location.replace("logoff");
+                        }}
+                        );
+
+
+
+                    }
+                },
+                beforeSend: function (xhr) {
+
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    swal("Desculpe", "Algum erro inesperado ocorreu. " + errorThrown, "warning");
+                },
+                complete: function (jqXHR, textStatus) {
+                   
+                }
+            });
+        });
+    }//if
+    else
+    {
+        swal({
+            title: "Erro!",
+            text: "Senha digitado já existe ou as senhas não correspondem !",
+            type: "warning",
+            showCancelButton: false,
+            closeOnConfirm: true
+        });
+    }
 }

@@ -47,7 +47,7 @@ public class InteressadoDAO extends AbstractDAO
             pst.setInt(1, usuario.getId());
             pst.setInt(2, usuario.getPedido().getId());
             pst.setString(3, Status.EM_PROCESSO.getValue());
-            pst.setDouble(4, usuario.getValorConsultori());
+            pst.setDouble(4, usuario.getValorConsultoria());
             pst.executeUpdate();
             conexao.commit();
         } catch (SQLException e)
@@ -245,6 +245,7 @@ public class InteressadoDAO extends AbstractDAO
                 prestador.setCandidatura(Status.valueOf(resultado.getString("status")));
                 prestador.setData(Calendar.getInstance());
                 prestador.getData().setTime(resultado.getDate("date_inscricao"));
+                prestador.setValorConsultoria(resultado.getDouble("valor"));
 
                 //pedido.setId(resultado.getInt("id_pedidos")); nao faz sentido essa linha!
                 lista.add(prestador);

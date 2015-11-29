@@ -268,7 +268,7 @@ public class AutenticarDAO extends AbstractDAO
                 }else if(rs.getInt("id_headhunter") != 0)
                 {
                     HeadHunter head = new HeadHunter();
-                    head.setId(rs.getInt("id_cliente"));
+                    head.setId(rs.getInt("id_headhunter"));
                     head.setEmail(rs.getString("email"));
                     head.setStatus(rs.getInt("status"));
                     head.setTipoConta(rs.getString("tipo_conta"));
@@ -326,9 +326,12 @@ public class AutenticarDAO extends AbstractDAO
             if (usuario.getTipoConta().equalsIgnoreCase("Cliente"))
             {
                 sql.append("WHERE ID_CLIENTE = ?) ");
-            } else
+            } else if(usuario.getTipoConta().equalsIgnoreCase("Prestador"))
             {
                 sql.append("WHERE ID_PRESTADOR = ? ");
+            }else if(usuario.getTipoConta().equalsIgnoreCase("HeadHunter"))
+            { 
+                sql.append("WHERE ID_HEADHUNTER = ? ");
             }
 
             pst = conexao.prepareStatement(sql.toString());
@@ -367,9 +370,12 @@ public class AutenticarDAO extends AbstractDAO
             if (usuario.getTipoConta().equalsIgnoreCase("Cliente"))
             {
                 sql.append("WHERE ID_CLIENTE = ?) ");
-            } else
+            } else if(usuario.getTipoConta().equalsIgnoreCase("Prestador"))
             {
                 sql.append("WHERE ID_PRESTADOR = ? ");
+            }else if(usuario.getTipoConta().equalsIgnoreCase("HeadHunter"))
+            { 
+                sql.append("WHERE ID_HEADHUNTER = ? ");
             }
 
             pst = conexao.prepareStatement(sql.toString());

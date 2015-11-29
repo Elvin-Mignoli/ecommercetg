@@ -18,8 +18,9 @@ public class PrestadorServico extends Usuario
     private ArrayList<Competencia> habilidades;
     private String cnpj;
     private Status candidatura;
-    private double valorConsultori;
+    private double valorConsultoria;
     private List<Avaliacao> avaliacoes;
+    private double ranking;
     
     public PrestadorServico()
     {
@@ -36,12 +37,12 @@ public class PrestadorServico extends Usuario
         return avaliacoes;
     }
     
-    public double getValorConsultori() {
-        return valorConsultori;
+    public double getValorConsultoria() {
+        return valorConsultoria;
     }
 
-    public void setValorConsultori(double valorConsultori) {
-        this.valorConsultori = valorConsultori;
+    public void setValorConsultoria(double valorConsultoria) {
+        this.valorConsultoria = valorConsultoria;
     }
     
     
@@ -127,5 +128,15 @@ public class PrestadorServico extends Usuario
         } 
         else 
             return entidade.getId().equals(this.getId()); //return super.equals(o); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public double getRanking()
+    {
+        return ranking;
+    }
+
+    public void setRanking(double ranking)
+    {
+        this.ranking = ranking;
     }
 }
