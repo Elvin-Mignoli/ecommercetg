@@ -4,8 +4,7 @@
  * and open the template in the editor.
  */
 $(document).ready(function ()
-{   
-    
+{
     //ajax para carregar dados do cliente
     $('#submit').click(function (event) //evento botão de click
     {
@@ -327,25 +326,25 @@ $(document).ready(function ()
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './ClienteDashboard.jsp');
         return false;
-    }); 
-    
-    
+    });
+
+
     //Testar
     /*$(document).on("click", '.att', function (e){
-        alert("oi");
-        e.preventDefault(); //eliminamos o evento
-        $("#panel-heading").html("Meu Perfil");
-        var path = "PrestadorPerfil.jsp"; //Pegamos o caminho
-        var titulo = "Meu Perfil"; //pegamos o titulo da página
-        document.title = titulo; // Alterar o titulo da página
-        window.history.pushState("", titulo, path);
-        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
-        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
-        window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
-        return false;
-    }); */
-    
-     //ajax mostrar as mensagens enviadas do cliente
+     alert("oi");
+     e.preventDefault(); //eliminamos o evento
+     $("#panel-heading").html("Meu Perfil");
+     var path = "PrestadorPerfil.jsp"; //Pegamos o caminho
+     var titulo = "Meu Perfil"; //pegamos o titulo da página
+     document.title = titulo; // Alterar o titulo da página
+     window.history.pushState("", titulo, path);
+     $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+     $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+     window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
+     return false;
+     }); */
+
+    //ajax mostrar as mensagens enviadas do cliente
     $("#meu_perfil_head").on("click", function (e) {
         e.preventDefault(); //eliminamos o evento
         $("#panel-heading").html("Meu Perfil");
@@ -357,8 +356,8 @@ $(document).ready(function ()
         $("#conteudo").load(path); //Faz uma requisição http para o servidor.
         window.history.pushState('Object', 'Dashboard', './HeadHunterDashboard.jsp');
         return false;
-    }); 
-    
+    });
+
     //Codigo para chamar o formulário de Alteracao de Email
     $("#editar_email_head").on("click", function (e) {
         $("#panel-heading").html("Dados Login");

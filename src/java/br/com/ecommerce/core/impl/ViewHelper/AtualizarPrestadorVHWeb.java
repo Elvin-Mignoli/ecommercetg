@@ -28,12 +28,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AtualizarPrestadorVHWeb implements IViewHelper{
 
-    PrestadorServico prestador  = new PrestadorServico();
+    PrestadorServico prestador;
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
         //tratamento da string de competencias
-        PrestadorServico sessionCliente = (PrestadorServico) request.getSession().getAttribute("user");
-        prestador.setEntrada(sessionCliente.getEntrada());
+        PrestadorServico sessionPrestador = (PrestadorServico) request.getSession().getAttribute("user");
+        prestador = sessionPrestador;
         ArrayList<Competencia> listComp = new ArrayList<>();
         String[] listSkill = request.getParameter("txtSkill").split(",");
         int contador = listSkill.length;
@@ -56,10 +56,10 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
         if(!listComp.isEmpty())
         {
             prestador.setHabilidades(listComp);
-            sessionCliente.setHabilidades(listComp);
+            sessionPrestador.setHabilidades(listComp);
         }
         else
-            prestador.setHabilidades(sessionCliente.getHabilidades());
+            prestador.setHabilidades(sessionPrestador.getHabilidades());
         /* Dados do Pessoais do Prestador de servico */
         String nome = request.getParameter("txtNome");
         String sobrenome = request.getParameter("txtSobrenome");
@@ -91,14 +91,14 @@ public class AtualizarPrestadorVHWeb implements IViewHelper{
         String estado = request.getParameter("txtEstado");
         String complemento = request.getParameter("txtComplemento");
         Endereco endereco = new Endereco(logradouro, numero, cep, bairro, cidade, estado, complemento);
-        endereco.setId(sessionCliente.getEndereco().getId());
+        endereco.setId(sessionPrestador.getEndereco().getId());
         
         /* Classe de Contato! */
         String telefone = request.getParameter("txtTelefone").replace("(", "").replace(")", "").replace("-", "");
         String celular = request.getParameter("txtCelular").replace("(", "").replace(")", "").replace("-", "");
         Contato contato = new Contato(telefone, celular);
 
-        prestador.setId(sessionCliente.getId());
+        prestador.setId(sessionPrestador.getId());
         prestador.setNome(nome);
         prestador.setSobrenome(sobrenome);
         prestador.setCpf(cpf);
