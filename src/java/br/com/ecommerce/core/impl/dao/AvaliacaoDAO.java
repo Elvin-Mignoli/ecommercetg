@@ -73,6 +73,13 @@ public class AvaliacaoDAO extends AbstractDAO
                 throw new SQLException("Desculpe, algum erro ocorreu!");
             }
             
+            sql = new StringBuilder();
+            sql.append("SELECT AVALIACAO(?)");
+            
+            pst = conexao.prepareStatement(sql.toString());
+            pst.setInt(1, pedido.getPrestadorFinalista().getId());
+            pst.execute();
+            
             if(transaction)
                 conexao.commit();
         }
@@ -118,7 +125,15 @@ public class AvaliacaoDAO extends AbstractDAO
     @Override
     public List<EntidadeDominio> consultar(EntidadeDominio entidade) throws SQLException
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*try
+        {
+            
+        }
+        catch(SQLException ex)
+        {
+            ex.printStackTrace();
+        }*/
+        return null;
     }
 
     @Override

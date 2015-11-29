@@ -34,7 +34,7 @@ public class CandidatarVHWeb implements IViewHelper{
         usuario.setId(Integer.parseInt(request.getParameter("id_prestador")));
         usuario.setPedido(new Pedido());
         usuario.getPedido().setId(Integer.parseInt(request.getParameter("id_pedido")));
-        usuario.setValorConsultori(Integer.parseInt(request.getParameter("valor")));
+        usuario.setValorConsultoria(Integer.parseInt(request.getParameter("valor")));
         Candidatar candidar = new Candidatar();
         resultado = candidar.processar(usuario);
         

@@ -41,6 +41,7 @@ public class FecharPedidoVHWeb implements IViewHelper
         pedido.setId(new Integer(request.getParameter("txtIdPedido")));
         pedido.setStatus(Status.EM_PROCESSO);
         pedido.getPrestadorFinalista().setId(new Integer(request.getParameter("txtIdPrestador")));
+        pedido.getPrestadorFinalista().setValorConsultoria(new Double(request.getParameter("txtValor")));
         IStrategy strategy = new AtualizarStatusPedidoStrategy();
         
         Resultado rs = strategy.processar(pedido);

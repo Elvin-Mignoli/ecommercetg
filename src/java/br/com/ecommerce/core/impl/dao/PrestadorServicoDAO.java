@@ -240,7 +240,7 @@ public class PrestadorServicoDAO extends AbstractDAO
         
         ArrayList<EntidadeDominio> lista = new ArrayList<>();
         PreparedStatement preparador;
-        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ";
+        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS,ENDERECOS WHERE ID_ENDERECO = ENDERECOS.ID ORDER BY PRESTADOR_SERVICOS.RANKING DESC";
         try
         {
             conexao.setAutoCommit(false);
@@ -274,6 +274,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                     prestador.setDataNascimento(resultado.getDate("data_nascimento"));
                     prestador.setSexo(resultado.getString("sexo"));
                     prestador.setSobrenome(resultado.getString("sobrenome"));
+                    prestador.setRanking(resultado.getFloat("ranking"));
                     //recuperar as competencias
                     CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
                     compDAO.consultarUm(prestador);
@@ -307,7 +308,7 @@ public class PrestadorServicoDAO extends AbstractDAO
         
         PrestadorServico prestador = (PrestadorServico) entidade;
         PreparedStatement preparador;
-        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS WHERE PRESTADOR_SERVICOS.ID = ?";
+        String sql = "SELECT PRESTADOR_SERVICOS.* FROM PRESTADOR_SERVICOS WHERE PRESTADOR_SERVICOS.ID = ? ORDER BY PRESTADOR_SERVICOS.RANKING DESC";
         try
         {
             //conexao.setAutoCommit(false);
@@ -340,6 +341,7 @@ public class PrestadorServicoDAO extends AbstractDAO
                 prestador.setDataNascimento(resultado.getDate("data_nascimento"));
                 prestador.setSexo(resultado.getString("sexo"));
                 prestador.setSobrenome(resultado.getString("sobrenome"));
+                prestador.setRanking(resultado.getFloat("ranking"));
                 //recuperar as competencias
                 CompetenciaDAO compDAO = new CompetenciaDAO(conexao);
                 compDAO.consultarUm(prestador);

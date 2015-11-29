@@ -371,6 +371,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setCanal(rs.getString("video_canal"));
                 pe.setAvaliacao(new Avaliacao());
                 pe.getAvaliacao().setId(rs.getInt("id_avaliacao"));
+                pe.setValor(rs.getDouble("valor"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
@@ -508,6 +509,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setQtdeInteressados(rs.getInt("qtde"));
                 pe.setAvaliacao(new Avaliacao());
                 pe.getAvaliacao().setId(rs.getInt("id_avaliacao"));
+                pe.setValor(rs.getDouble("valor"));
                 
                 entidades.add(pe);
             }
@@ -554,6 +556,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
+                pe.setValor(rs.getDouble("valor"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
@@ -603,6 +606,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
+                pe.setValor(rs.getDouble("valor"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
@@ -648,6 +652,7 @@ public class PedidoDAO extends AbstractDAO
                 pe.setHoraConsultoria(Calendar.getInstance());
                 pe.getHoraConsultoria().setTimeInMillis(rs.getTimestamp("horapedido").getTime());
                 pe.setCanal(rs.getString("video_canal"));
+                pe.setValor(rs.getDouble("valor"));
                 //procurar interessados
                 InteressadoDAO dao = new InteressadoDAO(conexao);
                 pe.setPrestadores(dao.consultar(pe));
@@ -1019,7 +1024,8 @@ public class PedidoDAO extends AbstractDAO
             
             sql.append("UPDATE PEDIDOS ");
             sql.append("SET STATUS = ?, ");
-            sql.append("ID_PRESTADOR = ? ");
+            sql.append("ID_PRESTADOR = ?, ");
+            sql.append("VALOR = ? ");
             sql.append("WHERE ID = ? ");
             
             pst = conexao.prepareStatement(sql.toString());
@@ -1028,7 +1034,8 @@ public class PedidoDAO extends AbstractDAO
             
             pst.setString(1, pedido.getStatus().getValue());
             pst.setInt(2, pedido.getPrestadorFinalista().getId());
-            pst.setInt(3, pedido.getId());
+            pst.setDouble(3, pedido.getPrestadorFinalista().getValorConsultoria());
+            pst.setInt(4, pedido.getId());
             
             pst.executeUpdate();
             

@@ -1,7 +1,7 @@
 <%-- 
     Document   : ClienteDetalhePedido
     Created on : 23/09/2015, 20:35:36
-    Author     : java
+    Author     : Felipe Monteiro
 --%>
 
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
@@ -166,7 +166,7 @@
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-usd"></span>
                                             </span>
-                                            <input type="text" name="txtValor" id="txtValor" class="form-control" placeholder="1.200,00" required="required"/>
+                                            <input type="text" name="txtValor" id="txtValor" class="form-control" value="${requestScope.pedido.valor}" placeholder="1.200,00" required="required" disabled="true"/>
                                         </div>
                                     </div>
                                 </div>

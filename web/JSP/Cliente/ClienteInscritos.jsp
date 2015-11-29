@@ -22,12 +22,13 @@
     <body>
         <div class="container">
             <div class="table-responsive">
-                <table data-toggle="table">
+                <table data-toggle="table" data-pagination="true">
                     <!-- cabecalho -->
                     <thead>
                         <tr>
                             <th>Prestador</th>
                             <th>Ranking</th>
+                            <th>Valor</th>
                             <th>Selecionar</th>
                         </tr>
                     </thead>
@@ -36,13 +37,15 @@
                     <!-- Linhas da tabela -->
                     <c:forEach var="prestador" items="${requestScope.pedido.prestadores}">
                         <tr>
-                            <td class="btn btn-link" onclick="alert('ola');">${prestador.nome} ${prestador.sobrenome}</td>
-                            <td><input type="number" class="rating" min="0" max="5" value="4" data-size="xs" disabled="true"/></td>
+                            <td class="" onclick="alert('ola');">${prestador.nome} ${prestador.sobrenome}</td>
+                            <td><input type="number" class="rating" min="0" max="5" value="${prestador.ranking}" data-size="xs" disabled="true"/></td>
+                            <td><h1 class="label label-success">R$ <f:formatNumber pattern="#,###.##" value="${prestador.valorConsultoria}"></f:formatNumber></h1></td>
                             <td>
                                 <form method="post" action="SelecionarPrestador" class="form-prestador">
-                                    <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${prestador.id}" hidden="true" class="id-prestador"/>
+                                <input type="text" name="txtIdPrestador" id="txtIdPrestador" value="${prestador.id}" hidden="true" class="id-prestador"/>
+                                <input type="text" name="txtValorConsultoria" id="txtValorConsultoria" value="${prestador.valorConsultoria}" hidden="true"/>
                                     <input type="text" name="txtIdPedido" id="txtIdPedido" value="${pedido.id}" hidden="true"/>
-                                    <button type="button" class="btn btn-success btn-prestador" onclick="selecionarPrestador(${prestador.id})">
+                                    <button type="button" class="btn btn-success btn-prestador" onclick="selecionarPrestador(${prestador.id},${prestador.valorConsultoria})">
                                         <span class="glyphicon glyphicon-ok"></span>
                                         Selecionar
                                     </button>
@@ -53,6 +56,7 @@
                 </table>
             </div>
         </div>
+        
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
         <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
     </body>
