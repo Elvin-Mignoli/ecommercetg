@@ -1,7 +1,7 @@
 <%-- 
     Document   : ClienteDetalhePedido
     Created on : 23/09/2015, 20:35:36
-    Author     : java
+    Author     : Felipe Monteiro
 --%>
 
 <%@page contentType="text/html" pageEncoding="ISO-8859-1"%>
@@ -166,7 +166,7 @@
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-usd"></span>
                                             </span>
-                                            <input type="text" name="txtValor" id="txtValor" class="form-control" placeholder="1.200,00" required="required"/>
+                                            <input type="text" name="txtValor" id="txtValor" class="form-control" value="<f:formatNumber value="${requestScope.pedido.valor}" pattern="#,###.##"></f:formatNumber>" placeholder="1.200,00" required="required" disabled="true"/>
                                         </div>
                                     </div>
                                 </div>
@@ -508,7 +508,7 @@
                                             //Mascaras dos campos!
                                             $(document).ready(function ()
                                             {
-                                                $('#txtValor').mask('000,000.00', {reverse: true});
+                                                //$('#txtValor').mask('000,000.00', {reverse: true});
                                                 $('#txtValidade').mask('99/9999');
                                                 $('#btnMensagem').on('click', function ()
                                                 {

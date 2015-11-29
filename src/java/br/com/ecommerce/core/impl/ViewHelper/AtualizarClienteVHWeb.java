@@ -40,12 +40,13 @@ public class AtualizarClienteVHWeb implements IViewHelper
         String cpf = request.getParameter("txtCpf");
         String sexo = request.getParameter("txtSexo").substring(0, 1);
         String dataNascimento = request.getParameter("txtDatanascimento");
+        dataNascimento = dataNascimento == null ? "" : dataNascimento;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date data = null;
         
         try
         {
-            if(dataNascimento != null || !dataNascimento.equals(""))
+            if(!dataNascimento.equals(""))
             {
                 data = sdf.parse(dataNascimento);
             }
@@ -80,7 +81,8 @@ public class AtualizarClienteVHWeb implements IViewHelper
         cliente.setContato(contato);
         cliente.setEndereco(endereco);
         cliente.setCartao(new CartaoCredito());
-
+        cliente.setEntrada(sessionCliente.getEntrada());
+        
         return cliente;
     }
 

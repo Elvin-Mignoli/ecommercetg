@@ -78,7 +78,8 @@ public class HeadHunterDAO extends AbstractDAO{
             dao = new CaixaEntradaDAO(conexao);
             
             dao.salvar(new CaixaEntrada(null, null,head));
-           conexao.commit();
+           if(transaction)
+            conexao.commit();
            
        }catch(Exception e){
            
@@ -144,8 +145,8 @@ public class HeadHunterDAO extends AbstractDAO{
             pst.setInt(8,head.getId() );
             
             pst.executeUpdate();
-            
-            conexao.commit();
+            if(transaction)
+                conexao.commit();
        }catch(Exception e){
            
             try

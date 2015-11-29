@@ -949,10 +949,9 @@ function removerConsultor()
 }
 
 //envia requisão ajax (Selecionar Prestador)
-function selecionarPrestador(prestador)
+function selecionarPrestador(prestador,valor)
 {
     var txtIdPedido = $('#txtIdPedido').val();
-
     swal({
         title: "Selecionar Prestador?",
         text: "",
@@ -965,7 +964,7 @@ function selecionarPrestador(prestador)
         $.ajax({
             type: 'POST',
             url: "SelecionarPrestador",
-            data: {txtIdPrestador: prestador, txtIdPedido: txtIdPedido},
+            data: {txtIdPrestador: prestador, txtIdPedido: txtIdPedido, txtValor:valor},
             success: function (data, textStatus, jqXHR) {
 
                 if (data !== null && data !== "")
