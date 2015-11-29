@@ -1,6 +1,6 @@
 <%-- 
-    Document   : PrestadorAlterarSenha
-    Created on : 14/08/2015, 13:36:52
+    Document   : HeadHunterAlterarSenha
+    Created on : 26/11/2015, 14:07:00
     Author     : Elvin
 --%>
 
@@ -56,7 +56,7 @@
       <div class="container">
             <div class="form-group form-inline">
                 <input type="button" value="Alterar" class="btn btn-success" id="submit" onclick="atualizarSenhaPrestador()"/>
-                <a href="PrestadorDashboard.jsp" class="btn btn-primary">Voltar</a>
+                <a href="HeadHunterDashboard.jsp" class="btn btn-primary">Voltar</a>
             </div>
       </div>  
     

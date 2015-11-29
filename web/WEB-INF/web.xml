@@ -34,6 +34,7 @@
         <url-pattern>/JSP/Cliente/NotifyConsultar</url-pattern>
         <url-pattern>/JSP/PrestadorServico/NotifyConsultar</url-pattern>
         <url-pattern>/JSP/HeadHunter/SalvarHeadHunter</url-pattern>
+        <url-pattern>/JSP/HeadHunter/AtualizarHeadHunter</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>120</session-timeout>

@@ -9,6 +9,7 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
+import br.com.ecommerce.domain.HeadHunter;
 import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
@@ -59,6 +60,9 @@ public class ValidaUsuarioVHWeb implements IViewHelper
             else if(resultado.getEntidade() instanceof PrestadorServico)
             {
                 response.sendRedirect("./JSP/PrestadorServico/PrestadorDashboard.jsp");
+            }else if(resultado.getEntidade() instanceof HeadHunter)
+            {
+                 response.sendRedirect("./JSP/HeadHunter/HeadHunterDashboard.jsp");
             }
         }       
     }   

@@ -27,7 +27,7 @@
                 <c:forEach var="list" items="${sessionScope.user.entrada.mensagens}">
                     <c:if test="${list.id == param.id}">
                         <!--Assunto da mensagem -->
-                        ${list.idPedido}
+                        
                         <tr>
                             <th class="segoe-ui-light-font" id="assunto">Re:&nbsp;${list.assunto}</th>
                         </tr>  

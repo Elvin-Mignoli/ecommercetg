@@ -8,10 +8,8 @@ package br.com.ecommerce.core.impl.ViewHelper;
 import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
-import br.com.ecommerce.core.impl.IStrategy.AlterarEmail;
-import br.com.ecommerce.domain.Cliente;
+import br.com.ecommerce.core.impl.IStrategy.AlterarSenha;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Elvin
  */
-public class AlterarEmailVHWeb implements IViewHelper{
+public class AlterarSenhaHeadHunterVHWeb implements IViewHelper{
 
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
@@ -36,20 +34,19 @@ public class AlterarEmailVHWeb implements IViewHelper{
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         
-        String email = request.getParameter("txtNovoEmail");
+        String senha= request.getParameter("txtNovaSenha");
         
         Usuario usuario =(Usuario) request.getSession().getAttribute("user");
-        usuario.setEmail(email);
-        IStrategy business = new AlterarEmail();
+        usuario.setSenha(senha);
+        IStrategy business = new AlterarSenha();
         Resultado rs = business.processar(usuario);
         
-        if(rs.getMensagemSimples() == null)
+       if(rs.getMensagemSimples() == null)
         {
            out.write("");
         }else{
            out.write("Houve algum problema no servidor, tente novamente mais tarde!");
         }
-       
     }
     
 }

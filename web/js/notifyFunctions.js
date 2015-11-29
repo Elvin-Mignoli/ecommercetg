@@ -90,3 +90,20 @@ function logoffchat(){
     });
     
 };
+/*window.onbeforeunload = function(){
+  //return 'Você tem certeza que deseja sair?';
+    var opcao = window.confirm("Deseja realmente sair?");
+    if(opcao === true)
+        alert("oi");
+    //gravar notify
+    
+};
+
+
+window.onunload = Sair;
+function Sair()
+{
+    //return "A página foi fechada";
+    
+}
+*/

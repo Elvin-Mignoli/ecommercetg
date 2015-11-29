@@ -86,6 +86,9 @@ public abstract class FactoryHelper
         helpers.put("/Ecommerce/JSP/HeadHunter/Email", new ConsultaEmailVHWeb());
         helpers.put("/Ecommerce/JSP/HeadHunter/CEP", new ConsultaCEPVHWeb());
         helpers.put("/Ecommerce/JSP/HeadHunter/CNPJ", new ConsultaCNPJVHWeb());
+        helpers.put("/Ecommerce/JSP/HeadHunter/AtualizarHeadHunter", new AtualizarHeadHunterVHWeb());
+        helpers.put("/Ecommerce/JSP/HeadHunter/AlterarEmail", new AlterarEmailHeadHunterVHWeb()); 
+        helpers.put("/Ecommerce/JSP/HeadHunter/AlterarSenha", new AlterarSenhaHeadHunterVHWeb()); 
     }
     
     /**
