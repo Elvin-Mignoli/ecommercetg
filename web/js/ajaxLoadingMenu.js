@@ -344,5 +344,47 @@ $(document).ready(function ()
         window.history.pushState('Object', 'Dashboard', './PrestadorDashboard.jsp');
         return false;
     }); */
+    
+     //ajax mostrar as mensagens enviadas do cliente
+    $("#meu_perfil_head").on("click", function (e) {
+        e.preventDefault(); //eliminamos o evento
+        $("#panel-heading").html("Meu Perfil");
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './HeadHunterDashboard.jsp');
+        return false;
+    }); 
+    
+    //Codigo para chamar o formulário de Alteracao de Email
+    $("#editar_email_head").on("click", function (e) {
+        $("#panel-heading").html("Dados Login");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './HeadHunterDashboard.jsp');
+        return false;
+    });
+
+    //Codigo para chamar o formulário de Alteracao da senha
+    $("#editar_senha_head").on("click", function (e) {
+        $("#panel-heading").html("Dados Login");
+        e.preventDefault(); //eliminamos o evento
+        var path = $(this).attr("href"); //Pegamos o caminho
+        var titulo = $(this).attr('data-titulo'); //pegamos o titulo da página
+        document.title = titulo; // Alterar o titulo da página
+        window.history.pushState("", titulo, path);
+        $("#conteudo").empty(''); //Limpa para poder colocar o conteúdo.
+        $("#conteudo").load(path); //Faz uma requisição http para o servidor.
+        window.history.pushState('Object', 'Dashboard', './HeadHunterDashboard.jsp');
+        return false;
+    });
 });
 

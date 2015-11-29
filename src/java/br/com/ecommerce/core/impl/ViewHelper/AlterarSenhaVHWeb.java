@@ -44,20 +44,12 @@ public class AlterarSenhaVHWeb implements IViewHelper{
         IStrategy business = new AlterarSenha();
         Resultado rs = business.processar(usuario);
         
-        if(rs.getMensagemSimples() == null)
+       if(rs.getMensagemSimples() == null)
         {
-            request.setAttribute("MsgAtualiza", "Dados atualizados com sucesso!");
-            if (request.getRequestURI().contains("Cliente"))// a requesição vem do cliente?
-            {
-               request.getSession().setAttribute("user",(Cliente) usuario);
-            }else if(request.getRequestURI().contains("Prestador"))// a requesição vem do Prestador de servico?
-            {
-                 request.getSession().setAttribute("user",(PrestadorServico) usuario);
-            }
+           out.write("");
         }else{
-            request.setAttribute("MsgAtualiza", "Houve algum problema no servidor, tente novamente mais tarde!");   //retorna lista de mensagens
+           out.write("Houve algum problema no servidor, tente novamente mais tarde!");
         }
-        request.getRequestDispatcher("PrestadorDashboard.jsp").forward(request, response);
     }
     
     

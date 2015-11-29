@@ -9,9 +9,7 @@ import br.com.ecommerce.application.Resultado;
 import br.com.ecommerce.core.IStrategy;
 import br.com.ecommerce.core.IViewHelper;
 import br.com.ecommerce.core.impl.IStrategy.AlterarEmail;
-import br.com.ecommerce.domain.Cliente;
 import br.com.ecommerce.domain.EntidadeDominio;
-import br.com.ecommerce.domain.PrestadorServico;
 import br.com.ecommerce.domain.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,9 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Elvin
+ * @author Henrique
  */
-public class AlterarEmailVHWeb implements IViewHelper{
+public class AlterarEmailHeadHunterVHWeb implements IViewHelper{
 
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
@@ -49,7 +47,6 @@ public class AlterarEmailVHWeb implements IViewHelper{
         }else{
            out.write("Houve algum problema no servidor, tente novamente mais tarde!");
         }
-       
     }
     
 }

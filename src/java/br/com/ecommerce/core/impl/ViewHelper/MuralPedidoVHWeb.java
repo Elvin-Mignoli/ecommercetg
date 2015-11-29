@@ -38,10 +38,13 @@ public class MuralPedidoVHWeb implements IViewHelper{
         prestador.setPedidos((ArrayList<EntidadeDominio>) pedido.getPedidos());
         
         //strategy para calcular a afinidade
-        AfinidadePedido afinidade = new AfinidadePedido();
-        resultado = afinidade.processar(prestador);
-        prestador = (PrestadorServico) resultado.getEntidade();
-        pedido.setPedidos(prestador.getPedidos());
+        if(prestador.getHabilidades() != null)
+        {
+            AfinidadePedido afinidade = new AfinidadePedido();
+            resultado = afinidade.processar(prestador);
+            prestador = (PrestadorServico) resultado.getEntidade();
+            pedido.setPedidos(prestador.getPedidos());
+        }
         
         if(resultado.getMensagens()!=null){
             request.setAttribute("ListaPedido", pedido);

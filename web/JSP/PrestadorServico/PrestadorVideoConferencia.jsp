@@ -166,6 +166,7 @@
                         });
                         hideUnnecessaryStuff();
                     };
+                     
                 },
                 onNewParticipant: function(numberOfViewers) {
                     document.title = 'Viewers: ' + numberOfViewers;
@@ -314,7 +315,7 @@
             }
            
         </script>
-       
+       <script src="../../bootstrap/js/popover.js" type="text/javascript"></script>
         <!-- commits.js is useless for you! It is not part of this WebRTC Experiment. -->
         <script src="//cdn.webrtc-experiment.com/commits.js" async> </script>
         <!--Bootstrap -->

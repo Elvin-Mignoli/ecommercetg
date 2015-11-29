@@ -258,26 +258,34 @@
                                                         </td>
                                                         <td class="text-center"><f:formatDate pattern="dd/MM/yyyy" value="${list.data.getTime()}"></f:formatDate></td>
                                                         <td class="text-center">
-                                                        <c:if test="${list.afinidade.equals('Nenhuma afinidade')}">
-                                                            <h4><span class=" label label-danger"> <i class="glyphicon glyphicon-star-empty btn-danger afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
-                                                            <h4><span class="label label-danger btn-danger afinidade">${list.afinidade}</span></h4>
-                                                        </c:if>
-                                                        <c:if test="${list.afinidade.equals('Pouco afinidade')}">
-                                                        <h4 ><span class="label label-warning" ><i class="glyphicon glyphicon-star-empty btn-warning  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
-                                                        <h4> <span class="label label-waring btn-warning afinidade">${list.afinidade}</span></h4>
-                                                        </c:if>
-                                                        <c:if test="${list.afinidade.equals('Afinidade regular')}">
-                                                            <h4 ><span class="label label-info"> <i class="glyphicon glyphicon-star-empty btn-info afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
-                                                            <h4 ><span class="label label-info btn-info afinidade">${list.afinidade}</span></h4>
-                                                        </c:if>
-                                                        <c:if test="${list.afinidade.equals('Boa afinidade')}">
-                                                            <h4> <span class="label label-primary" > <i class="glyphicon glyphicon-star-empty btn-primary  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
-                                                            <h4><span class="label label-primary btn-primary  afinidade">${list.afinidade}</span></h4>
-                                                        </c:if>
-                                                        <c:if test="${list.afinidade.equals('Ótima afinidade')}">
-                                                        <h4><span class="label label-success"> <i class="glyphicon glyphicon-star-empty btn-success  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
-                                                            <h4><span class="label label-success btn-success afinidade"> ${list.afinidade}</span></h4>
-                                                        </c:if>
+                                                        <c:choose>
+                                                            <c:when test="${list.afinidade != null}">
+                                                                <c:if test="${list.afinidade.equals('Nenhuma afinidade')}">
+                                                                    <h4><span class=" label label-danger"> <i class="glyphicon glyphicon-star-empty btn-danger afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                                    <h4><span class="label label-danger btn-danger afinidade">${list.afinidade}</span></h4>
+                                                                </c:if>
+                                                                <c:if test="${list.afinidade.equals('Pouco afinidade')}">
+                                                                <h4 ><span class="label label-warning" ><i class="glyphicon glyphicon-star-empty btn-warning  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                                <h4> <span class="label label-waring btn-warning afinidade">${list.afinidade}</span></h4>
+                                                                </c:if>
+                                                                <c:if test="${list.afinidade.equals('Afinidade regular')}">
+                                                                    <h4 ><span class="label label-info"> <i class="glyphicon glyphicon-star-empty btn-info afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                                    <h4 ><span class="label label-info btn-info afinidade">${list.afinidade}</span></h4>
+                                                                </c:if>
+                                                                <c:if test="${list.afinidade.equals('Boa afinidade')}">
+                                                                    <h4> <span class="label label-primary" > <i class="glyphicon glyphicon-star-empty btn-primary  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                                    <h4><span class="label label-primary btn-primary  afinidade">${list.afinidade}</span></h4>
+                                                                </c:if>
+                                                                <c:if test="${list.afinidade.equals('Ótima afinidade')}">
+                                                                <h4><span class="label label-success"> <i class="glyphicon glyphicon-star-empty btn-success  afinidade" id="star_perc">${list.afinidadePercent}%</i></span></h4>
+                                                                    <h4><span class="label label-success btn-success afinidade"> ${list.afinidade}</span></h4>
+                                                                </c:if>
+                                                            </c:when>
+                                                                <c:otherwise>
+                                                                    <h4><span class="label label-danger">Nenhuma habilidade adicionada!</span></h4>
+                                                                    <a href="#" id="add_skill" class="btn btn-link">Adicione!</a>
+                                                                </c:otherwise>
+                                                        </c:choose>
                                                         </td>
                                                     </tr>
                                                     </c:if>
@@ -395,6 +403,11 @@
                 title: 'Afinidade',
                 trigger: 'hover focus',
                 content:'Porcentagem de compatibilidade com o pedido, baseados em suas habilidades'
+            });
+            
+            //redirecionar para o perfil
+            $('#add_skill').on('click',function (){
+                $("#meu_perfil").trigger("click");
             });
         });  
         </script>

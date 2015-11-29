@@ -1,6 +1,6 @@
 <%-- 
-    Document   : PrestadorEditarEmail
-    Created on : 14/08/2015, 09:35:16
+    Document   : HeadHunterAlterarEmail
+    Created on : 26/11/2015, 12:20:10
     Author     : Elvin
 --%>
 
@@ -19,8 +19,7 @@
         <link href="../../css/openMensagem.css" rel="stylesheet" type="text/css"/>
 
     </head>
-    <body>
-        
+    <body> 
         <div class="container-fluid">
                 <!--E-mail atual-->
                 <div class="row">
@@ -72,10 +71,9 @@
            
             <div class="container">
                 <div class="form-group form-inline">
-                    <input type="button" value="Alterar" class="btn btn-success"  id="submit" onclick="atualizarEmailPrestador()"/>
-                    <a href="PrestadorDashboard.jsp" class="btn btn-primary">Voltar</a>
+                    <input type="button" value="Alterar" class="btn btn-success" id="submit" onclick="atualizarEmailHeadHunter()">
+                    <a href="HeadHunterDashboard.jsp" class="btn btn-primary">Voltar</a>
                 </div>
-            </div> 
-      
+            </div>                        
     </body>
 </html>

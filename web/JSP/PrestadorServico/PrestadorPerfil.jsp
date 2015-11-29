@@ -49,7 +49,7 @@
                     Você possui alguns dados cadastrais pendentes!
                </div>
        </c:if> 
-       <form method="POST" action="AtualizarPrestador">
+      
        <input type="text" name="operacao" value="Atualizar" hidden="true" id="operacao"/>
        <!--Panel informações pessoais -->
        <div class="panel  panel-success col-lg-10" >   
@@ -180,6 +180,7 @@
                         <div class="row">
                             <div class="form-group  " id="div_cep">
                                 <h4>CEP</h4>
+                                 <div id="statusCEP"></div>
                                 <div class="input-group col-lg-5">
                                     <span class="input-group-addon" id="span_cep"><b><i class="fa fa-street-view fa-lg"></i></b></span> </span>
                                     <input type="text" id="cep" name="txtCep" placeholder="0800-000" value="${sessionScope.user.endereco.cep}" class="form-control" onchange="loadEndereco()"/>
@@ -273,7 +274,7 @@
             </div><!--panel body-->
        </div><!--panel--><br>
   
-       </form>  
+       
                        
          <!-- Scripts da Pagina -->
           <!-- JavaScript Bootstrap tag-input -->
@@ -292,7 +293,7 @@
                 $("#input_celular").mask("(99)99999-9999");
                 $("#cep").mask("99999-999");
             
-            $(".form-control").prop('readonly','readonly');
+           $(".form-control").prop('disabled', 'true');
             //Aumentar o tamanho do skillbar
             $('#skill_bar').tagsinput({
                 tagClass: 'big'
