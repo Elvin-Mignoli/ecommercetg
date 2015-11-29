@@ -1920,3 +1920,33 @@ function atualizarSenhaHeadHunter()
         });
     }
 }
+
+function modalPerfil(id){
+    var idPrestador = id;
+    
+    $.ajax({
+        type: 'POST' ,
+        url: 'ConsultarUmPrestador',
+        data:{txtIdPrestador:idPrestador},
+        success: function (data, textStatus, jqXHR) {
+            //alert(data);
+            var prestador = jQuery.parseJSON(data);
+            
+            $('#nome').html(prestador.nome+' '+prestador.sobrenome);
+            var hb = '';
+            /*for(i = 0; i < prestador.habilidades.length;i++)
+            {
+                hb += prestador.habilidades[i].descricao; 
+            }*/
+            //alert(prestador.habilidades);
+            //$('#habilidades').text("Java");
+            var input = document.getElementById('habilidades');
+            input.value = prestador.habilidades;
+            $('#email').html(prestador.celular);
+            //alert("Habilidades: "+prestador.habilidades[2].descricao);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert('Erro '+errorThrown+' texto: '+textStatus);
+        }
+    });
+}

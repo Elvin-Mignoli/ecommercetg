@@ -4,6 +4,7 @@
     Author     : Elvin
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -19,18 +20,58 @@
         <link href="../../js/libs/sweet-notify/sweetalert.css" rel="stylesheet" type="text/css"/> 
         <link href="../../js/libs/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" type="text/css"/>
         <!--CSS notify -->
-         <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
-         <link href="../../js/libs/Notify/src/pnotify.core.css" rel="stylesheet" type="text/css"/>
-         <link href="../../js/libs/Notify/src/pnotify.buttons.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.core.css" rel="stylesheet" type="text/css"/>
+        <link href="../../js/libs/Notify/src/pnotify.buttons.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/Notify/src/pnotify.brighttheme.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/Notify/src/pnotify.mobile.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/Notify/src/pnotify.nonblock.css" rel="stylesheet" type="text/css"/>   
         <link href="../../js/libs/Notify/src/pnotify.history.css" rel="stylesheet" type="text/css"/>
         <link href="../../js/libs/Notify/src/pnotify.material.css" rel="stylesheet" type="text/css"/>
-        
-        
-   </head>
+        <!-- CSS Bootstrap table -->
+        <link href="../../js/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css"/>
+        <!-- CSS Tagsinput -->
+        <link href="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.css" rel="stylesheet" type="text/css"/>
+    </head>
     <body id="dashBoard">
+        <!-- Modal Perfil prestador -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="modalPerfil">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Perfil do prestador</h4>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Conteudo do Modal -->
+                        <div class="container-fluid">
+                            <div class="row-fluid">
+                                <div class="col-md-10">
+                                    <h3>Nome: <span class="btn-primary" id="nome"></span></h3>
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="col-md-10">
+                                    <!-- <h3>habilidades: <span class="" id="habilidades"></span></h3> -->
+                                    <h3>Habilidades:</h3>
+                                    <textarea id="habilidades" disabled="disabled"></textarea>
+                                    <!-- <input type="text" data-role="tagsinput" id="habilidades" class="tags"/>-->
+                                </div>
+                            </div>
+                            <div class="row-fluid">
+                                <div class="col-md-10">
+                                    <!-- <h3>Contato: <span class="" id="email"></span></h3> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -118,28 +159,28 @@
                                                 </a>
                                             </ul>
                                         </div>
-                                        <li class="active" id="listMensagens">
+                                        <!-- <li class="active" id="listMensagens">
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens
-                                                <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
-                                                    <i class="badge" id="qtdeMsg" style="background-color: #2ECC40">${sessionScope.user.entrada.QtdeAbertas()}</i>
-                                                </c:if>
-                                            </a>
-                                        </li>
+                                        <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
+                                            <i class="badge" id="qtdeMsg" style="background-color: #2ECC40">${sessionScope.user.entrada.QtdeAbertas()}</i>
+                                        </c:if>
+                                    </a>
+                                </li> -->
                                         <div class="collapse active" id="collapseMenuMensagens">
                                             <ul id="option_mensagens">
                                                 <a href= "#" id="caixa_entrada_head" data-titulo="Caixa de Entrada" >
-                                                <i class="glyphicon glyphicon-envelope"></i>
-                                                Caixa de entrada 
+                                                    <i class="glyphicon glyphicon-envelope"></i>
+                                                    Caixa de entrada 
                                                 </a>
                                                 <br/>
                                                 <a href= "#" id="mensagens_enviadas_head" data-titulo="Mensagens enviadas" >
-                                                <i class="glyphicon glyphicon-cloud-download"></i>
-                                                Mensagens enviadas
+                                                    <i class="glyphicon glyphicon-cloud-download"></i>
+                                                    Mensagens enviadas
                                                 </a>
                                                 <br/>
-                                              
+
                                             </ul>
                                         </div>    
                                         <ul class="nav nav-divider"></ul>
@@ -166,13 +207,39 @@
                     <div class="profile-content">
                         <div class="row-fluid-fluid">
                             <div class="panel panel-default">
-                                <div class="panel-heading" id="panel-heading"></div>
+                                <div class="panel-heading" id="panel-heading">Ranking dos melhores prestadores</div>
                                 <div class="panel-body">
-                                    
+
                                     <!-- Aqui vai toda as informações que o usuário precisar! -->
                                     <input type="text" hidden="true" value="" id="lastURL" />
+                                    <form method="POST" action="Ranking">
+                                        <input type="text" name="operacao" value="Consultar" hidden="false"/>
+                                        <input type="submit" id="ranking_submit" hidden="false"/>        
+                                    </form>
                                     <main id="conteudo">
-
+                                        <table data-toggle="table" data-pagination="true" data-search="true">
+                                            <thead class="text-center">
+                                            <th>Nome</th>
+                                            <th>Ranking</th>
+                                            <th>Perfil</th>
+                                            </thead>
+                                            <c:forEach var="prestador" items="${requestScope.prestadores}">
+                                                <tr>
+                                                    <td>
+                                                        ${prestador.nome} ${prestador.sobrenome}
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="rating" disabled="disabled" value="${prestador.ranking}" data-size="xs"/>
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-primary perfil" id="btnPerfil" data-name="${prestador.id}" data-target="#modalPerfil" data-toggle="modal" onclick="modalPerfil(${prestador.id})">
+                                                            <span class="glyphicon glyphicon-eye-open"></span>
+                                                            Visualizar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </table>
                                     </main>
                                 </div>
                             </div>
@@ -181,36 +248,48 @@
                 </div>
             </div>
         </div>
-                                                
-        <!-- Scripts da Pagina -->
-        <!-- Arquivos bootstrap da página -->
-        <script src="../../bootstrap/js/dropdown.js"></script>
-        <script src="../../bootstrap/js/collapse.js"></script>
-        <script src="../../bootstrap/js/tab.js"></script>
-        <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
-        <!-- Jquery.js-->
-        <script src="../../js/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
-        <!-- Mask's -->
-        <script src="../../js/libs/jquery.maskedinput.js"></script>
-        <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
-        <!--Bootstrap -->
-        <script src="../../bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
-        <!-- Arquivos JS para carregar tag inputs do bootstrap -->
-        <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
-        <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
-        <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
-        <!-- Plug-ins Jquery Notify -->
-        <script src="../../js/libs/noty/packaged/jquery.noty.packaged.min.js" type="text/javascript"></script>
-        <script src="../../js/libs/noty/layouts/topRight.js" type="text/javascript"></script>
-        <script src="../../js/libs/noty/jquery.noty.js" type="text/javascript"></script>
-        <!-- Implementando script de load de paginas de funcoes -->
-        <script src="../../js/ajaxFuntions.js"></script>
-        <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
-        <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
-        <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
-        <!--Notify js -->
-        <script src="../../js/libs/Notify/pnotify.custom.min.js" type="text/javascript"></script>
-       
+        <c:set var="idPrestador" value="0"></c:set>
+            <!-- Scripts da Pagina -->
+            <!-- Jquery.js-->
+            <script src="../../js/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
+            <!-- Mask's -->
+            <script src="../../js/libs/jquery.maskedinput.js"></script>
+            <script src="../../js/libs/jquery.mask/jquery.mask.min.js" type="text/javascript"></script>
+            <!-- Arquivos bootstrap da página -->
+            <script src="../../bootstrap/js/dropdown.js"></script>
+            <script src="../../bootstrap/js/collapse.js"></script>
+            <script src="../../bootstrap/js/tab.js"></script>
+            <script src="../../bootstrap/js/modal.js" type="text/javascript"></script>
+            <!-- Arquivos JS para carregar tag inputs do bootstrap -->
+            <script src="../../js/libs/angular/angular.min.js" type="text/javascript"></script>
+            <script src="../../js/libs/jQuery-Tags/js/typeahead.tagging.js" type="text/javascript"></script>
+            <script src="../../js/libs/jQuery-Tags/js/libs/typeahead.bundle.min.js" type="text/javascript"></script>
+            <!-- Plug-ins Jquery Notify -->
+            <script src="../../js/libs/noty/packaged/jquery.noty.packaged.min.js" type="text/javascript"></script>
+            <script src="../../js/libs/noty/layouts/topRight.js" type="text/javascript"></script>
+            <script src="../../js/libs/noty/jquery.noty.js" type="text/javascript"></script>
+            <!-- Sweet alert -->
+            <script src="../../js/libs/sweet-notify/sweetalert.min.js" type="text/javascript"></script>
+            <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>
+            <!--Notify js -->
+            <script src="../../js/libs/Notify/pnotify.custom.min.js" type="text/javascript"></script>
+            <!-- Bootstrap table -->
+            <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js"></script>
+            <!-- tags input -->
+            <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js" type="text/javascript"></script>
+            <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.min.js" type="text/javascript"></script>
+            <!-- Implementando script de load de paginas de funcoes -->
+            <script src="../../js/ajaxFuntions.js"></script>
+            <script src="../../js/ajaxLoadingMenu.js" type="text/javascript"></script>
+            <script>
+                                                            $(document).ready(function () {
+                                                                if ($('#panel-heading').html() === 'Ranking dos melhores prestadores')
+                                                                {
+                                                                    if (${requestScope.prestadores == null})
+                                                                        $('#ranking_submit').trigger("click");
+                                                                }
+                                                            });
+        </script>
     </body>
 </html>
 

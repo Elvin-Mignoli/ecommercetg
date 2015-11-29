@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(filterName = "SessionFilter", urlPatterns =
 {
-    "/JSP/Cliente/ClienteDashboard.jsp","/JSP/Cliente/AtualizarCliente", "/JSP/PrestadorServico/PrestadorDashboard.jsp","/JSP/Cliente/*","/JSP/PrestadorServico/*"
+    "/JSP/Cliente/ClienteDashboard.jsp","/JSP/Cliente/AtualizarCliente", "/JSP/PrestadorServico/PrestadorDashboard.jsp","/JSP/Cliente/*","/JSP/PrestadorServico/*","/JSP/HeadHunter/*"
 })
 public class SessionFilter implements Filter
 {

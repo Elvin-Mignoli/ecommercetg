@@ -26,10 +26,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AtualizarHeadHunterVHWeb implements IViewHelper{
 
-    HeadHunter head = new HeadHunter();
+    HeadHunter head;
     @Override
     public EntidadeDominio getEntidade(HttpServletRequest request) {
         HeadHunter session = (HeadHunter) request.getSession().getAttribute("user");
+        head = session;
         /* Dados do Pessoais do Cliente */
         String nome = request.getParameter("txtNome");
         String sobrenome = request.getParameter("txtSobrenome");
@@ -37,12 +38,13 @@ public class AtualizarHeadHunterVHWeb implements IViewHelper{
         String cpf = request.getParameter("txtCpf");
         String sexo = request.getParameter("txtSexo").substring(0, 1);
         String dataNascimento = request.getParameter("txtDatanascimento");
+        dataNascimento = dataNascimento == null ? "":dataNascimento;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date data = null;
         
         try
         {
-            if(dataNascimento != null || !dataNascimento.equals(""))
+            if(!dataNascimento.equals(""))
             {
                 data = sdf.parse(dataNascimento);
             }
