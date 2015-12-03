@@ -281,6 +281,7 @@
         <script src="../../bootstrap/js/popover.js" type="text/javascript"></script>
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput.min.js"></script>
         <script src="../../js/libs/bootstrap-taginput/bootstrap-tagsinput-angular.min.js"></script>
+        <script src="../../bootstrap/js/alert.js"></script>
 
         <!-- Mask -->
         <script>

@@ -20,7 +20,7 @@
     </head>
 
     <body>
-        <div class="container">
+        
             <div class="table-responsive">
                 <table data-toggle="table" data-pagination="true">
                     <!-- cabecalho -->
@@ -55,7 +55,7 @@
                     </c:forEach>
                 </table>
             </div>
-        </div>
+        
         
         <script src="../../js/libs/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
         <script src="../../js/libs/bootstrap-star-rating/js/star-rating.min.js" type="text/javascript"></script>

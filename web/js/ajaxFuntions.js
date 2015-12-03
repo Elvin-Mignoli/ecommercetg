@@ -1388,24 +1388,7 @@ function buscarNotificationCliente(){
                 }]
                 }
             });
-            //notify desktop
-             PNotify.desktop.permission();
-            (new PNotify({
-                title: 'Noticifação de Vídeo Chat!',
-                text: 'Foi iniciado uma sala de Vídeo Chat' +'\n'+
-               'Pedido:'+ '\n'+
-                 '"' + notify.pedido + '"\n' +
-                " Consultor: "+ notify.prestador+ '"\n' +
-                "Aguardando a sua entrada!",
-                desktop: {
-                    desktop: true
-                }
-            })).get().click(function(e) {
-              window.location.replace("Notify?idCliente="+notify.idCliente +
-                            "&idPrestador="+ notify.idPrestador +
-                            "&idPedido="+ notify.idPedido +
-                            "&Canal="+ notify.canal);
-            });
+            
         }
         
     },
@@ -1469,24 +1452,7 @@ function buscarNotificationPrestador(){
                 }]
                 }
             });
-            //notify desktop
-             PNotify.desktop.permission();
-            (new PNotify({
-                title: 'Noticifação de Vídeo Chat!',
-                text: 'Foi iniciado uma sala de Vídeo Chat!' +'\n'+ 
-                'Pedido:' +'\n'+ 
-                '"' + notify.pedido +'"\n' +
-                " Cliente: "+ notify.cliente+ '\n' +
-                "Aguardando a sua entrada!",
-                desktop: {
-                    desktop: true
-                }
-            })).get().click(function(e) {
-             window.location.replace("Notify?idCliente="+notify.idCliente +
-                            "&idPrestador="+ notify.idPrestador +
-                            "&idPedido="+ notify.idPedido +
-                            "&Canal="+ notify.canal);
-            });
+            
         }
         
     },

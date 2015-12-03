@@ -48,7 +48,7 @@
                 <!-- SEGUNDA LINHA DO FORM -->
                 <div class="row">
                     <!-- ************* Campo data de Inicio **************-->
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <h4>Data de início</h4>
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -60,7 +60,7 @@
                     <!-- **** Fim do Campo!  ***** -->
 
                     <!-- *************** Campo Data de Termino ****************** -->
-                    <div class="form-group col-lg-3">
+                    <div class="form-group col-lg-4">
                         <h4>Data de término</h4>
                         <div class="input-group">
                             <span class="input-group-addon">
