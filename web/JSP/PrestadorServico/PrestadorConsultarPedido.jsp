@@ -68,7 +68,7 @@
                             </form>
                         <br> <br>
                         <button type="button" id="btn_enviar" class="btn btn-success
-                               <c:if test="${requestScope.pedido.status != 'FECHADO'}">disabled</c:if>" onclick="showButtonMsg()">Mensagem
+                               <c:if test="${requestScope.pedido.status != 'FECHADO'}"></c:if>" onclick="showButtonMsg()">Mensagem
                          <span class="glyphicon glyphicon-send"></span></button>
                         <br><br>
                         

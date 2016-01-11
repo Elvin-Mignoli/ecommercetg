@@ -26,7 +26,40 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(filterName = "SessionFilter", urlPatterns =
 {
-    "/JSP/Cliente/ClienteDashboard.jsp","/JSP/Cliente/AtualizarCliente", "/JSP/PrestadorServico/PrestadorDashboard.jsp","/JSP/Cliente/*","/JSP/PrestadorServico/*","/JSP/HeadHunter/*"
+    "/JSP/Cliente/ClienteDashboard.jsp","/JSP/Cliente/AtualizarCliente", "/JSP/PrestadorServico/PrestadorDashboard.jsp",
+    "/JSP/Cliente/AlterarCartao.jsp",
+    "/JSP/Cliente/AlterarEmail.jsp",
+    "/JSP/Cliente/AlterarSenha.jsp",
+    "/JSP/Cliente/ClienteAtualizar.jsp",
+    "/JSP/Cliente/ClienteAtualizarPedido.jsp",
+    "/JSP/Cliente/ClienteCaixaEntrada.jsp",
+    "/JSP/Cliente/ClienteConsultar.jsp",
+    "/JSP/Cliente/ClienteDetalhePedido.jsp",
+    "/JSP/Cliente/ClienteExcluir.jsp",
+    "/JSP/Cliente/ClienteInscritos.jsp",
+    "/JSP/Cliente/ClienteMensagensEnviadas.jsp",
+    "/JSP/Cliente/ClientePedidos.jsp",
+    "/JSP/Cliente/ClientePerfil.jsp",
+    "/JSP/Cliente/ClienteVideoConferencia.jsp",
+    "/JSP/Cliente/OpenMensagemCliente.jsp",
+    "/JSP/Cliente/Pedidos.jsp",
+    "/JSP/Cliente/ResponderMensagemCliente.jsp",
+    "/JSP/PrestadorServico/OpenMensagem.jsp",
+    "/JSP/PrestadorServico/AlterarEmail.jsp",
+    "/JSP/PrestadorServico/AlterarSenha.jsp",
+    "/JSP/PrestadorServico/PrestadorCaixaEntrada.jsp",
+    "/JSP/PrestadorServico/PrestadorCandidaturas.jsp",
+    "/JSP/PrestadorServico/PrestadorConsultarPedido.jsp",
+    "/JSP/PrestadorServico/PrestadorConsultorias.jsp",
+    "/JSP/PrestadorServico/PrestadorDashboard.jsp",
+    "/JSP/PrestadorServico/PrestadorMensagensEnviadas.jsp",
+    "/JSP/PrestadorServico/PrestadorPerfil.jsp",
+    "/JSP/PrestadorServico/PrestadorVideoConferencia.jsp",
+    "/JSP/PrestadorServico/ResponderMensagem.jsp",
+    "/JSP/HeadHunter/HeadHunterAlterarEmail.jsp",
+    "/JSP/HeadHunter/HeadHunterAlterarSenha.jsp",
+    "/JSP/HeadHunter/HeadHunterDashboard.jsp",
+    "/JSP/HeadHunter/HeadHunterPerfil.jsp"
 })
 public class SessionFilter implements Filter
 {

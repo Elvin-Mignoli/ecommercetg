@@ -210,9 +210,7 @@
                         </div>
                         <div class="row-fluid">
                             <h3>Deixe um breve comentário:</h3>
-                            <textarea class="form-control" id="comentarioAvaliacao">
-                                
-                            </textarea>
+                            <textarea class="form-control" id="comentarioAvaliacao"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -228,7 +226,7 @@
         </div>
         <!-- Fim do modal de Avaliação -->
 
-        <div class="container">
+     
             <div class="panel panel-success">
                 <div class="panel panel-heading text-center">
                     <h4>Pedido (${requestScope.pedido.status})</h4>
@@ -413,7 +411,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <c:choose>
                                 <c:when test="${requestScope.pedido.status eq 'FECHADO' or requestScope.pedido.status eq 'CANCELADO' or requestScope.pedido.status eq 'ABERTO'}">
                                     <button class="btn btn-default disabled" id="btnPagamento" data-toggle="modal" data-target="#transfModal">
@@ -433,7 +431,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <c:choose>
                                 <c:when test="${requestScope.pedido.status eq 'FECHADO' and requestScope.pedido.avaliacao.id eq 0}">
                                     <button id="btnAvaliacao" class="btn btn-danger" data-toggle="modal" data-target="#modalAvaliar">
@@ -458,7 +456,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+      
         <div class="panel panel-info col-lg-12">
             <div class="panel panel-heading text-center">Histórico de mensagens</div>
             <div class="panel-body">

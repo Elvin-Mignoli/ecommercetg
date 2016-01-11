@@ -73,7 +73,7 @@
                             <div class="profile-sidebar">
                                 <!-- SIDEBAR USERPIC -->
                                 <div class="profile-userpic">
-                                    <img src="http://wallpaperus.org/wallpapers/09/256/black-people-1920x1080-wallpaper-2340332.jpg" class="img-responsive" alt="">
+                                    <img src="../../imagens/people.jpg" class="img-responsive" alt="">
                                 </div>
                                 <!-- END SIDEBAR USERPIC -->
                                 <!-- SIDEBAR USER TITLE -->
@@ -119,9 +119,9 @@
                                             <a href="#collapseMenuMensagens" data-toggle="collapse" aria-expanded="false">
                                                 <i class="glyphicon glyphicon-envelope"></i>
                                                 Mensagens
-                                                <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
+                                               <!-- <c:if test="${sessionScope.user.entrada.QtdeAbertas() gt 0}">
                                                     <i class="badge" id="qtdeMsg" style="background-color: #2ECC40">${sessionScope.user.entrada.QtdeAbertas()}</i>
-                                                </c:if>
+                                                </c:if>-->
                                             </a>
                                         </li>
                                         <div class="collapse active" id="collapseMenuMensagens">

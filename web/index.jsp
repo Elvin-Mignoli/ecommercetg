@@ -22,6 +22,8 @@
 
         <!-- Custom styles for this template -->
         <link href="bootstrap/dist/css/jumbotron.css" rel="stylesheet">
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="assets/css/font-awesome.css" rel="stylesheet" type="text/css"/>
     </head>
 
     <body>
@@ -64,8 +66,8 @@
 
         <!-- Main jumbotron for a primary marketing message or call to action -->
         <div class="jumbotron">
-            <div class="container center-block">
-                <div id="indexCarousel" class="carousel slide col-md-5" data-ride="carousel">
+            <div class="container">
+                <div id="indexCarousel" class="carousel slide col-md-10 text-center" data-ride="carousel">
                     <!-- Indicadores -->
                     <ol class="carousel-indicators">
                         <li data-target="#image-carousel" data-slide="0" class="active"></li>
@@ -76,16 +78,23 @@
                     <div class="carousel-inner" role="listbox">
                         <!-- primeiro item -->
                         <div class="item active">
-                            <img src="http://www.webmarketingpros.com/blog/wp-content/uploads/2014/02/business-discovery.jpg" alt="">
+                            <img src="imagens/freelance.jpg" alt="">
                             <div class="carousel-caption">
-                                <h3>Primeira imagem</h3>
+                                <h3>Temos ótimos planos para você!</h3>
                             </div>
                         </div>
                         <!-- Segundo item -->
                         <div class="item">
-                            <img src="http://www.webmarketingpros.com/blog/wp-content/uploads/2014/02/business-discovery.jpg" alt="">
+                            <img src="imagens/happy.jpg" alt="">
                             <div class="carousel-caption">
-                                <h3>Segunda imagem</h3>
+                                <h3>Seja um grande consultor</h3>
+                            </div>
+                        </div>
+                        <!-- Terceiro Item -->
+                        <div class="item">
+                            <img src="imagens/ranking.jpg" alt="">
+                            <div class="carousel-caption">
+                                <h3>Cresça em nosso Ranking</h3>
                             </div>
                         </div>
                     </div>
@@ -117,34 +126,82 @@
                     <!-- <p>Alguns informações aqui</p>
                     <p><a class="btn btn-default" href="#" role="button">Mais detalhes &raquo;</a></p> -->
                 </div>
-                <div class="col-md-4">
-                    <h2>Nossos Pedidos</h2>
-                    <div class="box-chart">
-                        <canvas id="GraficoBarra" style="width: 100%"></canvas>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <span class="label label-success">Abertos</span>
-                        </div>
-                        <div class="col-sm-3">
-                            <span class="label label-info">Fechados</span>
-                        </div>
-                        <div class="col-sm-3">
-                            <span class="label label-danger">Cancelados</span>
+                <!-- Comentários --> 
+                <div class="col-md-4 text-center">
+                    <h2>Depoimentos</h2>
+                    <div id="carousel-example" class="carousel slide-custom" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example" data-slide-to="1"></li>
+                            <li data-target="#carousel-example" data-slide-to="2"></li>
+                        </ol>
+
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="item">
+                                    <div class="col-md-10 slide-custom">
+                                        <h4><i class="fa fa-quote-left"></i> Um serviço muito prático para quem quer fazer freelancer.<i class="fa fa-quote-right"></i></h4>
+                                        <div class="user-img pull-right">
+                                            <img src="assets/img/user.gif" alt="" class="img-u image-responsive"  />
+                                        </div>
+                                        <h5 class="pull-right"><strong class="c-black">Lorem Dolor</strong></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="">
+                                    <div class="col-md-10 slide-custom">
+                                        <h4> <i class="fa fa-quote-left"></i>O "Know-how" é ótimo, com ele consegui muita visibilidade!<i class="fa fa-quote-right"></i></h4>
+                                        <div class="user-img pull-right">
+                                            <img src="assets/img/user2.png" alt="" class="img-u image-responsive"  />
+                                        </div>
+                                        <h5 class="pull-right"><strong class="c-black">Keep Code</strong></h5>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <h2>Titulo 3</h2>
-                    <p>E mais algumas por aqui!</p>
-                    <p><a class="btn btn-default" href="#" role="button">Mais detalhes &raquo;</a></p>
+                <!-- Fim dos comentários -->
+                <div class="col-md-4 text-left">
+                    <h2>Empresas Envolvidas</h2>
+                    <div id="carousel-example" class="carousel slide-custom" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example" data-slide-to="1"></li>
+                            <li data-target="#carousel-example" data-slide-to="2"></li>
+                        </ol>
+
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <div class="item">
+                                    <div class="col-md-10 slide-custom">
+                                        <h4><i class="fa fa-quote-left"></i>Desenvolvimento de soluções em segurança<i class="fa fa-quote-right"></i></h4>
+                                        <div class="user-img pull-right">
+                                            <img src="assets/img/metro.png" alt="" class="img-u image-responsive"  />
+                                        </div>
+                                        <h5 class="pull-right"><strong class="c-black">Defender SW</strong></h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="col-md-10 slide-custom">
+                                    <h4> <i class="fa fa-quote-left"></i>O "Know-how" é ótimo, com ele consegui muita visibilidade!<i class="fa fa-quote-right"></i></h4>
+                                    <div class="user-img pull-right">
+                                        <img src="assets/img/code.png" alt="" class="img-u image-responsive"  />
+                                    </div>
+                                    <h5 class="pull-right"><strong class="c-black">Faucibus luctus</strong></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <hr>
 
             <footer class="form-inline">
-                <p>&copy; Company 2014</p>
+                <p>&copy; <b>Know-how</b> Company 2015</p>
             </footer>
         </div> <!-- /container -->
         <!--Para funcionar o collapsed-->
@@ -171,7 +228,7 @@
             <c:forEach var="hb" items="${requestScope.donnutHabilidade}">
                     {
                     value: '${hb.value}',
-                    scaleShowLabels: true,
+                            scaleShowLabels: true,
                             color: this.dar_cor_aleatoria(),
                             highlight: "#D3D3D3",
                             label: '${hb.label}'

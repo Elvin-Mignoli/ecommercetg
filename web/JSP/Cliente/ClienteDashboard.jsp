@@ -75,7 +75,7 @@
                                         <div class="media">
                                             <div class="media-left media-middle">
                                                 <a href="#" id="file">
-                                                    <img src="http://www.tvchoicemagazine.co.uk/sites/default/files/imagecache/interview_image/intex/michael_emerson.png" class="img-responsive">
+                                                    <img src="../../imagens/michael_emerson.png" class="img-responsive">
                                                     <!-- <img src="${sessionScope.user.imagem}" class="img-responsive" id="imagePerfil"> -->
                                                 </a>
                                             </div>

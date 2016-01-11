@@ -100,6 +100,12 @@ public class ClienteDAO extends AbstractDAO
             dao = new CaixaEntradaDAO(conexao);
             
             dao.salvar(new CaixaEntrada(cliente, null));
+            //fixar saldo de um novo cliente
+            sql = new StringBuilder("INSERT INTO SALDOS (id_cliente,valor) VALUES (?,?)");
+            pst = conexao.prepareStatement(sql.toString());
+            pst.setInt(1, entidade.getId());
+            pst.setFloat(2, 2000);
+            pst.execute();
             
             conexao.commit();   //commitando as alteracoes feitas no banco!
 

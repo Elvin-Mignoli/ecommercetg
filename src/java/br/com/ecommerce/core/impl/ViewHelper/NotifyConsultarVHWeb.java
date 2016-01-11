@@ -65,7 +65,7 @@ public class NotifyConsultarVHWeb implements IViewHelper{
             
              response.getWriter().write(js.toString());
         }else{
-            response.getWriter().write(resultado.getMensagens().toString());
+            response.getWriter().write("Vazio");
         }
     }
     
